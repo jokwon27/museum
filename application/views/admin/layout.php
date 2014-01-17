@@ -14,7 +14,7 @@
     <title>Dashboard - Admin</title>
 
        <!-- Bootstrap core CSS -->
-    <link href="<?= base_url('assets/bootstrap/css/bootstrap.min.css')?>" rel="stylesheet">
+    <link href="<?= base_url('assets/bootstrap/css/bootstrap.css')?>" rel="stylesheet">
 
     <!-- Add custom CSS here -->
     <link href="<?= base_url('assets/css/sb-admin.css') ?>" rel="stylesheet">

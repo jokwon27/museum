@@ -23,5 +23,18 @@ class M_admin extends CI_Model {
         //echo $sql;
         return $this->db->query($sql)->result();
     }
+
+    function user_get_data($limit, $start, $search){
+        $q = '';
+        if (isset($search['id']) && ($search['id'] !== '')) {
+            $q .= " and id = '".$search['id']."'";
+        }
+        $limit = " limit $start, $limit ";
+        $sql = "select * from users where id is not null $q order by username";
+        $query = $this->db->query($sql . $limit);
+        $ret['data'] = $query->result();
+        $ret['jumlah'] = $this->db->query($sql)->num_rows();
+        return $ret;
+    }
     
 }

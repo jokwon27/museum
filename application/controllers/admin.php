@@ -6,20 +6,41 @@ class Admin extends CI_Controller {
         parent::__construct();
         $this->load->model(array('m_admin'));
         $this->load->library('session');
-        
+        $this->limit = 10;
         date_default_timezone_set('Asia/Jakarta');
     }
 
     function show_dashboard($data){
   
-        $id_user = $this->session->userdata('user_id');
+        $id_user = $this->session->userdata('id_user');
         $data['menu'] = $this->m_admin->menu_load_data($id_user);
         $this->load->view('admin/layout', $data);
        
     }
 
+    function login() {
+        $jml = $this->m_admin->cek_login();
+        if (isset($jml->username) and $jml->username != '') {
+            $data = array(
+                'id_user' => $jml->id, 
+                'user' => $jml->username, 
+                'pass' => $jml->password
+            );
+            $this->session->set_userdata($data);
+
+            die(json_encode(array('status'=>'login')));
+        } else {
+            die(json_encode(array('status'=>'gagal')));
+        }
+    }
+
+    function logout() {
+        $this->session->sess_destroy();
+        redirect(base_url('admin'));
+    }
+
     function cek(){
-        $user = $this->session->userdata('username'); 
+        $user = $this->session->userdata('user'); 
 
         if ($user == '') {
             redirect(base_url('admin/sign_in'));
@@ -42,6 +63,16 @@ class Admin extends CI_Controller {
         $data['title'] = 'Master Data User';
         $data['page'] = 'master_user';
         $this->show_dashboard($data);
+    }
+
+    function master_user_list($page){
+        $search = array();
+        $start = ($page - 1) * $this->limit;        
+        $data = $this->m_admin->user_get_data($this->limit, $start, $search);
+        $data['page'] = $page;
+        $data['limit'] = $this->limit;
+        $this->load->view('admin/master_user_list', $data);
+
     }
 
     function master_museum(){
@@ -79,28 +110,6 @@ class Admin extends CI_Controller {
         $this->show_dashboard($data);
     }
 
-
-    
-	function login() {
-        $jml = $this->m_admin->cek_login();
-        if (isset($jml->username) and $jml->username != '') {
-            $data = array(
-                'user_id' => $jml->id, 
-                'username' => $jml->username, 
-                'password' => $jml->password
-            );
-            $this->session->set_userdata($data);
-
-            die(json_encode(array('status'=>'login')));
-        } else {
-            die(json_encode(array('status'=>'gagal')));
-        }
-    }
-
-    function logout() {
-        $this->session->sess_destroy();
-        redirect(base_url('admin'));
-    }
 
 	
 }
