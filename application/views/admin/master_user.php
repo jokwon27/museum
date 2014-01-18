@@ -20,6 +20,8 @@
             var page = ($('.noblock').html()=='')?'1':$('.noblock').html();
             BootstrapDialog.show({
                 title: 'Hapus Data',
+                closable:true,
+                type: BootstrapDialog.TYPE_DEFAULT,
                 message: 'Anda yakin akan menghapus data ini?',
                 buttons: [
                 {
@@ -58,5 +60,5 @@
 
 <div>
 	
-	<div id="user_list" style="width:50%"></div>
+	<div id="user_list" style="width:100%"></div>
 </div>
