@@ -4947,6 +4947,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
   line-height: 1.428571429;
   text-decoration: none;
   background-color: #ffffff;
+  color: blue;
+  cursor: pointer;
   border: 1px solid #dddddd;
 }
 

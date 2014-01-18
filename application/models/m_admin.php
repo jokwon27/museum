@@ -36,5 +36,9 @@ class M_admin extends CI_Model {
         $ret['jumlah'] = $this->db->query($sql)->num_rows();
         return $ret;
     }
+
+    function user_delete_data($id){
+        $this->db->where('id', $id)->delete('users');
+    }
     
 }

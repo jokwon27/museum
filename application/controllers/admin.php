@@ -6,7 +6,7 @@ class Admin extends CI_Controller {
         parent::__construct();
         $this->load->model(array('m_admin'));
         $this->load->library('session');
-        $this->limit = 10;
+        $this->limit = 3;
         date_default_timezone_set('Asia/Jakarta');
     }
 
@@ -69,10 +69,19 @@ class Admin extends CI_Controller {
         $search = array();
         $start = ($page - 1) * $this->limit;        
         $data = $this->m_admin->user_get_data($this->limit, $start, $search);
+        if ($data['data'] == NULL) {
+            $data = $this->m_admin->user_get_data($this->limit, 0, $search);
+        }
         $data['page'] = $page;
         $data['limit'] = $this->limit;
+        $data['pagination'] = pagination($data['jumlah'], $this->limit, $page, 1);
         $this->load->view('admin/master_user_list', $data);
 
+    }
+
+    function master_user_delete($id,$page) {
+        $this->m_admin->user_delete_data($id);
+        $this->master_user_list($page);
     }
 
     function master_museum(){

@@ -493,7 +493,7 @@ function header_excel($namaFile) {
     header("Content-Transfer-Encoding: binary ");
 }
 
-function paging_ajax($jmldata, $dataPerPage, $klik, $tab = NULL, $search) {
+function pagination($jmldata, $dataPerPage, $klik, $tab = NULL, $search = NULL) {
     /*
      * Parameter '$search' dalam bentuk string , bisa json string atau yang lain
      * contoh 1#nama_barang#nama_pabrik
@@ -501,8 +501,7 @@ function paging_ajax($jmldata, $dataPerPage, $klik, $tab = NULL, $search) {
 
     $showPage = NULL;
     ob_start();
-    echo "
-        <div class='body-page'>";
+    echo '<ul class="pagination">';
     if (!empty($klik)) {
         $noPage = $klik;
     } else {
@@ -524,28 +523,28 @@ function paging_ajax($jmldata, $dataPerPage, $klik, $tab = NULL, $search) {
         $prev = null;
         $last = ' class="last-block" ';
         if ($klik > 1) {
-            $prev = "onClick=\"paging(" . ($klik - 1) . "," . $tab . ", '" . $search . "')\" ";
+            $prev = "onClick=\"pagination(" . ($klik - 1) . "," . $tab . ", '" . $search . "')\" ";
         }
-        echo "<div class='page-prev' $prev>prev</div>";
+        echo '<li><span '.$prev.'>&laquo;</span></li>';
         for ($page = 1; $page <= $jumPage; $page++) {
             if ((($page >= $noPage - 1) && ($page <= $noPage + 1)) || ($page == 1) || ($page == $jumPage)) {
                 if (($showPage == 1) && ($page != 2))
-                    echo "<div class='titik'>...</div>";
+                    echo "<li>...</li>";
                 if (($showPage != ($jumPage - 1)) && ($page == $jumPage))
-                    echo "<div class='titik'>...</div>";
+                    echo "<li>...</li>";
                 if ($page == $noPage)
-                    echo " <div class='noblock'>" . $page . "</div> ";
+                    echo " <li class='active'><span class='noblock'>" . $page . "</span></li> ";
                 else {
                     $get['page'] = $page;
                     if ($tab != NULL) {
                         $get['tab'] = $tab;
                     }
-                    $next = "onClick=\"paging(" . $page . "," . $tab . ", '" . $search . "')\" ";
+                    $next = "onClick=\"pagination(" . $page . "," . $tab . ", '" . $search . "')\" ";
                     //echo " <a class='block' href='?" . generate_get_parameter($get) . "'>" . $page . "</a> ";
                     if ($page == $jumPage) {
-                        echo '<div  class="block" ' . $next . '>' . $page . '</div>';
+                        echo '<li ' . $next . '><span class="block">' . $page . '</span></li>';
                     } else {
-                        echo '<div class="block" ' . $next . '>' . $page . '</div>';
+                        echo '<li ' . $next . '><span class="block">' . $page . '</span></li>';
                     }
                 }
                 $showPage = $page;
@@ -553,11 +552,11 @@ function paging_ajax($jmldata, $dataPerPage, $klik, $tab = NULL, $search) {
         }
         $next = null;
         if ($klik < $jumPage) {
-            $next = "onClick=\"paging(" . ($klik + 1) . "," . $tab . ", '" . $search . "')\" ";
+            $next = "onClick=\"pagination(" . ($klik + 1) . "," . $tab . ", '" . $search . "')\" ";
         }
-        echo "<div class='page-next' $next >next</div>";
+        echo '<li><span '.$next.'>&raquo;</span></li>';
     }
-    echo "</div>";
+    echo "</ul>";
 
     $buffer = ob_get_contents();
     ob_end_clean();
