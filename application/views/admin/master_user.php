@@ -3,7 +3,7 @@
 		get_user_list(1);
         $('#bt_reset').click(function(){
            get_user_list(1);
-           $('input[name=id]').val('');
+           reset_data();
         });
 
         $('#bt_add').click(function(){
@@ -26,17 +26,40 @@
             dataType: 'json',
             data: $('#formtambah').serialize(),
             success: function(data) {
-                $('input[name=id]').val(data.id);
+                if( $('input[name=id]').val() == ''){
+                    $('input[name=id]').val(data.id);
+                    message_add_succes();
+                }else{
+                     message_edit_succes();
+                }
+               
                 get_user_list(1);
-                //$('#form_tambah').modal('dismiss');
+                $('#form_tambah').modal('hide');
+                reset_data();
+            }, error: function(){
+                if( $('input[name=id]').val() == ''){
+                    $('input[name=id]').val(data.id);
+                    message_add_failed();
+                }else{
+                     message_edit_failed();
+                }
+                 get_user_list(1);
+                $('#form_tambah').modal('hide');
+                reset_data();
             }
         });
         }
 
     }
 
+    function reset_data(){
+        $('input[name=id], #user').val('');
+    }
+
     function tambah_data(){
-         $('#form_tambah').modal();
+        $('#form_tambah').modal().on('hidden.bs.modal', function (e) {
+          reset_data();
+        })
          $('#user').focus();
     }
 
@@ -49,6 +72,46 @@
             cache: false,
             success: function(data) {
                 $('#user_list').html(data);
+            }
+        });
+    }
+
+    function edit_user(id, username){
+        $('input[name=id]').val(id);
+        $('#user').val(username);
+        $('#form_tambah').modal('show');
+    }
+
+    function edit_privileges_user(id){
+        $.ajax({
+            type : 'GET',
+            url: '<?= base_url("admin/get_privileges") ?>/'+id,
+            cache: false,
+            success: function(data) {
+                console.log(data);
+                datahtml = data;
+                BootstrapDialog.show({
+                    title: 'Edit User Privileges',
+                    closable:true,
+                    type: BootstrapDialog.TYPE_DEFAULT,
+                    message: datahtml,
+                    buttons: [
+                    {
+                        label: 'Batal',
+                        action: function(dialogItself){
+                            dialogItself.close();
+                        }
+                    },
+                    {
+                        label: 'Simpan',
+                        cssClass: 'btn-primary',
+                        action: function(dialogItself){
+                             
+                             dialogItself.close();
+                        }
+                    }]
+                });
+                
             }
         });
     }
@@ -98,7 +161,6 @@
 <div>
     <?= form_button('tambah', '<span class="fa fa-plus-circle"> Tambah</span>', 'class="btn btn-primary" id="bt_add"') ?>
     <?= form_button('tambah', '<span class="fa fa-refresh"> Reset</span>', 'class="btn" id="bt_reset"') ?>
-    
     <br/>
 	<div id="user_list" style="width:100%"></div>
 </div>

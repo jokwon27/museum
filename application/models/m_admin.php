@@ -52,10 +52,27 @@ class M_admin extends CI_Model {
             $this->db->insert('users', $data);
             $id = $this->db->insert_id();
         }else{
-            $this->db->where('id', $id)->update('users');
+            $this->db->where('id', $id)->update('users', $data);
         }
 
         return $id;
+    }
+
+    function privileges_get_data() {
+        $query = $this->db->get('menu_admin');
+        return $query->result();
+    }
+
+    function user_privileges_data($id) {
+        $sql = "select * from menu_user_privileges where 
+             user_id = '" . $id . "'";
+        //echo $sql;
+        $query = $this->db->query($sql)->result();
+        $data = array();
+        foreach ($query as $value) {
+            $data[] = $value->menu_admin_id;
+        }
+        return $data;
     }
     
 }

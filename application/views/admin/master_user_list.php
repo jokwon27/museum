@@ -12,10 +12,10 @@
 		<td><?= (++$key + (($page - 1) * $limit)) ?></td>
 		<td><?= $value->username?></td>
 		<td align="right">
-			<button type="button" class="btn btn-default btn-xs">
+			<button type="button" class="btn btn-default btn-xs" onclick="edit_privileges_user('<?= $value->id ?>')">
 				<span class="fa fa-pencil"></span> Edit Privileges
 			</button>
-			<button type="button" class="btn btn-default btn-xs">
+			<button type="button" class="btn btn-default btn-xs" onclick="edit_user('<?= $value->id ?>', '<?= $value->username ?>')">
 				<span class="fa fa-pencil"></span> Edit Akun
 			</button>
 			<button type="button" class="btn btn-default btn-xs" onclick="delete_user('<?= $value->id ?>')">

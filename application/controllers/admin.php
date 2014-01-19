@@ -94,6 +94,13 @@ class Admin extends CI_Controller {
         $this->master_user_list($page);
     }
 
+    function get_privileges($id){
+        $data['user_priv'] = $this->m_admin->user_privileges_data($id);
+        $data['privileges'] = $this->m_admin->privileges_get_data();
+        $this->load->view('admin/master_user_privileges', $data);
+    }
+
+
     function master_museum(){
         $this->cek();
         $data['title'] = 'Master Data Museum';
