@@ -40,5 +40,22 @@ class M_admin extends CI_Model {
     function user_delete_data($id){
         $this->db->where('id', $id)->delete('users');
     }
+
+    function user_save_data(){
+        $data = array(
+            'username' => post_safe('user')
+        );
+
+        $id = post_safe('id');
+
+        if ($id === '') {
+            $this->db->insert('users', $data);
+            $id = $this->db->insert_id();
+        }else{
+            $this->db->where('id', $id)->update('users');
+        }
+
+        return $id;
+    }
     
 }

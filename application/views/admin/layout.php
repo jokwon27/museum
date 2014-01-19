@@ -26,10 +26,8 @@
     <link rel="stylesheet" href="<?= base_url('assets/font-awesome/css/font-awesome.min.css')?>">
     
     <script type="text/javascript" src="<?= base_url('assets/pnotify/jquery.pnotify.min.js') ?>"></script>
-    <script type="text/javascript" src="<?= base_url('assets/pnotify/pnotify.message.js') ?>"></script>
+
     <link href="<?= base_url('assets/pnotify/jquery.pnotify.default.css') ?>" media="all" rel="stylesheet" type="text/css" />
-    <!-- Include this file if you are using Pines Icons. -->
-    <link href="<?= base_url('assets/pnotify/icons/jquery.pnotify.default.icons.css') ?>" media="all" rel="stylesheet" type="text/css" />
   </head>
 
   <body>

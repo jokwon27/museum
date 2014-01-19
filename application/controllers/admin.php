@@ -6,7 +6,7 @@ class Admin extends CI_Controller {
         parent::__construct();
         $this->load->model(array('m_admin'));
         $this->load->library('session');
-        $this->limit = 3;
+        $this->limit = 10;
         date_default_timezone_set('Asia/Jakarta');
     }
 
@@ -66,7 +66,11 @@ class Admin extends CI_Controller {
     }
 
     function master_user_list($page){
-        $search = array();
+        $this->cek();
+        $search = array(
+                'id' => get_safe('id'),
+                'username' => get_safe('user')
+            );
         $start = ($page - 1) * $this->limit;        
         $data = $this->m_admin->user_get_data($this->limit, $start, $search);
         if ($data['data'] == NULL) {
@@ -79,7 +83,13 @@ class Admin extends CI_Controller {
 
     }
 
+    function master_user_save(){
+        $id = $this->m_admin->user_save_data();
+        die(json_encode(array('id'=>$id)));
+    }
+
     function master_user_delete($id,$page) {
+        $this->cek();
         $this->m_admin->user_delete_data($id);
         $this->master_user_list($page);
     }
