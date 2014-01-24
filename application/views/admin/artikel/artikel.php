@@ -1,8 +1,8 @@
 <script type="text/javascript">
 	$(function(){
-		get_user_list(1);
+		get_artikel_list(1);
         $('#bt_reset').click(function(){
-           get_user_list(1);
+           get_artikel_list(1);
            reset_data();
         });
 
@@ -23,7 +23,7 @@
         }else{
             $.ajax({
                 type : 'POST',
-                url: '<?= base_url("admin/master_user_save") ?>/', 
+                url: '<?= base_url("admin/master_artikel_save") ?>/', 
                 cache: false,
                 dataType: 'json',
                 data: $('#formtambah').serialize(),
@@ -35,7 +35,7 @@
                          message_edit_succes();
                     }
                    
-                    get_user_list(1);
+                    get_artikel_list(1);
                     $('#form_tambah').modal('hide');
                     reset_data();
                 }, error: function(){
@@ -45,7 +45,7 @@
                     }else{
                          message_edit_failed();
                     }
-                     get_user_list(1);
+                     get_artikel_list(1);
                     $('#form_tambah').modal('hide');
                     reset_data();
                 }
@@ -54,26 +54,7 @@
 
     }
 
-    function save_priv_data(){
-        var id_user =  $('input[name=id_user]').val();
-        $.ajax({
-                type : 'POST',
-                url: '<?= base_url("admin/save_privileges") ?>/'+id_user, 
-                cache: false,
-                dataType: 'json',
-                data: $('#formpriv').serialize(),
-                success: function(data) {
-                    if( data.status == true){
-                        message_edit_succes();
-                    }else{
-                        message_edit_failed(); 
-                    }
-                }, error: function(){
-                    message_edit_failed();
-                   
-                }
-            });
-    }
+    
 
     function reset_data(){
         $('input[name=id], #user').val('');
@@ -87,38 +68,40 @@
     }
 
 
-    function get_user_list(p){
+    function get_artikel_list(p){
         $.ajax({
             type : 'GET',
-            url: '<?= base_url("admin/master_user_list") ?>/'+p,
+            url: '<?= base_url("admin/master_artikel_list") ?>/'+p,
             data: $('#formtambah').serialize()+'&search='+$('#search').val(),
             cache: false,
             success: function(data) {
-                $('#user_list').html(data);
+                $('#artikel_list').html(data);
             }
         });
     }
 
-    function edit_user(id, username){
+    function edit_artikel(id, username){
         $('input[name=id]').val(id);
         $('#user').val(username);
         $('#form_tambah').modal('show');
     }
 
-    function edit_privileges_user(id){
-        $.ajax({
+    function preview_artikel(id){
+         $.ajax({
             type : 'GET',
-            url: '<?= base_url("admin/get_privileges") ?>/'+id,
+            url: '<?= base_url("admin/artikel_preview") ?>/'+id,
             cache: false,
             success: function(data) {
-                $('#priv_body').html(data);
-                $('#form_priv').modal();
-                $('input[name=id_user]').val(id);
+                $('#preview_body').html(data);
+                $('#modal_preview').modal();
             }
         });
+        
     }
 
-    function delete_user(id){
+    
+
+    function delete_artikel(id){
             var page = (isNaN($('.noblock').html()))?'1':$('.noblock').html();
             BootstrapDialog.show({
                 title: 'Hapus Data',
@@ -138,10 +121,10 @@
                     action: function(dialogItself){
                          $.ajax({
                             type : 'GET',
-                            url: '<?= base_url("admin/master_user_delete") ?>/'+id+'/'+page,
+                            url: '<?= base_url("admin/master_artikel_delete") ?>/'+id+'/'+page,
                             cache: false,
                             success: function(data) {
-                                $('#user_list').html(data);
+                                $('#artikel_list').html(data);
                                 message_delete_succes();
                             },
                             error: function(){
@@ -156,7 +139,7 @@
         }
 
     function pagination(p){
-        get_user_list(p);
+        get_artikel_list(p);
     }
 </script>
 
@@ -167,7 +150,7 @@
     </div>
     <div class="col-lg-4">
         <div class="input-group">
-            <input type="text" class="form-control" id="search" placeholder="Username..." onkeyup="get_user_list(1)" />
+            <input type="text" class="form-control" id="search" placeholder="Judul..." onkeyup="get_artikel_list(1)" />
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" >
                     <span class="glyphicon glyphicon-search"></span>
@@ -176,7 +159,7 @@
         </div>
     </div>
     <br/><br/>
-	<div id="user_list" style="width:100%"></div>
+	<div id="artikel_list" style="width:100%"></div>
 </div>
 
 <div id="form_tambah" class="modal fade">
@@ -205,20 +188,19 @@
   <?= form_close() ?>
 </div><!-- /.modal -->
 
-<div id="form_priv" class="modal fade">
-    <div class="modal-dialog">
+<div id="modal_preview" class="modal fade">
+    <div class="modal-dialog higherWider">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Edit User Privileges</h4>
+            <h4 class="modal-title">Preview</h4>
           </div>
-        <div class="modal-body">
-             <?= form_hidden('id_user') ?>
-             <div id="priv_body"></div>
+        <div class="modal-body" style="max-height:400px;overflow-y:auto;">
+             <div id="preview_body"></div>
         </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-            <button type="button" class="btn btn-primary" id="bt_save" onclick="save_priv_data()">Simpan</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+           
           </div>  
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

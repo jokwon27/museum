@@ -25,4 +25,5 @@
 	</tr>
 	<?php endforeach; ?>
 </table>
+
 <?= $pagination ?>

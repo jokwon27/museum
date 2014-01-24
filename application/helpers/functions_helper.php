@@ -160,7 +160,8 @@ function dateconvert($tgl) {
 }
 
 function indo_tgl($tgl) {
-    $baru = explode("-", $tgl);
+    $x = explode(' ', $tgl);
+    $baru = explode("-", $x[0]);
     if ($baru[1] == '01')
         $mo = "Januari";
     if ($baru[1] == '02')
@@ -187,7 +188,7 @@ function indo_tgl($tgl) {
         $mo = "Desember";
     $new = "$baru[2] $mo $baru[0]";
 
-    return $new;
+    return $new." ".$x[1];
 }
 
 function indo_tgl_graph($tgl) {

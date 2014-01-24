@@ -24,10 +24,15 @@ class M_admin extends CI_Model {
         return $this->db->query($sql)->result();
     }
 
+    /* User */
     function user_get_data($limit, $start, $search){
         $q = '';
         if (isset($search['id']) && ($search['id'] !== '')) {
-            $q .= " and id = '".$search['id']."'";
+            $q = " and id = '".$search['id']."'";
+        }
+
+        if (isset($search['username']) && ($search['username'] !== '')) {
+            $q = " and username like '%".$search['username']."%'";
         }
         $limit = " limit $start, $limit ";
         $sql = "select * from users where id is not null $q order by username";
@@ -43,7 +48,8 @@ class M_admin extends CI_Model {
 
     function user_save_data(){
         $data = array(
-            'username' => post_safe('user')
+            'username' => post_safe('user'),
+            'password' => md5('1234')
         );
 
         $id = post_safe('id');
@@ -102,5 +108,63 @@ class M_admin extends CI_Model {
 
         return $status;
     }
+
+    /* User */
+
+
+    /* Artikel */
+    function artikel_get_data($limit, $start, $search){
+        $q = '';
+        if (isset($search['id']) && ($search['id'] !== '')) {
+            $q = " and a.id = '".$search['id']."'";
+        }
+
+        if (isset($search['judul']) && ($search['judul'] !== '')) {
+            $q = " and a.judul like '%".$search['judul']."%'";
+        }
+        $limit = " limit $start, $limit ";
+        $sql = "select a.*, u.username, m.nama as museum from artikel a
+            join users u on (u.id = a.id_user)
+            left join museum m on (m.id = a.id_museum)
+            where a.id is not null $q order by waktu desc";
+        
+
+        $query = $this->db->query($sql . $limit);
+        $ret['data'] = $query->result();
+        $ret['jumlah'] = $this->db->query($sql)->num_rows();
+        return $ret;
+    }
+
+    function artikel_delete_data($id){
+        $this->db->where('id', $id)->delete('artikel');
+    }
+
+    function artikel_save_data(){
+        $data = array(
+            'username' => post_safe('user'),
+            'password' => md5('1234')
+        );
+
+        $id = post_safe('id');
+
+        if ($id === '') {
+            $this->db->insert('users', $data);
+            $id = $this->db->insert_id();
+        }else{
+            $this->db->where('id', $id)->update('users', $data);
+        }
+
+        return $id;
+    }
+
+    function get_artikel($id){
+        $sql = "select a.*, u.username, m.nama as museum from artikel a
+            join users u on (u.id = a.id_user)
+            left join museum m on (m.id = a.id_museum) 
+            where a.id = '".$id."'";
+        return $this->db->query($sql)->row();
+    }
+
+    /* Artikel */
     
 }

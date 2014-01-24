@@ -57,7 +57,8 @@ class Admin extends CI_Controller {
         $data['page'] = 'home';
 		$this->show_dashboard($data);
 	}
-
+    
+    /* User */
     function master_user(){
         $this->cek();
         $data['title'] = 'Master Data User';
@@ -69,7 +70,7 @@ class Admin extends CI_Controller {
         $this->cek();
         $search = array(
                 'id' => get_safe('id'),
-                'username' => get_safe('user')
+                'username' => get_safe('search')
             );
         $start = ($page - 1) * $this->limit;        
         $data = $this->m_admin->user_get_data($this->limit, $start, $search);
@@ -110,8 +111,10 @@ class Admin extends CI_Controller {
         $hasil = $this->m_admin->user_privileges_edit_data($add);
         die(json_encode(array('status'=>$hasil)));
     }
+    /* User */
 
 
+    /* Museum */
     function master_museum(){
         $this->cek();
         $data['title'] = 'Master Data Museum';
@@ -119,26 +122,65 @@ class Admin extends CI_Controller {
         $this->show_dashboard($data);
     }
 
+
+    /* Museum */
+
+    /* Trans Jogja */
     function master_trans(){
         $this->cek();
         $data['title'] = 'Master Data Trans Jogja';
         $data['page'] = 'trans/trans';
         $this->show_dashboard($data);
     }
+    /* Trans Jogja */
 
+    /* Shelter */
     function master_shelter(){
         $this->cek();
         $data['title'] = 'Master Data Shelter';
         $data['page'] = 'shelter/shelter';
         $this->show_dashboard($data);
     }
+    /* Shelter */
 
-    function master_acara(){
+    /* Artikel */
+    function master_artikel(){
         $this->cek();
-        $data['title'] = 'Master Data Acara';
-        $data['page'] = 'acara/acara';
+        $data['title'] = 'Master Data Artikel';
+        $data['page'] = 'artikel/artikel';
         $this->show_dashboard($data);
     }
+
+    function master_artikel_list($page){
+        $this->cek();
+        $search = array(
+                'id' => get_safe('id'),
+                'judul' => get_safe('search')
+            );
+        $start = ($page - 1) * $this->limit;        
+        $data = $this->m_admin->artikel_get_data($this->limit, $start, $search);
+        if ($data['data'] == NULL) {
+            $data = $this->m_admin->artikel_get_data($this->limit, 0, $search);
+        }
+        $data['page'] = $page;
+        $data['limit'] = $this->limit;
+        $data['pagination'] = pagination($data['jumlah'], $this->limit, $page, 1);
+        $this->load->view('admin/artikel/artikel_list', $data);
+
+    }
+
+    function master_artikel_delete($id,$page) {
+        $this->cek();
+        $this->m_admin->artikel_delete_data($id);
+        $this->master_artikel_list($page);
+    }
+
+    function artikel_preview($id){
+        $data['artikel'] = $this->m_admin->get_artikel($id);
+        $this->load->view('admin/artikel/artikel_preview', $data);
+    }
+
+    /* Artkel */
 
     function master_slide(){
         $this->cek();
