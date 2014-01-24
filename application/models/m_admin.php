@@ -74,5 +74,33 @@ class M_admin extends CI_Model {
         }
         return $data;
     }
+
+    function user_privileges_edit_data($data) {
+        $this->db->trans_begin();
+        //delete privileges
+        $this->db->where('user_id', $data['id_user']);
+        $this->db->delete('menu_user_privileges');
+
+        // add privileges
+        if (is_array($data['privileges'])) {
+            foreach ($data['privileges'] as $value) {
+                $insert = array(
+                    'user_id' => $data['id_user'],
+                    'menu_admin_id' => $value
+                );
+                $this->db->insert('menu_user_privileges', $insert);
+            }
+        }
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $status = false;
+        } else {
+            $this->db->trans_commit();
+            $status = true;
+        }
+
+        return $status;
+    }
     
 }

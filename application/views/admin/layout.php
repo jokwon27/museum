@@ -50,6 +50,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav side-nav">
+             <li><a href="<?= base_url('admin')?>"><i class="fa fa-dashboard"></i> Home</a></li>
             <?php foreach ($menu as $key => $val): ?>
             <?php 
               $active = '';

@@ -61,7 +61,7 @@ class Admin extends CI_Controller {
     function master_user(){
         $this->cek();
         $data['title'] = 'Master Data User';
-        $data['page'] = 'master_user';
+        $data['page'] = 'user/user';
         $this->show_dashboard($data);
     }
 
@@ -79,7 +79,7 @@ class Admin extends CI_Controller {
         $data['page'] = $page;
         $data['limit'] = $this->limit;
         $data['pagination'] = pagination($data['jumlah'], $this->limit, $page, 1);
-        $this->load->view('admin/master_user_list', $data);
+        $this->load->view('admin/user/user_list', $data);
 
     }
 
@@ -95,37 +95,48 @@ class Admin extends CI_Controller {
     }
 
     function get_privileges($id){
+        $data['username'] = $this->db->where('id', $id)->get('users')->row()->username;
         $data['user_priv'] = $this->m_admin->user_privileges_data($id);
         $data['privileges'] = $this->m_admin->privileges_get_data();
-        $this->load->view('admin/master_user_privileges', $data);
+        $this->load->view('admin/user/user_privileges', $data);
+    }
+
+    function save_privileges($id_user){
+        $add = array(
+            'privileges' => post_safe('data'),
+            'id_user' => $id_user
+        );
+
+        $hasil = $this->m_admin->user_privileges_edit_data($add);
+        die(json_encode(array('status'=>$hasil)));
     }
 
 
     function master_museum(){
         $this->cek();
         $data['title'] = 'Master Data Museum';
-        $data['page'] = 'master_museum';
+        $data['page'] = 'museum/museum';
         $this->show_dashboard($data);
     }
 
     function master_trans(){
         $this->cek();
         $data['title'] = 'Master Data Trans Jogja';
-        $data['page'] = 'master_trans';
+        $data['page'] = 'trans/trans';
         $this->show_dashboard($data);
     }
 
     function master_shelter(){
         $this->cek();
         $data['title'] = 'Master Data Shelter';
-        $data['page'] = 'master_shelter';
+        $data['page'] = 'shelter/shelter';
         $this->show_dashboard($data);
     }
 
     function master_acara(){
         $this->cek();
         $data['title'] = 'Master Data Acara';
-        $data['page'] = 'master_acara';
+        $data['page'] = 'acara/acara';
         $this->show_dashboard($data);
     }
 
