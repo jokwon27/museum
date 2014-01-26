@@ -7122,3 +7122,8 @@ td.visible-print {
 .higherWider {
     width:900px;
 }
+
+.body_fit{
+  max-height:400px;
+  overflow-y:auto;
+}

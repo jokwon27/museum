@@ -80,6 +80,7 @@
     }
 
     function tambah_data(){
+        $('#judul_dialog').html('Tambah');
         $('#form_tambah').modal().on('hidden.bs.modal', function (e) {
           reset_data();
         })
@@ -100,6 +101,7 @@
     }
 
     function edit_user(id, username){
+        $('#judul_dialog').html('Edit');
         $('input[name=id]').val(id);
         $('#user').val(username);
         $('#form_tambah').modal('show');
@@ -185,7 +187,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Tambah Data User</h4>
+            <h4 class="modal-title"><span id="judul_dialog"></span> Data User</h4>
           </div>
         <div class="modal-body">
        <?= form_hidden('id') ?>

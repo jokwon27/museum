@@ -141,17 +141,21 @@ class M_admin extends CI_Model {
 
     function artikel_save_data(){
         $data = array(
-            'username' => post_safe('user'),
-            'password' => md5('1234')
+            'judul' => post_safe('judul'),
+            'waktu' => date('Y-m-d H:i:s'),
+            'id_user' => $this->session->userdata('id_user'),
+            'id_museum' => post_safe('id_museum'),
+            'url' => post_safe('url'),
+            'isi' => post_safe('isi_artikel')            
         );
 
         $id = post_safe('id');
 
         if ($id === '') {
-            $this->db->insert('users', $data);
+            $this->db->insert('artikel', $data);
             $id = $this->db->insert_id();
         }else{
-            $this->db->where('id', $id)->update('users', $data);
+            $this->db->where('id', $id)->update('artikel', $data);
         }
 
         return $id;

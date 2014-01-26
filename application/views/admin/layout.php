@@ -18,8 +18,11 @@
     <link href="<?= base_url('assets/bootstrap/css/bootstrap-dialog.css')?>" rel="stylesheet">
     <!-- Add custom CSS here -->
     <link href="<?= base_url('assets/css/sb-admin.css') ?>" rel="stylesheet">
+    <link href="<?= base_url('assets/css/jquery.autocomplete.css') ?>" rel="stylesheet">
     <!-- JavaScript -->
-    <script type="text/javascript" src="<?= base_url('assets/js/jquery-1.10.2.js') ?>"></script>
+    <script type="text/javascript" src="<?= base_url('assets/js/jquery-1.8.3.js') ?>"></script>
+    
+    <script type="text/javascript" src="<?= base_url('assets/js/jquery.autocomplete.js') ?>"></script>
     <script type="text/javascript" src="<?= base_url('assets/bootstrap/js/bootstrap.min.js') ?>"></script>
     <script type="text/javascript" src="<?= base_url('assets/bootstrap/js/bootstrap-dialog.js') ?>"></script>
 
@@ -142,11 +145,6 @@
       </div><!-- /#page-wrapper -->
 
     </div><!-- /#wrapper -->
-
-
-    <!-- Page Specific Plugins -->
-    <script src="<?= base_url('assets/js/tablesorter/jquery.tablesorter.js') ?>"></script>
-    <script src="<?= base_url('assets/js/tablesorter/tables.js') ?>"></script>
 
   </body>
 </html>

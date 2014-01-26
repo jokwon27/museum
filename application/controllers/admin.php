@@ -169,6 +169,11 @@ class Admin extends CI_Controller {
 
     }
 
+    function master_artikel_save(){
+        $id = $this->m_admin->artikel_save_data();
+        die(json_encode(array('id'=>$id)));
+    }
+
     function master_artikel_delete($id,$page) {
         $this->cek();
         $this->m_admin->artikel_delete_data($id);
@@ -178,6 +183,11 @@ class Admin extends CI_Controller {
     function artikel_preview($id){
         $data['artikel'] = $this->m_admin->get_artikel($id);
         $this->load->view('admin/artikel/artikel_preview', $data);
+    }
+
+    function master_artikel_data($id){
+         $data = $this->m_admin->get_artikel($id);
+         die(json_encode($data));
     }
 
     /* Artkel */

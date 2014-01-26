@@ -19,7 +19,7 @@
 			<button type="button" class="btn btn-default btn-xs" onclick="preview_artikel('<?= $value->id ?>')">
 				<span class="fa fa-eye"></span> Preview
 			</button>
-			<button type="button" class="btn btn-default btn-xs" onclick="edit_artikel('<?= $value->id ?>', '<?= $value->username ?>')">
+			<button type="button" class="btn btn-default btn-xs" onclick="edit_artikel('<?= $value->id ?>')">
 				<span class="fa fa-pencil"></span> Edit Artikel
 			</button>
 			<button type="button" class="btn btn-default btn-xs" onclick="delete_artikel('<?= $value->id ?>')">

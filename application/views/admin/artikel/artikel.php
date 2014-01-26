@@ -1,4 +1,6 @@
+<script type="text/javascript" src="<?= base_url('assets/ckeditor/ckeditor.js') ?>"></script>
 <script type="text/javascript">
+    
 	$(function(){
 		get_artikel_list(1);
         $('#bt_reset').click(function(){
@@ -13,54 +15,100 @@
         $('#formtambah').submit(function(){
             return false;
         });
+        $('#museum').autocomplete("<?= base_url('autocomplete/get_museum') ?>",
+        {
+            parse: function(data){
+                var parsed = [];
+                for (var i=0; i < data.length; i++) {
+                    parsed[i] = {
+                        data: data[i],
+                        value: data[i].nama // nama field yang dicari
+                    };
+                }
+                $("input[name=id_museum]").val('');
+                
+                return parsed;
+            },
+            formatItem: function(data,i,max){
+                var str = '<div class=result>'+data.nama+'<br/> '+data.alamat+'</div>';
+                return str;
+            },
+            width: 400, // panjang tampilan pencarian autocomplete yang akan muncul di bawah textbox pencarian
+            dataType: 'json' // tipe data yang diterima oleh library ini disetup sebagai JSON
+        }).result(
+        function(event,data,formated){
+            $(this).val(data.nama);
+            $("input[name=id_museum]").val(data.id);
+            
+        });
 
         
 	});
 
     function save_data(){
-        if ($('#user').val() == '') {
-            message_custom('notice', 'Peringatan', 'Username harus diisi!', '#user');
-        }else{
-            $.ajax({
-                type : 'POST',
-                url: '<?= base_url("admin/master_artikel_save") ?>/', 
-                cache: false,
-                dataType: 'json',
-                data: $('#formtambah').serialize(),
-                success: function(data) {
-                    if( $('input[name=id]').val() == ''){
-                        $('input[name=id]').val(data.id);
-                        message_add_succes();
-                    }else{
-                         message_edit_succes();
-                    }
-                   
-                    get_artikel_list(1);
-                    $('#form_tambah').modal('hide');
-                    reset_data();
-                }, error: function(){
-                    if( $('input[name=id]').val() == ''){
-                        $('input[name=id]').val(data.id);
-                        message_add_failed();
-                    }else{
-                         message_edit_failed();
-                    }
-                     get_artikel_list(1);
-                    $('#form_tambah').modal('hide');
-                    reset_data();
-                }
-            });
+        if ($('#judul').val() == '') {
+            message_custom('notice', 'Peringatan', 'Judul harus diisi!', '#user');
+            return false;
         }
+
+        if ($('input[name=id_museum]').val() == '') {
+            message_custom('notice', 'Peringatan', 'Museum harus diisi!', '#museum');
+            return false;
+        }
+
+        if ($('#url').val() == '') {
+            message_custom('notice', 'Peringatan', 'URL harus diisi!', '#url');
+            return false;
+        }
+
+        if (CKEDITOR.instances.isi.getData() == '') {
+            message_custom('notice', 'Peringatan', 'Isi Artikel harus diisi!', '#isi');
+            return false;
+        }
+
+
+        $.ajax({
+            type : 'POST',
+            url: '<?= base_url("admin/master_artikel_save") ?>/', 
+            cache: false,
+            dataType: 'json',
+            data: $('#formtambah').serialize()+'&isi_artikel='+CKEDITOR.instances.isi.getData(),
+            success: function(data) {
+                if( $('input[name=id]').val() == ''){
+                    $('input[name=id]').val(data.id);
+                    message_add_succes();
+                }else{
+                     message_edit_succes();
+                }
+               
+                get_artikel_list(1);
+                $('#form_tambah').modal('hide');
+                reset_data();
+            }, error: function(){
+                if( $('input[name=id]').val() == ''){
+                    $('input[name=id]').val(data.id);
+                    message_add_failed();
+                }else{
+                     message_edit_failed();
+                }
+                 get_artikel_list(1);
+                $('#form_tambah').modal('hide');
+                reset_data();
+            }
+        });
+        
 
     }
 
     
 
     function reset_data(){
-        $('input[name=id], #user').val('');
+        $('input[name=id], #museum, #judul, input[name=id_museum], #url').val('');
+        CKEDITOR.instances.isi.setData('');
     }
 
     function tambah_data(){
+        $('#judul_dialog').html('Tambah');
         $('#form_tambah').modal().on('hidden.bs.modal', function (e) {
           reset_data();
         })
@@ -80,10 +128,24 @@
         });
     }
 
-    function edit_artikel(id, username){
-        $('input[name=id]').val(id);
-        $('#user').val(username);
-        $('#form_tambah').modal('show');
+    function edit_artikel(id){
+        $.ajax({
+            type : 'GET',
+            url: '<?= base_url("admin/master_artikel_data") ?>/'+id,
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+                $('input[name=id]').val(data.id);
+                $('#museum').val(data.museum);
+                $('input[name=id_museum]').val(data.id_museum);
+                $('#judul').val(data.judul);
+                $('#url').val(data.url);
+                CKEDITOR.instances.isi.setData(data.isi);
+                $('#judul_dialog').html('Edit');
+                $('#form_tambah').modal('show');
+            }
+        });
+        
     }
 
     function preview_artikel(id){
@@ -164,20 +226,39 @@
 
 <div id="form_tambah" class="modal fade">
      <?= form_open('','id=formtambah class="form-horizontal"') ?>
-    <div class="modal-dialog">
+    <div class="modal-dialog higherWider">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Tambah Data User</h4>
+            <h4 class="modal-title"><span id="judul_dialog"></span> Data Artikel</h4>
           </div>
-        <div class="modal-body">
+        <div class="modal-body body_fit">
        <?= form_hidden('id') ?>
         <div class="form-group">
-            <label class="col-sm-2 control-label">Username</label>
+            <label class="col-sm-2 control-label">Judul</label>
             <div class="col-sm-6">
-            <?= form_input('user','','class=form-control id=user')?>
+            <?= form_input('judul','','class=form-control id=judul')?>
             </div>
-        </div>      
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Museum</label>
+            <div class="col-sm-6">
+            <?= form_input('museum','','class=form-control id=museum')?>
+            <?= form_hidden('id_museum') ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">judul URL</label>
+            <div class="col-sm-6">
+            <?= form_input('url','','class=form-control id=url')?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Isi Artikel</label>
+            <div class="col-sm-10">
+            <?= form_textarea('isi','','class=form-control id=isi')?>
+            </div>
+        </div>
         </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -195,7 +276,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title">Preview</h4>
           </div>
-        <div class="modal-body" style="max-height:400px;overflow-y:auto;">
+        <div class="modal-body body_fit">
              <div id="preview_body"></div>
         </div>
           <div class="modal-footer">
@@ -205,3 +286,9 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<script type="text/javascript">
+CKEDITOR.replace( 'isi', {
+        uiColor: '#14B8C4'
+    });
+</script>
