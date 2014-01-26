@@ -1,4 +1,5 @@
-<script type="text/javascript" src="<?= base_url('assets/ckeditor/ckeditor.js') ?>"></script>
+<script type="text/javascript" src="<?= base_url('public/editor/ckeditor/ckeditor.js') ?>"></script>
+<script type="text/javascript" src="<?= base_url('public/editor/ckeditor/config.js') ?>"></script>
 <script type="text/javascript">
     
 	$(function(){
@@ -288,6 +289,16 @@
 </div><!-- /.modal -->
 
 <script type="text/javascript">
+/*
+CKEDITOR.editorConfig = function(config) {
+   config.filebrowserBrowseUrl = '<?= base_url("assets")?>/kcfinder/browse.php?type=files';
+   config.filebrowserImageBrowseUrl = '<?= base_url("assets")?>/kcfinder/browse.php?type=images';
+   config.filebrowserFlashBrowseUrl = '<?= base_url("assets")?>/kcfinder/browse.php?type=flash';
+   config.filebrowserUploadUrl = '<?= base_url("assets")?>/kcfinder/upload.php?type=files';
+   config.filebrowserImageUploadUrl = '<?= base_url("assets")?>/kcfinder/upload.php?type=images';
+   config.filebrowserFlashUploadUrl = '<?= base_url("assets")?>/kcfinder/upload.php?type=flash';
+};
+*/
 CKEDITOR.replace( 'isi', {
         uiColor: '#14B8C4'
     });

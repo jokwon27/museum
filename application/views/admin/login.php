@@ -16,7 +16,7 @@
 
     <!-- Custom styles for this template -->
     <link href="<?= base_url('assets/css/signin.css') ?>" rel="stylesheet">
-    <script type="text/javascript" src="<?= base_url('assets/js/jquery-1.10.2.js') ?>"></script>
+    <script type="text/javascript" src="<?= base_url('assets/js/jquery-1.8.3.js') ?>"></script>
 
     <script type="text/javascript">
       $(function(){

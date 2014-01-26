@@ -14,7 +14,7 @@
     <!-- Add custom CSS here -->
     <link href="<?= base_url('assets/css/small-business.css') ?>" rel="stylesheet">
     <!-- JavaScript -->
-    <script type="text/javascript" src="<?= base_url('assets/js/jquery-1.10.2.js') ?>"></script>
+    <script type="text/javascript" src="<?= base_url('assets/js/jquery-1.8.3.js') ?>"></script>
     <script type="text/javascript" src="<?= base_url('assets/bootstrap/js/bootstrap.min.js') ?>"></script>
   </head>
 

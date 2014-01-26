@@ -27,7 +27,7 @@ class Admin extends CI_Controller {
                 'pass' => $jml->password
             );
             $this->session->set_userdata($data);
-
+            
             die(json_encode(array('status'=>'login')));
         } else {
             die(json_encode(array('status'=>'gagal')));

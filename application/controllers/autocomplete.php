@@ -9,9 +9,7 @@ class Autocomplete extends CI_Controller {
         date_default_timezone_set('Asia/Jakarta');
     }
 
-	function index(){
-	
-	}
+
 
 	function get_museum(){
 		$q = get_safe('q');
