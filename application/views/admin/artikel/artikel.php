@@ -113,7 +113,7 @@
         $('#form_tambah').modal().on('hidden.bs.modal', function (e) {
           reset_data();
         })
-         $('#user').focus();
+         $('#judul').focus();
     }
 
 
@@ -204,6 +204,12 @@
     function pagination(p){
         get_artikel_list(p);
     }
+
+    function set_url(obj){
+        var title = $(obj).val();
+        var url = title.toLowerCase().replace(/ /g,'-');
+        $('#url').val(url);
+    }
 </script>
 
 <div>
@@ -238,7 +244,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Judul</label>
             <div class="col-sm-6">
-            <?= form_input('judul','','class=form-control id=judul')?>
+            <?= form_input('judul','','class=form-control id=judul onkeyup=set_url(this)')?>
             </div>
         </div>
         <div class="form-group">
@@ -249,7 +255,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">judul URL</label>
+            <label class="col-sm-2 control-label">URL</label>
             <div class="col-sm-6">
             <?= form_input('url','','class=form-control id=url')?>
             </div>
@@ -289,16 +295,6 @@
 </div><!-- /.modal -->
 
 <script type="text/javascript">
-/*
-CKEDITOR.editorConfig = function(config) {
-   config.filebrowserBrowseUrl = '<?= base_url("assets")?>/kcfinder/browse.php?type=files';
-   config.filebrowserImageBrowseUrl = '<?= base_url("assets")?>/kcfinder/browse.php?type=images';
-   config.filebrowserFlashBrowseUrl = '<?= base_url("assets")?>/kcfinder/browse.php?type=flash';
-   config.filebrowserUploadUrl = '<?= base_url("assets")?>/kcfinder/upload.php?type=files';
-   config.filebrowserImageUploadUrl = '<?= base_url("assets")?>/kcfinder/upload.php?type=images';
-   config.filebrowserFlashUploadUrl = '<?= base_url("assets")?>/kcfinder/upload.php?type=flash';
-};
-*/
 CKEDITOR.replace( 'isi', {
         uiColor: '#14B8C4'
     });

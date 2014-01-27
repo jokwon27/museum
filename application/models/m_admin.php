@@ -170,5 +170,110 @@ class M_admin extends CI_Model {
     }
 
     /* Artikel */
+
+     /* Artikel */
+    function museum_get_data($limit, $start, $search){
+        $q = '';
+        if (isset($search['id']) && ($search['id'] !== '')) {
+            $q = " and id = '".$search['id']."'";
+        }
+
+        if (isset($search['nama']) && ($search['nama'] !== '')) {
+            $q = " and nama like '%".$search['nama']."%'";
+        }
+        $limit = " limit $start, $limit ";
+        $sql = "select * from museum
+            where id is not null $q order by nama";
+        
+
+        $query = $this->db->query($sql . $limit);
+        $ret['data'] = $query->result();
+        $ret['jumlah'] = $this->db->query($sql)->num_rows();
+        return $ret;
+    }
+
+    function museum_delete_data($id){
+        $this->db->where('id', $id)->delete('museum');
+    }
+
+    function museum_save_data(){
+        $data = array(
+            'nama' => post_safe('nama'),
+            'alamat' => post_safe('alamat'),
+            'longitude' => post_safe('longitude'),
+            'latitude' => post_safe('latitude'),
+            'keterangan' => post_safe('keterangan_museum')            
+        );
+
+        $id = post_safe('id');
+
+        if ($id === '') {
+            $this->db->insert('museum', $data);
+            $id = $this->db->insert_id();
+        }else{
+            $this->db->where('id', $id)->update('museum', $data);
+        }
+
+        return $id;
+    }
+
+    function get_museum($id){
+        $sql = "select * from museum
+            where id = '".$id."'";
+        return $this->db->query($sql)->row();
+    }
+
+    /* Artikel */
+
+    /* Shelter */
+    function shelter_get_data($limit, $start, $search){
+        $q = '';
+        if (isset($search['id']) && ($search['id'] !== '')) {
+            $q = " and id = '".$search['id']."'";
+        }
+
+        if (isset($search['nama']) && ($search['nama'] !== '')) {
+            $q = " and nama like '%".$search['nama']."%'";
+        }
+        $limit = " limit $start, $limit ";
+        $sql = "select * from shelter
+            where id is not null $q order by nama";
+        
+
+        $query = $this->db->query($sql . $limit);
+        $ret['data'] = $query->result();
+        $ret['jumlah'] = $this->db->query($sql)->num_rows();
+        return $ret;
+    }
+
+    function shelter_delete_data($id){
+        $this->db->where('id', $id)->delete('shelter');
+    }
+
+    function shelter_save_data(){
+        $data = array(
+            'nama' => post_safe('nama'),
+            'longitude' => post_safe('longitude'),
+            'latitude' => post_safe('latitude')        
+        );
+
+        $id = post_safe('id');
+
+        if ($id === '') {
+            $this->db->insert('shelter', $data);
+            $id = $this->db->insert_id();
+        }else{
+            $this->db->where('id', $id)->update('shelter', $data);
+        }
+
+        return $id;
+    }
+
+    function get_shelter($id){
+        $sql = "select * from shelter
+            where id = '".$id."'";
+        return $this->db->query($sql)->row();
+    }
+    /* Shelter */
     
 }

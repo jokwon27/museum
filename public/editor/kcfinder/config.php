@@ -23,7 +23,7 @@ $_CONFIG = array(
 
     'disabled' =>  false,
     'theme' => "oxygen",
-    'uploadURL' => "upload",
+    'uploadURL' => "../../../image_upload",
     'uploadDir' => "",
 
     'types' => array(

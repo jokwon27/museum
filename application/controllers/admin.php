@@ -27,7 +27,8 @@ class Admin extends CI_Controller {
                 'pass' => $jml->password
             );
             $this->session->set_userdata($data);
-            
+            //session_start();
+            //$_SESSION['kcfinder'] = FALSE;
             die(json_encode(array('status'=>'login')));
         } else {
             die(json_encode(array('status'=>'gagal')));
@@ -36,6 +37,8 @@ class Admin extends CI_Controller {
 
     function logout() {
         $this->session->sess_destroy();
+        //session_start();
+        //session_unset('kcfinder');
         redirect(base_url('admin'));
     }
 
@@ -122,17 +125,47 @@ class Admin extends CI_Controller {
         $this->show_dashboard($data);
     }
 
+    function master_museum_list($page){
+        $this->cek();
+        $search = array(
+                'id' => get_safe('id'),
+                'nama' => get_safe('search')
+            );
+        $start = ($page - 1) * $this->limit;        
+        $data = $this->m_admin->museum_get_data($this->limit, $start, $search);
+        if ($data['data'] == NULL) {
+            $data = $this->m_admin->museum_get_data($this->limit, 0, $search);
+        }
+        $data['page'] = $page;
+        $data['limit'] = $this->limit;
+        $data['pagination'] = pagination($data['jumlah'], $this->limit, $page, 1);
+        $this->load->view('admin/museum/museum_list', $data);
+
+    }
+
+    function master_museum_save(){
+        $id = $this->m_admin->museum_save_data();
+        die(json_encode(array('id'=>$id)));
+    }
+
+    function master_museum_delete($id,$page) {
+        $this->cek();
+        $this->m_admin->museum_delete_data($id);
+        $this->master_museum_list($page);
+    }
+
+    function master_museum_data($id){
+         $data = $this->m_admin->get_museum($id);
+         die(json_encode($data));
+    }
+
+    function museum_preview($id){
+        $data['museum'] = $this->m_admin->get_museum($id);
+        $this->load->view('admin/museum/museum_preview', $data);
+    }
+
 
     /* Museum */
-
-    /* Trans Jogja */
-    function master_trans(){
-        $this->cek();
-        $data['title'] = 'Master Data Trans Jogja';
-        $data['page'] = 'trans/trans';
-        $this->show_dashboard($data);
-    }
-    /* Trans Jogja */
 
     /* Shelter */
     function master_shelter(){
@@ -140,6 +173,40 @@ class Admin extends CI_Controller {
         $data['title'] = 'Master Data Shelter';
         $data['page'] = 'shelter/shelter';
         $this->show_dashboard($data);
+    }
+
+    function master_shelter_list($page){
+        $this->cek();
+        $search = array(
+                'id' => get_safe('id'),
+                'nama' => get_safe('search')
+            );
+        $start = ($page - 1) * $this->limit;        
+        $data = $this->m_admin->shelter_get_data($this->limit, $start, $search);
+        if ($data['data'] == NULL) {
+            $data = $this->m_admin->shelter_get_data($this->limit, 0, $search);
+        }
+        $data['page'] = $page;
+        $data['limit'] = $this->limit;
+        $data['pagination'] = pagination($data['jumlah'], $this->limit, $page, 1);
+        $this->load->view('admin/shelter/shelter_list', $data);
+
+    }
+
+    function master_shelter_save(){
+        $id = $this->m_admin->shelter_save_data();
+        die(json_encode(array('id'=>$id)));
+    }
+
+    function master_shelter_delete($id,$page) {
+        $this->cek();
+        $this->m_admin->shelter_delete_data($id);
+        $this->master_shelter_list($page);
+    }
+
+    function master_shelter_data($id){
+         $data = $this->m_admin->get_shelter($id);
+         die(json_encode($data));
     }
     /* Shelter */
 
@@ -190,7 +257,16 @@ class Admin extends CI_Controller {
          die(json_encode($data));
     }
 
-    /* Artkel */
+    /* Artikel */
+
+    /* Trans Jogja */
+    function master_trans(){
+        $this->cek();
+        $data['title'] = 'Master Data Trans Jogja';
+        $data['page'] = 'trans/trans';
+        $this->show_dashboard($data);
+    }
+    /* Trans Jogja */
 
     function master_slide(){
         $this->cek();
