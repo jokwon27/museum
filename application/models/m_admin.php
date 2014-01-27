@@ -126,9 +126,9 @@ class M_admin extends CI_Model {
         $sql = "select a.*, u.username, m.nama as museum from artikel a
             join users u on (u.id = a.id_user)
             left join museum m on (m.id = a.id_museum)
-            where a.id is not null $q order by waktu desc";
+            where a.id is not null $q order by id desc";
         
-
+        //echo $sql.$limit;
         $query = $this->db->query($sql . $limit);
         $ret['data'] = $query->result();
         $ret['jumlah'] = $this->db->query($sql)->num_rows();

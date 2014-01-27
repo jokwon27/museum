@@ -3,9 +3,12 @@
 class Nav extends CI_Controller {
 
 	function index(){
+		$this->load->model('m_admin');
 		$data['page'] = 'home';
 		$data['title'] = 'Home';
 		$data['slide'] = $this->m_configuration->load_home_slide();
+		$artikel = $this->m_admin->artikel_get_data(3, 0, null);
+		$data['artikel'] = $artikel['data'];
 		$this->load->view('front/layout', $data);
 	}
 
