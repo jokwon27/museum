@@ -55,7 +55,7 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="well text-center">
-      This is a well that is a great spot for a business tagline or phone number for easy access!
+      <marquee>Welcome!!!</marquee>
     </div>
   </div>
 </div>
