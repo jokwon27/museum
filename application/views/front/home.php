@@ -60,12 +60,19 @@
   </div>
 </div>
 
-<div class="row">
+<div class="col-lg-8">
   <?php foreach ($artikel as $key => $val):?>
-  <div class="col-lg-4">
-    <h2><?= $val->judul?></h2>
-    <p><?= substr($val->isi, 0) ?></p>
-    <a class="btn btn-default" href="#">More Info</a>
+  <div class="row">    
+      <h2><?= $val->judul?></h2>
+      <p><?= substr($val->isi, 0) ?></p>
+      <a class="btn btn-default" href="#">More Info</a>    
   </div>
   <?php endforeach; ?>
+</div>
+
+<div class="col-lg-4">
+  <div class="well">
+    <h4>Panel</h4>
+    
+  </div>
 </div>
