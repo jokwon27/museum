@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Nav extends CI_Controller {
+class Trans_jogja extends CI_Controller {
 
 	function __construct() {
         parent::__construct();
@@ -11,16 +11,10 @@ class Nav extends CI_Controller {
     }
 
 	function index(){
-		$this->load->model('m_admin');
-		$data['page'] = 'home';
-		$data['title'] = 'Home';
-		$data['slide'] = $this->m_configuration->load_home_slide();
-		$artikel = $this->m_admin->artikel_get_data(3, 0, null);
-		$data['artikel'] = $artikel['data'];
+		$data['title'] = 'Trans Jogja';
+		$data['page'] = 'trans_jogja';
 		$this->load->view('front/layout', $data);
 	}
-
-
 	
 }
 

@@ -55,7 +55,7 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="well text-center">
-      This is a well that is a great spot for a business tagline or phone number for easy access!
+      <marquee>Welcome!!!</marquee>
     </div>
   </div>
 </div>
@@ -63,9 +63,10 @@
 <div class="col-lg-8">
   <?php foreach ($artikel as $key => $val):?>
   <div class="row">    
-      <h2><?= $val->judul?></h2>
+      <h2><?= anchor('artikel/detail/'.$val->url,$val->judul) ?></h2>
+      <img style="display:block-inline;" src="<?= base_url('image_upload/tumbnail_artikel/').'/'.$val->image ?>" width="128" height="100">
       <p><?= substr($val->isi, 0) ?></p>
-      <a class="btn btn-default" href="#">More Info</a>    
+      <a class="btn btn-default" href="<?= base_url('artikel/detail').'/'.$val->url?>">Baca Lebih Lanjut &raquo;</a>    
   </div>
   <?php endforeach; ?>
 </div>

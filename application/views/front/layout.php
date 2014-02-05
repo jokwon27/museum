@@ -16,6 +16,7 @@
     <!-- JavaScript -->
     <script type="text/javascript" src="<?= base_url('assets/js/jquery-1.8.3.js') ?>"></script>
     <script type="text/javascript" src="<?= base_url('assets/bootstrap/js/bootstrap.min.js') ?>"></script>
+    <link rel="stylesheet" href="<?= base_url('assets/font-awesome/css/font-awesome.min.css')?>">
   </head>
 
   <body>
@@ -37,10 +38,10 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li <?= ($page == 'home')?'class="active"':''?> ><?= anchor('/','Home')?></li>
-            <li <?= ($page == 'museum')?'class="active"':''?> ><?= anchor('/nav/museum','Museum')?></li>
-            <li <?= ($page == 'acara')?'class="active"':''?> ><?= anchor('/nav/acara','Acara')?></li>
-            <li <?= ($page == 'trans_jogja')?'class="active"':''?> ><?= anchor('/nav/trans_jogja','Trans Jogja')?></li>
-            <li <?= ($page == 'peta')?'class="active"':''?> ><?= anchor('/nav/peta','Peta')?></li>
+            <li <?= ($page == 'museum')?'class="active"':''?> ><?= anchor('/museum','Museum')?></li>
+            <li <?= ($page == 'artikel')?'class="active"':''?> ><?= anchor('/artikel','Artikel')?></li>
+            <li <?= ($page == 'trans_jogja')?'class="active"':''?> ><?= anchor('/trans_jogja','Trans Jogja')?></li>
+            <li <?= ($page == 'peta')?'class="active"':''?> ><?= anchor('/peta','Peta')?></li>
           </ul>
         </div><!-- /.navbar-collapse -->
 

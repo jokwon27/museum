@@ -63,7 +63,7 @@
                 $active = 'class="active"';
               }
             ?>
-            <li <?= $active ?> ><a href="<?= base_url($val->url)?>"><i class="<?= $val->icon ?>fa fa-dashboard"></i> <?= $val->nama ?></a></li>
+            <li <?= $active ?> ><a href="<?= base_url($val->url)?>"><i class="fa <?= $val->icon ?>"></i> <?= $val->nama ?></a></li>
             <?php endforeach; ?>      
             
           </ul>
