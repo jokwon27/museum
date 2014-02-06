@@ -48,13 +48,13 @@ class M_admin extends CI_Model {
 
     function user_save_data(){
         $data = array(
-            'username' => post_safe('user'),
-            'password' => md5('1234')
+            'username' => post_safe('user')            
         );
 
         $id = post_safe('id');
 
         if ($id === '') {
+            $data['password'] = md5('1234');
             $this->db->insert('users', $data);
             $id = $this->db->insert_id();
         }else{
@@ -162,7 +162,8 @@ class M_admin extends CI_Model {
     }
 
     function get_artikel($id){
-        $sql = "select a.*, u.username, m.nama as museum from artikel a
+        $sql = "select a.*, u.username, m.nama as museum, m.url as url_museum
+             from artikel a
             join users u on (u.id = a.id_user)
             left join museum m on (m.id = a.id_museum) 
             where a.id = '".$id."'";
@@ -200,6 +201,7 @@ class M_admin extends CI_Model {
         $data = array(
             'nama' => post_safe('nama'),
             'alamat' => post_safe('alamat'),
+            'url' => post_safe('url'),
             'longitude' => post_safe('longitude'),
             'latitude' => post_safe('latitude'),
             'keterangan' => post_safe('keterangan_museum')            

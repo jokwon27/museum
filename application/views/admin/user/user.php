@@ -18,39 +18,45 @@
 	});
 
     function save_data(){
+        var stop = false;
         if ($('#user').val() == '') {
-            message_custom('notice', 'Peringatan', 'Username harus diisi!', '#user');
-        }else{
-            $.ajax({
-                type : 'POST',
-                url: '<?= base_url("admin/master_user_save") ?>/', 
-                cache: false,
-                dataType: 'json',
-                data: $('#formtambah').serialize(),
-                success: function(data) {
-                    if( $('input[name=id]').val() == ''){
-                        $('input[name=id]').val(data.id);
-                        message_add_succes();
-                    }else{
-                         message_edit_succes();
-                    }
-                   
-                    get_user_list(1);
-                    $('#form_tambah').modal('hide');
-                    reset_data();
-                }, error: function(){
-                    if( $('input[name=id]').val() == ''){
-                        $('input[name=id]').val(data.id);
-                        message_add_failed();
-                    }else{
-                         message_edit_failed();
-                    }
-                     get_user_list(1);
-                    $('#form_tambah').modal('hide');
-                    reset_data();
-                }
-            });
+            dc_validation('#user', 'Username harus diisi!');
+            stop = true; 
         }
+
+        if (stop) {
+            return false;
+        };
+        $.ajax({
+            type : 'POST',
+            url: '<?= base_url("admin/master_user_save") ?>/', 
+            cache: false,
+            dataType: 'json',
+            data: $('#formtambah').serialize(),
+            success: function(data) {
+                if( $('input[name=id]').val() == ''){
+                    $('input[name=id]').val(data.id);
+                    message_add_succes();
+                }else{
+                     message_edit_succes();
+                }
+               
+                get_user_list(1);
+                $('#form_tambah').modal('hide');
+                reset_data();
+            }, error: function(){
+                if( $('input[name=id]').val() == ''){
+                    $('input[name=id]').val(data.id);
+                    message_add_failed();
+                }else{
+                     message_edit_failed();
+                }
+                 get_user_list(1);
+                $('#form_tambah').modal('hide');
+                reset_data();
+            }
+        });
+        
 
     }
 
@@ -77,6 +83,7 @@
 
     function reset_data(){
         $('input[name=id], #user').val('');
+        dc_validation_remove('.form-control');
     }
 
     function tambah_data(){
@@ -196,7 +203,13 @@
             <div class="col-sm-6">
             <?= form_input('user','','class=form-control id=user')?>
             </div>
-        </div>      
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Password</label>
+            <div class="col-sm-6">
+            <label style="margin:7px;">1234 (Default)</label>
+            </div>
+        </div>   
         </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>

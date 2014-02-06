@@ -4,7 +4,7 @@ class Artikel extends CI_Controller {
 
 	function __construct() {
         parent::__construct();
-        $this->load->model(array('m_data'));
+        $this->load->model(array('m_data', 'm_admin'));
         $this->load->library('session');
         $this->limit = 10;
         date_default_timezone_set('Asia/Jakarta');
@@ -13,6 +13,8 @@ class Artikel extends CI_Controller {
 	function index(){
 		$data['title'] = 'Artikel';
 		$data['page'] = 'artikel';
+		$artikel = $this->m_admin->artikel_get_data(7, 0, null);
+		$data['artikel'] = $artikel['data'];
 		$this->load->view('front/layout', $data);
 	}
 

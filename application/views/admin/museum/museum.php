@@ -17,34 +17,42 @@
             return false;
         });
         
-        
 	});
 
     function save_data(){
+        var stop = false;
         if ($('#nama').val() == '') {
-            message_custom('notice', 'Peringatan', 'Nama harus diisi!', '#nama');
-            return false;
+            dc_validation('#nama', 'Nama harus diisi!');
+            stop = true; 
         }
 
         if ($('#alamat').val() == '') {
-            message_custom('notice', 'Peringatan', 'Alamat harus diisi!', '#alamat');
-            return false;
+           dc_validation('#alamat', 'Alamat harus diisi!');
+            stop = true; 
+        }
+
+        if ($('#url').val() == '') {
+             dc_validation('#url', 'URL harus diisi!');
+             stop = true; 
         }
 
         if ($('#longitude').val() == '') {
-            message_custom('notice', 'Peringatan', 'Longitude harus diisi!', '#longitude');
-            return false;
+            dc_validation('#longitude', 'Longitude harus diisi!');
+            stop = true; 
         }
 
         if ($('#latitude').val() == '') {
-            message_custom('notice', 'Peringatan', 'Latitude harus diisi!', '#latitude');
-            return false;
+            dc_validation('#latitude', 'Latitude harus diisi!');
+            stop = true;
         }
 
         if (CKEDITOR.instances.keterangan.getData() == '') {
-            message_custom('notice', 'Peringatan', 'Keterangan harus diisi!', '#keterangan');
-            return false;
+             CKEDITOR.instances.keterangan.setData($('#nama').val());
         }
+
+        if (stop) {
+            return false;
+        };
 
 
         $.ajax({
@@ -83,8 +91,9 @@
     
 
     function reset_data(){
-        $('input[name=id], #nama, #alamat, #longitude, #latitude ').val('');
+        $('input[name=id], #nama, #alamat, #longitude, #latitude, #url ').val('');
         CKEDITOR.instances.keterangan.setData('');
+        dc_validation_remove('.form-control');
     }
 
     function tambah_data(){
@@ -120,6 +129,7 @@
                 $('#alamat').val(data.alamat);
                 $('#longitude').val(data.longitude);
                 $('#latitude').val(data.latitude);
+                $('#url').val(data.url);
                 CKEDITOR.instances.keterangan.setData(data.keterangan);
                 $('#judul_dialog').html('Edit');
                 $('#form_tambah').modal('show');
@@ -183,6 +193,13 @@
     function pagination(p){
         get_museum_list(p);
     }
+
+    function set_url(obj){
+        dc_validation_remove('#url');
+        var title = $(obj).val();
+        var url = title.toLowerCase().replace(/ /g,'-');
+        $('#url').val(url);
+    }
 </script>
 
 <div>
@@ -217,13 +234,19 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Nama Museum</label>
             <div class="col-sm-6">
-            <?= form_input('nama','','class=form-control id=nama')?>
+            <?= form_input('nama','','class=form-control id=nama onkeyup=set_url(this)')?>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">Alamat</label>
             <div class="col-sm-6">
             <?= form_textarea('alamat','','class=form-control id=alamat')?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">URL</label>
+            <div class="col-sm-6">
+            <?= form_input('url','','class=form-control id=url')?>
             </div>
         </div>
         <div class="form-group">
@@ -241,7 +264,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Keterangan</label>
             <div class="col-sm-10">
-            <?= form_textarea('keterangan','','class=form-control id=keterangan')?>
+            <?= form_textarea('keterangan','','id=keterangan')?>
             </div>
         </div>
         </div>

@@ -60,6 +60,7 @@
   </div>
 </div>
 
+<div class="row">
 <div class="col-lg-8">
   <?php foreach ($artikel as $key => $val):?>
   <div class="row">    
@@ -76,4 +77,6 @@
     <h4>Panel</h4>
     
   </div>
+</div>
+
 </div>

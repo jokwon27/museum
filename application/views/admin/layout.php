@@ -23,6 +23,7 @@
     <script type="text/javascript" src="<?= base_url('assets/js/jquery-1.8.3.js') ?>"></script>
     
     <script type="text/javascript" src="<?= base_url('assets/js/jquery.autocomplete.js') ?>"></script>
+    <script type="text/javascript" src="<?= base_url('assets/js/library.js') ?>"></script>
     <script type="text/javascript" src="<?= base_url('assets/bootstrap/js/bootstrap.min.js') ?>"></script>
     <script type="text/javascript" src="<?= base_url('assets/bootstrap/js/bootstrap-dialog.js') ?>"></script>
 
@@ -31,6 +32,25 @@
     <script type="text/javascript" src="<?= base_url('assets/pnotify/jquery.pnotify.min.js') ?>"></script>
 
     <link href="<?= base_url('assets/pnotify/jquery.pnotify.default.css') ?>" media="all" rel="stylesheet" type="text/css" />
+  
+    <script type="text/javascript">
+      $(function(){
+        $('.form-control').keyup(function(){
+            if($(this).val() !== ''){
+                dc_validation_remove(this);
+            }
+            
+        });
+
+        $('.form-control').change(function(){
+            if($(this).val() !== ''){
+                dc_validation_remove(this);
+            }
+            
+        });
+
+      });
+    </script>
   </head>
 
   <body>
@@ -49,18 +69,21 @@
           </button>
           <a class="navbar-brand" href="<?= base_url('admin')?>">Admin</a>
         </div>
-
+        <?php $icon = ''; ?>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav side-nav">
-             <li><a href="<?= base_url('admin')?>"><i class="fa fa-dashboard"></i> Home</a></li>
+             <li><a href="<?= base_url('admin')?>"><i class="fa fa-home"></i> Home</a></li>
             <?php foreach ($menu as $key => $val): ?>
             <?php 
               $active = '';
+              
               if(strpos($val->url, $page) !== false){
                 $active = 'class="active"';
+                
               }else if($val->nama == $title ){
                 $active = 'class="active"';
+                $icon = $val->icon;
               }
             ?>
             <li <?= $active ?> ><a href="<?= base_url($val->url)?>"><i class="fa <?= $val->icon ?>"></i> <?= $val->nama ?></a></li>
@@ -103,19 +126,7 @@
                 <li><a href="#">View Inbox <span class="badge">7</span></a></li>
               </ul>
             </li>
-            <li class="dropdown alerts-dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> Alerts <span class="badge">3</span> <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Default <span class="label label-default">Default</span></a></li>
-                <li><a href="#">Primary <span class="label label-primary">Primary</span></a></li>
-                <li><a href="#">Success <span class="label label-success">Success</span></a></li>
-                <li><a href="#">Info <span class="label label-info">Info</span></a></li>
-                <li><a href="#">Warning <span class="label label-warning">Warning</span></a></li>
-                <li><a href="#">Danger <span class="label label-danger">Danger</span></a></li>
-                <li class="divider"></li>
-                <li><a href="#">View All</a></li>
-              </ul>
-            </li>
+     
             <li class="dropdown user-dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?= $this->session->userdata('user') ?> <b class="caret"></b></a>
               <ul class="dropdown-menu">
@@ -132,12 +143,12 @@
       <div id="page-wrapper">
 
         <div class="row">
-          <div class="col-lg-12">
-           
-            <ol class="breadcrumb">              
-              <li class="active"><h2><i class="fa fa-dashboard"></i>  <?= $title ?> </h2></li>
+         <div class="col-lg-12">
+            <h2><?= $title ?></h2>
+            <ol class="breadcrumb">
+              <li><a href="<?= base_url('admin')?>"><i class="fa fa-home"></i> Home</a></li>
+              <li><i class="fa <?= $icon ?>"></i> <?= $title ?></li>
             </ol>
-          
           </div>
         </div><!-- /.row -->
         <?php $this->load->view('admin/'.$page) ?>

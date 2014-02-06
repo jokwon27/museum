@@ -47,25 +47,29 @@
 	});
 
     function save_data(){
+        var stop = false;
         if ($('#judul').val() == '') {
-            message_custom('notice', 'Peringatan', 'Judul harus diisi!', '#user');
-            return false;
+             dc_validation('#judul', 'Judul harus diisi!');
+             stop = true; 
         }
 
         if ($('input[name=id_museum]').val() == '') {
-            message_custom('notice', 'Peringatan', 'Museum harus diisi!', '#museum');
-            return false;
+             dc_validation('#museum', 'Museum harus diisi!');
+             stop = true; 
         }
 
         if ($('#url').val() == '') {
-            message_custom('notice', 'Peringatan', 'URL harus diisi!', '#url');
-            return false;
+             dc_validation('#url', 'URL harus diisi!');
+             stop = true; 
         }
 
         if (CKEDITOR.instances.isi.getData() == '') {
-            message_custom('notice', 'Peringatan', 'Isi Artikel harus diisi!', '#isi');
-            return false;
+            CKEDITOR.instances.isi.setData($('#judul').val());
         }
+
+        if (stop) {
+            return false;
+        };
 
 
         $.ajax({
@@ -106,6 +110,7 @@
     function reset_data(){
         $('input[name=id], #museum, #judul, input[name=id_museum], #url').val('');
         CKEDITOR.instances.isi.setData('');
+        dc_validation_remove('.form-control');
     }
 
     function tambah_data(){
@@ -206,6 +211,7 @@
     }
 
     function set_url(obj){
+        dc_validation_remove('#url');
         var title = $(obj).val();
         var url = title.toLowerCase().replace(/ /g,'-');
         $('#url').val(url);
@@ -233,6 +239,7 @@
 
 <div id="form_tambah" class="modal fade">
      <?= form_open('','id=formtambah class="form-horizontal"') ?>
+     <?= form_hidden('id_museum') ?>
     <div class="modal-dialog higherWider">
         <div class="modal-content">
           <div class="modal-header">
@@ -251,7 +258,6 @@
             <label class="col-sm-2 control-label">Museum</label>
             <div class="col-sm-6">
             <?= form_input('museum','','class=form-control id=museum')?>
-            <?= form_hidden('id_museum') ?>
             </div>
         </div>
         <div class="form-group">
@@ -263,7 +269,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Isi Artikel</label>
             <div class="col-sm-10">
-            <?= form_textarea('isi','','class=form-control id=isi')?>
+            <?= form_textarea('isi','','id=isi')?>
             </div>
         </div>
         </div>

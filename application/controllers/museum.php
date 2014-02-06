@@ -4,7 +4,7 @@ class Museum extends CI_Controller {
 
 	function __construct() {
         parent::__construct();
-        $this->load->model(array('m_data'));
+        $this->load->model(array('m_data','m_admin'));
         $this->load->library('session');
         $this->limit = 10;
         date_default_timezone_set('Asia/Jakarta');
@@ -13,6 +13,8 @@ class Museum extends CI_Controller {
 	function index(){
 		$data['title'] = 'Museum';
 		$data['page'] = 'museum';
+		$museum = $this->m_admin->museum_get_data(7, 0, null);
+		$data['museum'] = $museum['data'];
 		$this->load->view('front/layout', $data);
 	}
 
