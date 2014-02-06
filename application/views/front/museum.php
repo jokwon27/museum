@@ -6,7 +6,7 @@
 		      <h2><?= anchor('museum/detail/'.$val->url,$val->nama) ?></h2>
 		      <img style="display:block-inline;" src="<?= base_url('image_upload/tumbnail_museum/').'/'.$val->image ?>" width="128" height="100">
 		      <p><?= substr($val->keterangan, 0) ?></p>
-		      <a class="btn btn-default" href="<?= base_url('museum/detail').'/'.$val->url?>">Baca Lebih Lanjut &raquo;</a>    
+		      <a class="btn btn-default btn-xs" href="<?= base_url('museum/detail').'/'.$val->url?>">Baca Lebih Lanjut &raquo;</a>    
 		  </div>
 		  <?php endforeach; ?>
 	</div>

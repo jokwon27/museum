@@ -147,7 +147,9 @@
             <h2><?= $title ?></h2>
             <ol class="breadcrumb">
               <li><a href="<?= base_url('admin')?>"><i class="fa fa-home"></i> Home</a></li>
-              <li><i class="fa <?= $icon ?>"></i> <?= $title ?></li>
+              <?php if($icon !== ''): ?>
+                <li><i class="fa <?= $icon ?>"></i> <?= $title ?></li>
+              <?php endif; ?>
             </ol>
           </div>
         </div><!-- /.row -->
