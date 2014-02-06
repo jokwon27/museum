@@ -27,6 +27,7 @@
         if (stop) {
             return false;
         };
+        
         $.ajax({
             type : 'POST',
             url: '<?= base_url("admin/master_user_save") ?>/', 
@@ -232,8 +233,8 @@
              <div id="priv_body"></div>
         </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-            <button type="button" class="btn btn-primary" id="bt_save" onclick="save_priv_data()">Simpan</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-refresh"></i> Batal</button>
+            <button type="button" class="btn btn-primary" id="bt_save" onclick="save_priv_data()"><i class="fa fa-save"></i> Simpan</button>
           </div>  
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

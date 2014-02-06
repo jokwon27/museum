@@ -69,11 +69,12 @@
           </button>
           <a class="navbar-brand" href="<?= base_url('admin')?>">Admin</a>
         </div>
-        <?php $icon = ''; ?>
+        <?php $icon = ''; $active = ''; ?>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav side-nav">
-             <li><a href="<?= base_url('admin')?>"><i class="fa fa-home"></i> Home</a></li>
+            <?php if($page === 'home') $active = 'class="active"' ?>
+             <li <?= $active ?> ><a href="<?= base_url('admin')?>"><i class="fa fa-home"></i> Home</a></li>
             <?php foreach ($menu as $key => $val): ?>
             <?php 
               $active = '';

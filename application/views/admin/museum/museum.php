@@ -269,8 +269,8 @@
         </div>
         </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-            <button type="button" class="btn btn-primary" id="bt_save" onclick="save_data()">Simpan</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-refresh"></i> Batal</button>
+            <button type="button" class="btn btn-primary" id="bt_save" onclick="save_data()"><i class="fa fa-save"></i> Simpan</button>
           </div>  
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -288,7 +288,7 @@
              <div id="preview_body"></div>
         </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-check"></i> OK</button>
            
           </div>  
     </div><!-- /.modal-content -->

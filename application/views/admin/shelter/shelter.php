@@ -19,21 +19,26 @@
 	});
 
     function save_data(){
+        var stop = false;
+
         if ($('#nama').val() == '') {
-            message_custom('notice', 'Peringatan', 'Nama harus diisi!', '#nama');
-            return false;
+            dc_validation('#nama', 'Nama harus diisi!');
+            stop = true; 
         }
 
         if ($('#longitude').val() == '') {
-            message_custom('notice', 'Peringatan', 'Longitude harus diisi!', '#longitude');
-            return false;
+            dc_validation('#longitude', 'Longitude harus diisi!');
+            stop = true; 
         }
 
         if ($('#latitude').val() == '') {
-            message_custom('notice', 'Peringatan', 'Latitude harus diisi!', '#latitude');
-            return false;
+            dc_validation('#latitude', 'Latitude harus diisi!');
+            stop = true; 
         }
 
+        if (stop) {
+            return false;
+        };
 
         $.ajax({
             type : 'POST',
@@ -72,6 +77,7 @@
 
     function reset_data(){
         $('input[name=id], #nama, #longitude, #latitude ').val('');
+        dc_validation_remove('.form-control');
     }
 
     function tambah_data(){
@@ -205,8 +211,8 @@
         </div>
         </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-            <button type="button" class="btn btn-primary" id="bt_save" onclick="save_data()">Simpan</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-refresh"></i> Batal</button>
+            <button type="button" class="btn btn-primary" id="bt_save" onclick="save_data()"><i class="fa fa-save"></i> Simpan</button>
           </div>  
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
