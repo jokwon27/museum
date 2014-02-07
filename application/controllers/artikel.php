@@ -23,7 +23,7 @@ class Artikel extends CI_Controller {
 		$data['page'] = 'artikel';
 		$artikel = $this->m_admin->artikel_get_data($this->limit, $start, null);
 		$data['artikel'] = $artikel['data'];
-		$data['pagination'] = pagination($artikel['jumlah'], $this->limit, $page,'artikel');
+		$data['pagination'] = pagination_front($artikel['jumlah'], $this->limit, $page,'artikel');
 		$this->load->view('front/layout', $data);
 	}
 

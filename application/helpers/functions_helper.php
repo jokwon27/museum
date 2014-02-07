@@ -565,7 +565,77 @@ function post_safe($parameter){
     return $hasil;
 }
 
-function pagination($total_data, $limit, $page, $url){
+function pagination($jmldata, $dataPerPage, $klik, $tab = NULL, $search = NULL) {
+    /*
+     * Parameter '$search' dalam bentuk string , bisa json string atau yang lain
+     * contoh 1#nama_barang#nama_pabrik
+     */
+
+    $showPage = NULL;
+    ob_start();
+    echo '<ul class="pagination">';
+    if (!empty($klik)) {
+        $noPage = $klik;
+    } else {
+        $noPage = 1;
+    }
+
+    $dataPerPage = $dataPerPage;
+
+
+    $jumData = $jmldata;
+    $jumPage = ceil($jumData / $dataPerPage);
+    $get = $_GET;
+    if ($jumData > $dataPerPage) {
+        $onclick = null;
+        if ($noPage > 1) {
+            $get['page'] = ($noPage - 1);
+            $onclick = $klik;
+        }
+        $prev = null;
+        $last = ' class="last-block" ';
+        if ($klik > 1) {
+            $prev = "onClick=\"pagination(" . ($klik - 1) . "," . $tab . ", '" . $search . "')\" ";
+        }
+        echo '<li><span '.$prev.'>&laquo;</span></li>';
+        for ($page = 1; $page <= $jumPage; $page++) {
+            if ((($page >= $noPage - 1) && ($page <= $noPage + 1)) || ($page == 1) || ($page == $jumPage)) {
+                if (($showPage == 1) && ($page != 2))
+                    echo "<li>...</li>";
+                if (($showPage != ($jumPage - 1)) && ($page == $jumPage))
+                    echo "<li>...</li>";
+                if ($page == $noPage)
+                    echo " <li class='active'><span class='noblock'>" . $page . "</span></li> ";
+                else {
+                    $get['page'] = $page;
+                    if ($tab != NULL) {
+                        $get['tab'] = $tab;
+                    }
+                    $next = "onClick=\"pagination(" . $page . "," . $tab . ", '" . $search . "')\" ";
+                    //echo " <a class='block' href='?" . generate_get_parameter($get) . "'>" . $page . "</a> ";
+                    if ($page == $jumPage) {
+                        echo '<li ' . $next . '><span class="block">' . $page . '</span></li>';
+                    } else {
+                        echo '<li ' . $next . '><span class="block">' . $page . '</span></li>';
+                    }
+                }
+                $showPage = $page;
+            }
+        }
+        $next = null;
+        if ($klik < $jumPage) {
+            $next = "onClick=\"pagination(" . ($klik + 1) . "," . $tab . ", '" . $search . "')\" ";
+        }
+        echo '<li><span '.$next.'>&raquo;</span></li>';
+    }
+    echo "</ul>";
+
+    $buffer = ob_get_contents();
+    ob_end_clean();
+    return $buffer;
+}
+
+function pagination_front($total_data, $limit, $page, $url){
     $str = '';
     $total_page = ceil($total_data/$limit);
 

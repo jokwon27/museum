@@ -74,7 +74,7 @@
                 reset_data();
             }, error: function(){
                 if( $('input[name=id]').val() == ''){
-                    $('input[name=id]').val(data.id);
+                    
                     message_add_failed();
                 }else{
                      message_edit_failed();

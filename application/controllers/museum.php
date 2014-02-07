@@ -23,7 +23,7 @@ class Museum extends CI_Controller {
 		$data['page'] = 'museum';
 		$museum = $this->m_admin->museum_get_data($this->limit, $start, null);
 		$data['museum'] = $museum['data'];
-		$data['pagination'] = pagination($museum['jumlah'], $this->limit, $page,'museum');
+		$data['pagination'] = pagination_front($museum['jumlah'], $this->limit, $page,'museum');
 		$this->load->view('front/layout', $data);
 	}
 
