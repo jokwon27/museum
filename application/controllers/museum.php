@@ -11,10 +11,19 @@ class Museum extends CI_Controller {
     }
 
 	function index(){
+		if (isset($_GET['page'])) {
+			$page = get_safe('page');
+		}else{
+			$page = 1;
+		}
+		
+		$start = ($page - 1) * $this->limit;
+
 		$data['title'] = 'Museum';
 		$data['page'] = 'museum';
-		$museum = $this->m_admin->museum_get_data(7, 0, null);
+		$museum = $this->m_admin->museum_get_data($this->limit, $start, null);
 		$data['museum'] = $museum['data'];
+		$data['pagination'] = pagination($museum['jumlah'], $this->limit, $page,'museum');
 		$this->load->view('front/layout', $data);
 	}
 

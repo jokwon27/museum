@@ -11,9 +11,8 @@
   <div class="row">  
     <a class="btn btn-default btn-xs" href="<?= base_url('artikel/detail').'/'.$val->url?>">Baca Lebih Lanjut &raquo;</a>    
   </div>
-  <?php endforeach; ?>
-
-  <?= $pagination ?>
+<?php endforeach; ?>
+<?= $pagination ?>
 </div>
 
 <div class="col-lg-4">

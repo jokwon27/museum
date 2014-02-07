@@ -9,6 +9,7 @@
 		      <a class="btn btn-default btn-xs" href="<?= base_url('museum/detail').'/'.$val->url?>">Baca Lebih Lanjut &raquo;</a>    
 		  </div>
 		  <?php endforeach; ?>
+		  <?= $pagination ?>
 	</div>
 
 	<div class="col-lg-4">

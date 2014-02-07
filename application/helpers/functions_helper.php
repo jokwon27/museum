@@ -565,23 +565,23 @@ function post_safe($parameter){
     return $hasil;
 }
 
-function pagination($total_data, $limit, $page, $tab){
+function pagination($total_data, $limit, $page, $url){
     $str = '';
     $total_page = ceil($total_data/$limit);
 
-    $first = '<li><a onclick="paging(1,'.$tab.')">First</a></li>';
-    $last = '<li><a onclick="paging('.$total_page.','.$tab.')">Last</a></li>';
+    $first = '<li><a href="'. base_url($url.'?page=1').'" >First</a></li>';
+    $last = '<li><a href="'. base_url($url.'?page=').$total_page.'" >Last</a></li>';
     $click_prev = '';
     if ($page > 1) {
-        $click_prev = '';
+        $click_prev = base_url($url.'?page=').($page-1);
     }
-    $prev = '<li><a '.$click_prev.'>&laquo;</a></li>';
+    $prev = '<li><a href="'.$click_prev.'">&laquo;</a></li>';
     
     $click_next = '';
     if ($page < $total_page) {
-        $click_next = '';
+        $click_next = base_url($url.'?page=').($page+1);
     }
-    $next = '<li><a '.$click_next.'>&raquo;</a></li>';
+    $next = '<li><a href="'.$click_next.'">&raquo;</a></li>';
 
     $page_numb = '';
     $act_click = '';
@@ -597,11 +597,11 @@ function pagination($total_data, $limit, $page, $tab){
 
 
     for ($p = $start; $p <= $finish; $p++) {
-        
-        if ($p !== $page) {
-            $page_numb .= '<li><a >'.$p.'</a></li>';
+        if ($p == $page) {
+            $page_numb .= '<li class="active" href="'.base_url($url.'?page=').$p.'"><a>'.$p.'</a></li>';
+            
         }else{
-            $page_numb .= '<li class="active"><a>'.$p.'</a></li>';
+            $page_numb .= '<li><a href="'.base_url($url.'?page=').$p.'">'.$p.'</a></li>';
         }
        
     }
