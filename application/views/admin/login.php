@@ -1,62 +1,76 @@
-
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html>
+
+<head>
+
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
 
-    <title>Signin Template for Bootstrap</title>
+    <title>Start Bootstrap - SB Admin Version 2.0 Demo</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="<?= base_url('assets/bootstrap/css/bootstrap.min.css')?>" rel="stylesheet">
+    <!-- Core CSS - Include with every page -->
+    <link href="<?= base_url() ?>assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= base_url() ?>assets/font-awesome/css/font-awesome.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="<?= base_url('assets/css/signin.css') ?>" rel="stylesheet">
-    <script type="text/javascript" src="<?= base_url('assets/js/jquery-1.8.3.js') ?>"></script>
+    <!-- SB Admin CSS - Include with every page -->
+    <link href="<?= base_url() ?>assets/css/sb-admin.css" rel="stylesheet">
 
-    <script type="text/javascript">
-      $(function(){
-        $('#formsign').submit(function(){
-          $.ajax({
-                url: '<?= base_url("admin/login") ?>',
-                type: 'POST',
-                dataType: 'json',
-                data: $('#formsign').serialize(),
-                cache: false,
-                success: function(data) {
-                    location.href ="admin";
-                }
-            });
+</head>
 
-          return false;
-        });
-      });
-    </script>
-  </head>
-
-  <body>
+<body>
 
     <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Please Sign In</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" id="formsign">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Username" name="username" type="text" autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                    </label>
+                                </div>
+                                <!-- Change this to a button or input when using this as a form -->
+                                <button type="submit" href="index.html" class="btn btn-lg btn-success btn-block">Login</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-      <form class="form-signin" role="form" id="formsign">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" class="form-control" placeholder="Username" required autofocus name="username">
-        <input type="password" class="form-control" placeholder="Password" required name="password">
-        <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-        <button class="btn btn-lg btn-primary btn-block" type="submit" id="signin">Sign in</button>
-      </form>
+    <!-- Core Scripts - Include with every page -->
+    <script src="<?= base_url() ?>assets/js/jquery-1.8.3.js"></script>
+    <script src="<?= base_url() ?>assets/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(function(){
+      $('#formsign').submit(function(){
+        $.ajax({
+              url: '<?= base_url("admin/login") ?>',
+              type: 'POST',
+              dataType: 'json',
+              data: $('#formsign').serialize(),
+              cache: false,
+              success: function(data) {
+                  location.href ="admin";
+              }
+          });
 
-    </div> <!-- /container -->
+        return false;
+      });
+    });
+  </script>
+</body>
 
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-  </body>
 </html>
