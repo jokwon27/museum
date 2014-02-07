@@ -5,7 +5,7 @@
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABJD9IIW_lEgd8azMKO4YS-GfF7T7weuk&sensor=false">
 </script>
 <script type="text/javascript">
-	var latlong = new google.maps.LatLng(<?= $museum->longitude ?>, <?= $museum->latitude ?>);
+	var latlong = new google.maps.LatLng(<?= $museum->latitude ?>, <?= $museum->longitude ?>);
   function initialize() {
     var mapOptions = {
       center: latlong,
@@ -26,7 +26,7 @@
 <title><?= $museum->nama ?></title>
 <div class="row">
 	<div class="col-lg-8">
-	    <h1><?= $museum->nama ?></h1>
+	    <h1><i class="fa fa-building-o"></i> <?= $museum->nama ?></h1>
 	    <hr>
 	    
 	    <div style="float:left;margin-right:100px">
