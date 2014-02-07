@@ -11,10 +11,12 @@ class Artikel extends CI_Controller {
     }
 
 	function index(){
+		$page = get_safe('page');
 		$data['title'] = 'Artikel';
 		$data['page'] = 'artikel';
-		$artikel = $this->m_admin->artikel_get_data(7, 0, null);
+		$artikel = $this->m_admin->artikel_get_data($this->limit, 0, null);
 		$data['artikel'] = $artikel['data'];
+		$data['pagination'] = pagination($artikel['jumlah'], 10, 1,1);
 		$this->load->view('front/layout', $data);
 	}
 

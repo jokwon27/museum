@@ -494,75 +494,7 @@ function header_excel($namaFile) {
     header("Content-Transfer-Encoding: binary ");
 }
 
-function pagination($jmldata, $dataPerPage, $klik, $tab = NULL, $search = NULL) {
-    /*
-     * Parameter '$search' dalam bentuk string , bisa json string atau yang lain
-     * contoh 1#nama_barang#nama_pabrik
-     */
 
-    $showPage = NULL;
-    ob_start();
-    echo '<ul class="pagination">';
-    if (!empty($klik)) {
-        $noPage = $klik;
-    } else {
-        $noPage = 1;
-    }
-
-    $dataPerPage = $dataPerPage;
-
-
-    $jumData = $jmldata;
-    $jumPage = ceil($jumData / $dataPerPage);
-    $get = $_GET;
-    if ($jumData > $dataPerPage) {
-        $onclick = null;
-        if ($noPage > 1) {
-            $get['page'] = ($noPage - 1);
-            $onclick = $klik;
-        }
-        $prev = null;
-        $last = ' class="last-block" ';
-        if ($klik > 1) {
-            $prev = "onClick=\"pagination(" . ($klik - 1) . "," . $tab . ", '" . $search . "')\" ";
-        }
-        echo '<li><span '.$prev.'>&laquo;</span></li>';
-        for ($page = 1; $page <= $jumPage; $page++) {
-            if ((($page >= $noPage - 1) && ($page <= $noPage + 1)) || ($page == 1) || ($page == $jumPage)) {
-                if (($showPage == 1) && ($page != 2))
-                    echo "<li>...</li>";
-                if (($showPage != ($jumPage - 1)) && ($page == $jumPage))
-                    echo "<li>...</li>";
-                if ($page == $noPage)
-                    echo " <li class='active'><span class='noblock'>" . $page . "</span></li> ";
-                else {
-                    $get['page'] = $page;
-                    if ($tab != NULL) {
-                        $get['tab'] = $tab;
-                    }
-                    $next = "onClick=\"pagination(" . $page . "," . $tab . ", '" . $search . "')\" ";
-                    //echo " <a class='block' href='?" . generate_get_parameter($get) . "'>" . $page . "</a> ";
-                    if ($page == $jumPage) {
-                        echo '<li ' . $next . '><span class="block">' . $page . '</span></li>';
-                    } else {
-                        echo '<li ' . $next . '><span class="block">' . $page . '</span></li>';
-                    }
-                }
-                $showPage = $page;
-            }
-        }
-        $next = null;
-        if ($klik < $jumPage) {
-            $next = "onClick=\"pagination(" . ($klik + 1) . "," . $tab . ", '" . $search . "')\" ";
-        }
-        echo '<li><span '.$next.'>&raquo;</span></li>';
-    }
-    echo "</ul>";
-
-    $buffer = ob_get_contents();
-    ob_end_clean();
-    return $buffer;
-}
 
 function range_year_start_from_one_year_ago() {
     $x = mktime(0, 0, 0, date("m"), date("d"), date("Y") - 1);
@@ -631,6 +563,51 @@ function post_safe($parameter){
     $quote = str_replace("'", "`", $string);
     $hasil = str_replace(array("?", "\\"), "", $quote);
     return $hasil;
+}
+
+function pagination($total_data, $limit, $page, $tab){
+    $str = '';
+    $total_page = ceil($total_data/$limit);
+
+    $first = '<li><a onclick="paging(1,'.$tab.')">First</a></li>';
+    $last = '<li><a onclick="paging('.$total_page.','.$tab.')">Last</a></li>';
+    $click_prev = '';
+    if ($page > 1) {
+        $click_prev = '';
+    }
+    $prev = '<li><a '.$click_prev.'>&laquo;</a></li>';
+    
+    $click_next = '';
+    if ($page < $total_page) {
+        $click_next = '';
+    }
+    $next = '<li><a '.$click_next.'>&raquo;</a></li>';
+
+    $page_numb = '';
+    $act_click = '';
+    $start = $page - 2;
+    $finish = $page + 2;
+    if ($start < 1) {
+        $start = 1;
+    }
+
+    if ($finish > $total_page){
+        $finish = $total_page;
+    }
+
+
+    for ($p = $start; $p <= $finish; $p++) {
+        
+        if ($p !== $page) {
+            $page_numb .= '<li><a >'.$p.'</a></li>';
+        }else{
+            $page_numb .= '<li class="active"><a>'.$p.'</a></li>';
+        }
+       
+    }
+
+
+    return '<ul class="pagination pointer">'.$first.$prev.$page_numb.$next.$last.'</ul>';
 }
 
 
