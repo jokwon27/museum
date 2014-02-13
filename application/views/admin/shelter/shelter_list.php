@@ -3,11 +3,11 @@
 </h4>
 <table class="table table-striped table-hover" width="100%">
 	<tr>
-		<th width="6%">No.</th>
+		<th width="5%">No.</th>
 		<th width="40%">Nama Shelter</th>
-		<th width="17%">Longitude</th>
-		<th width="17%">Latitude</th>
-		<th width="20%"></th>
+		<th width="15%">Longitude</th>
+		<th width="15%">Latitude</th>
+		<th width="25%"></th>
 	</tr>
 	<?php foreach ($data as $key => $value):?>
 	<tr>
@@ -16,6 +16,9 @@
 		<td><?= $value->longitude ?></td>
 		<td><?= $value->latitude ?></td>
 		<td align="right">
+			<button type="button" class="btn btn-default btn-xs" onclick="edit_shelter('<?= $value->id ?>')">
+				<span class="fa fa-eye"></span> Detail
+			</button>
 			<button type="button" class="btn btn-default btn-xs" onclick="edit_shelter('<?= $value->id ?>')">
 				<span class="fa fa-pencil"></span> Edit Shelter
 			</button>

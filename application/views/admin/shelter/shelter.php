@@ -1,6 +1,49 @@
+<style type="text/css">
+  #map-shelter {height: 300px; }
+</style>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABJD9IIW_lEgd8azMKO4YS-GfF7T7weuk&sensor=false"></script>
+<script type="text/javascript">
+    var markers = [];
+    function initialize() {
+        var mapOptions = {
+            zoom: 16,
+            // Center the map on Chicago, USA.
+            center: new google.maps.LatLng(-7.782772,110.366922)
+        };
+
+        map = new google.maps.Map(document.getElementById('map-shelter'), mapOptions);
+        google.maps.event.addListener(map, 'click', function(event) {
+            setAllMap(null);
+            placeMarker(event.latLng);
+           $('#latitude').val(event.latLng['d']);
+           $('#longitude').val(event.latLng['e']);
+        });
+
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+    function placeMarker(location) {
+        var marker = new google.maps.Marker({
+            position: location, 
+            map: map
+        });
+        markers.push(marker);
+    }
+
+    function setAllMap(map) {
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
+      }
+    }
+   
+
+  
+</script>
 <script type="text/javascript">
     
 	$(function(){
+        $("#form_tambah").on("shown.bs.modal", function () {
+            google.maps.event.trigger(map, "resize");
+        });
 		get_shelter_list(1);
         $('#bt_reset').click(function(){
            get_shelter_list(1);
@@ -182,33 +225,44 @@
 </div>
 
 <div id="form_tambah" class="modal fade">
-     <?= form_open('','id=formtambah class="form-horizontal"') ?>
+     
     <div class="modal-dialog higherWider">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"><span id="judul_dialog"></span> Data Shelter</h4>
           </div>
-        <div class="modal-body body_fit">
-       <?= form_hidden('id') ?>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Nama Shelter</label>
-            <div class="col-sm-6">
-            <?= form_input('nama','','class=form-control id=nama')?>
+        <div class="modal-body body-fit">
+            <?= form_open('','id=formtambah class="form-horizontal"') ?>
+           <?= form_hidden('id') ?>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Nama Shelter</label>
+                <div class="col-sm-6">
+                <?= form_input('nama','','class=form-control id=nama')?>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Longitude</label>
-            <div class="col-sm-6">
-            <?= form_input('longitude','','class=form-control id=longitude')?>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Longitude</label>
+                <div class="col-sm-6">
+                <?= form_input('longitude','','class=form-control id=longitude')?>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Latitude</label>
-            <div class="col-sm-6">
-            <?= form_input('latitude','','class=form-control id=latitude')?>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Latitude</label>
+                <div class="col-sm-6">
+                <?= form_input('latitude','','class=form-control id=latitude')?>
+                </div>
             </div>
-        </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-8">
+                    <div id="map-shelter"></div>
+                </div>
+            </div>
+            
+            <?= form_close() ?>       
+            
+     
         </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-refresh"></i> Batal</button>
@@ -216,5 +270,5 @@
           </div>  
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
-  <?= form_close() ?>
+  
 </div><!-- /.modal -->
