@@ -4,11 +4,13 @@
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABJD9IIW_lEgd8azMKO4YS-GfF7T7weuk&sensor=false"></script>
 <script type="text/javascript">
     var markers = [];
+    var map = {};
+    var thecenter = new google.maps.LatLng(-7.782772,110.366922);
     function initialize() {
         var mapOptions = {
             zoom: 16,
             // Center the map on Chicago, USA.
-            center: new google.maps.LatLng(-7.782772,110.366922)
+            center: thecenter
         };
 
         map = new google.maps.Map(document.getElementById('map-shelter'), mapOptions);
@@ -18,6 +20,12 @@
            $('#latitude').val(event.latLng['d']);
            $('#longitude').val(event.latLng['e']);
         });
+
+        var delControlDiv = document.createElement('div');
+        var delControl = new deleteControl(delControlDiv, map);
+
+        delControlDiv.index = 1;
+        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(delControlDiv);
 
     }
     google.maps.event.addDomListener(window, 'load', initialize);
@@ -36,6 +44,51 @@
     }
    
 
+
+    /** @constructor */
+    function deleteControl(controlDiv, map) {
+
+      // We set up a variable for this since we're adding
+      // event listeners later.
+      var control = this;
+
+
+      // Set CSS styles for the DIV containing the control
+      // Setting padding to 5 px will offset the control
+      // from the edge of the map
+      controlDiv.style.padding = '5px';
+
+      // Set CSS for the control border
+      var deleteUI = document.createElement('div');
+      deleteUI.style.backgroundColor = 'white';
+      deleteUI.style.borderStyle = 'solid';
+      deleteUI.style.borderWidth = '2px';
+      deleteUI.style.cursor = 'pointer';
+      deleteUI.style.textAlign = 'center';
+      deleteUI.title = 'Click to set the map to Home';
+      controlDiv.appendChild(deleteUI);
+
+      // Set CSS for the control interior
+      var deleteText = document.createElement('div');
+      deleteText.style.fontFamily = 'Arial,sans-serif';
+      deleteText.style.fontSize = '12px';
+      deleteText.style.paddingLeft = '4px';
+      deleteText.style.paddingRight = '4px';
+      deleteText.innerHTML = '<b>Hapus Marker</b>';
+      deleteUI.appendChild(deleteText);
+
+      
+
+      // Setup the click event listener for Home:
+      // simply set the map to the control's current home property.
+      google.maps.event.addDomListener(deleteUI, 'click', function() {
+        $('#latitude, #longitude').val('');
+        setAllMap(null);
+      });
+
+     
+    }
+
   
 </script>
 <script type="text/javascript">
@@ -52,6 +105,7 @@
 
         $('#bt_add').click(function(){
             tambah_data();
+            reset_data();
         });
 
         $('#formtambah').submit(function(){
@@ -121,6 +175,8 @@
     function reset_data(){
         $('input[name=id], #nama, #longitude, #latitude ').val('');
         dc_validation_remove('.form-control');
+        setAllMap(null);
+        map.setCenter(thecenter);
     }
 
     function tambah_data(){
@@ -155,6 +211,10 @@
                 $('#nama').val(data.nama);
                 $('#longitude').val(data.longitude);
                 $('#latitude').val(data.latitude);
+
+                var shelterCoord = new google.maps.LatLng(data.latitude,data.longitude);
+                placeMarker(shelterCoord);
+                map.setCenter(shelterCoord);
                 $('#judul_dialog').html('Edit');
                 $('#form_tambah').modal('show');
             }

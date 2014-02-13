@@ -1,8 +1,104 @@
 <script type="text/javascript" src="<?= base_url('public/editor/ckeditor/ckeditor.js') ?>"></script>
 <script type="text/javascript" src="<?= base_url('public/editor/ckeditor/config.js') ?>"></script>
+<style type="text/css">
+  #map-museum {height: 300px; }
+</style>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABJD9IIW_lEgd8azMKO4YS-GfF7T7weuk&sensor=false"></script>
+<script type="text/javascript">
+    var markers = [];
+    var map = {};
+    var thecenter = new google.maps.LatLng(-7.782772,110.366922);
+    function initialize() {
+        var mapOptions = {
+            zoom: 16,
+            // Center the map on Chicago, USA.
+            center: thecenter
+        };
+
+        map = new google.maps.Map(document.getElementById('map-museum'), mapOptions);
+        google.maps.event.addListener(map, 'click', function(event) {
+            setAllMap(null);
+            placeMarker(event.latLng);
+           $('#latitude').val(event.latLng['d']);
+           $('#longitude').val(event.latLng['e']);
+        });
+
+        var delControlDiv = document.createElement('div');
+        var delControl = new deleteControl(delControlDiv, map);
+
+        delControlDiv.index = 1;
+        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(delControlDiv);
+
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+    function placeMarker(location) {
+        var marker = new google.maps.Marker({
+            position: location, 
+            map: map
+        });
+        markers.push(marker);
+    }
+
+    function setAllMap(map) {
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
+      }
+    }
+   
+
+
+    /** @constructor */
+    function deleteControl(controlDiv, map) {
+
+      // We set up a variable for this since we're adding
+      // event listeners later.
+      var control = this;
+
+
+      // Set CSS styles for the DIV containing the control
+      // Setting padding to 5 px will offset the control
+      // from the edge of the map
+      controlDiv.style.padding = '5px';
+
+      // Set CSS for the control border
+      var deleteUI = document.createElement('div');
+      deleteUI.style.backgroundColor = 'white';
+      deleteUI.style.borderStyle = 'solid';
+      deleteUI.style.borderWidth = '2px';
+      deleteUI.style.cursor = 'pointer';
+      deleteUI.style.textAlign = 'center';
+      deleteUI.title = 'Click to set the map to Home';
+      controlDiv.appendChild(deleteUI);
+
+      // Set CSS for the control interior
+      var deleteText = document.createElement('div');
+      deleteText.style.fontFamily = 'Arial,sans-serif';
+      deleteText.style.fontSize = '12px';
+      deleteText.style.paddingLeft = '4px';
+      deleteText.style.paddingRight = '4px';
+      deleteText.innerHTML = '<b>Hapus Marker</b>';
+      deleteUI.appendChild(deleteText);
+
+      
+
+      // Setup the click event listener for Home:
+      // simply set the map to the control's current home property.
+      google.maps.event.addDomListener(deleteUI, 'click', function() {
+        $('#latitude, #longitude').val('');
+        setAllMap(null);
+      });
+
+     
+    }
+</script>
+
+
 <script type="text/javascript">
     
 	$(function(){
+        $("#form_tambah").on("shown.bs.modal", function () {
+            google.maps.event.trigger(map, "resize");
+        });
 		get_museum_list(1);
         $('#bt_reset').click(function(){
            get_museum_list(1);
@@ -11,6 +107,7 @@
 
         $('#bt_add').click(function(){
             tambah_data();
+            reset_data();
         });
 
         $('#formtambah').submit(function(){
@@ -94,6 +191,8 @@
         $('input[name=id], #nama, #alamat, #longitude, #latitude, #url ').val('');
         CKEDITOR.instances.keterangan.setData('');
         dc_validation_remove('.form-control');
+        setAllMap(null);
+        map.setCenter(thecenter);
     }
 
     function tambah_data(){
@@ -132,6 +231,11 @@
                 $('#url').val(data.url);
                 CKEDITOR.instances.keterangan.setData(data.keterangan);
                 $('#judul_dialog').html('Edit');
+
+                var museumCoord = new google.maps.LatLng(data.latitude,data.longitude);
+                placeMarker(museumCoord);
+                map.setCenter(museumCoord);
+
                 $('#form_tambah').modal('show');
             }
         });
@@ -261,6 +365,12 @@
             <?= form_input('latitude','','class=form-control id=latitude')?>
             </div>
         </div>
+        <div class="form-group">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-8">
+                    <div id="map-museum"></div>
+                </div>
+            </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">Keterangan</label>
             <div class="col-sm-10">
