@@ -30,7 +30,7 @@
         
         $.ajax({
             type : 'POST',
-            url: '<?= base_url("admin/master_user_save") ?>/', 
+            url: '<?= base_url("admin/user_save") ?>/', 
             cache: false,
             dataType: 'json',
             data: $('#formtambah').serialize(),
@@ -99,7 +99,7 @@
     function get_user_list(p){
         $.ajax({
             type : 'GET',
-            url: '<?= base_url("admin/master_user_list") ?>/'+p,
+            url: '<?= base_url("admin/user_list") ?>/'+p,
             data: $('#formtambah').serialize()+'&search='+$('#search').val(),
             cache: false,
             success: function(data) {
@@ -137,18 +137,18 @@
                 message: 'Anda yakin akan menghapus data ini?',
                 buttons: [
                 {
-                    label: 'Batal',
+                    label: '<i class="fa fa-refresh"></i> Batal',
                     action: function(dialogItself){
                         dialogItself.close();
                     }
                 },
                 {
-                    label: 'Hapus',
+                    label: '<i class="fa fa-trash-o"></i> Hapus',
                     cssClass: 'btn-primary',
                     action: function(dialogItself){
                          $.ajax({
                             type : 'GET',
-                            url: '<?= base_url("admin/master_user_delete") ?>/'+id+'/'+page,
+                            url: '<?= base_url("admin/user_delete") ?>/'+id+'/'+page,
                             cache: false,
                             success: function(data) {
                                 $('#user_list').html(data);

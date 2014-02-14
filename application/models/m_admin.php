@@ -278,4 +278,54 @@ class M_admin extends CI_Model {
     }
     /* Shelter */
     
+    /* Rute Trans Jogja */
+    function trans_get_data($limit, $start, $search){
+        $q = '';
+        if (isset($search['id']) && ($search['id'] !== '')) {
+            $q = " and id = '".$search['id']."'";
+        }
+
+        if (isset($search['nama']) && ($search['nama'] !== '')) {
+            $q = " and nama like '%".$search['nama']."%'";
+        }
+        $limit = " limit $start, $limit ";
+        $sql = "select * from jalur
+            where id is not null $q order by nama";
+        
+
+        $query = $this->db->query($sql . $limit);
+        $ret['data'] = $query->result();
+        $ret['jumlah'] = $this->db->query($sql)->num_rows();
+        return $ret;
+    }
+
+    function trans_delete_data($id){
+        $this->db->where('id', $id)->delete('jalur');
+    }
+
+    function trans_save_data(){
+        $data = array(
+            'nama' => post_safe('nama'),
+            'rute' => post_safe('rute'),
+            'koordinat_rute' => (post_safe('koordinat_rute') !== '')?post_safe('koordinat_rute'):NULL
+        );
+
+        $id = post_safe('id');
+
+        if ($id === '') {
+            $this->db->insert('jalur', $data);
+            $id = $this->db->insert_id();
+        }else{
+            $this->db->where('id', $id)->update('jalur', $data);
+        }
+
+        return $id;
+    }
+
+    function get_trans($id){
+        $sql = "select * from jalur
+            where id = '".$id."'";
+        return $this->db->query($sql)->row();
+    }
+    /* Rute Trans Jogja */
 }

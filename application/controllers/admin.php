@@ -62,14 +62,14 @@ class Admin extends CI_Controller {
 	}
     
     /* User */
-    function master_user(){
+    function user(){
         $this->cek();
-        $data['title'] = 'Master Data User';
+        $data['title'] = 'User';
         $data['page'] = 'user/user';
         $this->show_dashboard($data);
     }
 
-    function master_user_list($page){
+    function user_list($page){
         $this->cek();
         $search = array(
                 'id' => get_safe('id'),
@@ -87,15 +87,15 @@ class Admin extends CI_Controller {
 
     }
 
-    function master_user_save(){
+    function user_save(){
         $id = $this->m_admin->user_save_data();
         die(json_encode(array('id'=>$id)));
     }
 
-    function master_user_delete($id,$page) {
+    function user_delete($id,$page) {
         $this->cek();
         $this->m_admin->user_delete_data($id);
-        $this->master_user_list($page);
+        $this->user_list($page);
     }
 
     function get_privileges($id){
@@ -118,14 +118,14 @@ class Admin extends CI_Controller {
 
 
     /* Museum */
-    function master_museum(){
+    function museum(){
         $this->cek();
-        $data['title'] = 'Master Data Museum';
+        $data['title'] = 'Museum';
         $data['page'] = 'museum/museum';
         $this->show_dashboard($data);
     }
 
-    function master_museum_list($page){
+    function museum_list($page){
         $this->cek();
         $search = array(
                 'id' => get_safe('id'),
@@ -143,18 +143,18 @@ class Admin extends CI_Controller {
 
     }
 
-    function master_museum_save(){
+    function museum_save(){
         $id = $this->m_admin->museum_save_data();
         die(json_encode(array('id'=>$id)));
     }
 
-    function master_museum_delete($id,$page) {
+    function museum_delete($id,$page) {
         $this->cek();
         $this->m_admin->museum_delete_data($id);
-        $this->master_museum_list($page);
+        $this->museum_list($page);
     }
 
-    function master_museum_data($id){
+    function museum_data($id){
          $data = $this->m_admin->get_museum($id);
          die(json_encode($data));
     }
@@ -168,14 +168,14 @@ class Admin extends CI_Controller {
     /* Museum */
 
     /* Shelter */
-    function master_shelter(){
+    function shelter(){
         $this->cek();
-        $data['title'] = 'Master Data Shelter';
+        $data['title'] = 'Shelter';
         $data['page'] = 'shelter/shelter';
         $this->show_dashboard($data);
     }
 
-    function master_shelter_list($page){
+    function shelter_list($page){
         $this->cek();
         $search = array(
                 'id' => get_safe('id'),
@@ -193,32 +193,32 @@ class Admin extends CI_Controller {
 
     }
 
-    function master_shelter_save(){
+    function shelter_save(){
         $id = $this->m_admin->shelter_save_data();
         die(json_encode(array('id'=>$id)));
     }
 
-    function master_shelter_delete($id,$page) {
+    function shelter_delete($id,$page) {
         $this->cek();
         $this->m_admin->shelter_delete_data($id);
-        $this->master_shelter_list($page);
+        $this->shelter_list($page);
     }
 
-    function master_shelter_data($id){
+    function shelter_data($id){
          $data = $this->m_admin->get_shelter($id);
          die(json_encode($data));
     }
     /* Shelter */
 
     /* Artikel */
-    function master_artikel(){
+    function artikel(){
         $this->cek();
-        $data['title'] = 'Master Data Artikel';
+        $data['title'] = 'Artikel';
         $data['page'] = 'artikel/artikel';
         $this->show_dashboard($data);
     }
 
-    function master_artikel_list($page){
+    function artikel_list($page){
         $this->cek();
         $search = array(
                 'id' => get_safe('id'),
@@ -236,15 +236,15 @@ class Admin extends CI_Controller {
 
     }
 
-    function master_artikel_save(){
+    function artikel_save(){
         $id = $this->m_admin->artikel_save_data();
         die(json_encode(array('id'=>$id)));
     }
 
-    function master_artikel_delete($id,$page) {
+    function artikel_delete($id,$page) {
         $this->cek();
         $this->m_admin->artikel_delete_data($id);
-        $this->master_artikel_list($page);
+        $this->artikel_list($page);
     }
 
     function artikel_preview($id){
@@ -252,7 +252,7 @@ class Admin extends CI_Controller {
         $this->load->view('admin/artikel/artikel_preview', $data);
     }
 
-    function master_artikel_data($id){
+    function artikel_data($id){
          $data = $this->m_admin->get_artikel($id);
          die(json_encode($data));
     }
@@ -260,18 +260,52 @@ class Admin extends CI_Controller {
     /* Artikel */
 
     /* Trans Jogja */
-    function master_trans(){
+    function trans(){
         $this->cek();
-        $data['title'] = 'Master Data Trans Jogja';
+        $data['title'] = 'Rute Trans Jogja';
         $data['page'] = 'trans/trans';
         $this->show_dashboard($data);
     }
+
+    function trans_list($page){
+        $this->cek();
+        $search = array(
+                'id' => get_safe('id'),
+                'nama' => get_safe('search')
+            );
+        $start = ($page - 1) * $this->limit;        
+        $data = $this->m_admin->trans_get_data($this->limit, $start, $search);
+        if ($data['data'] == NULL) {
+            $data = $this->m_admin->trans_get_data($this->limit, 0, $search);
+        }
+        $data['page'] = $page;
+        $data['limit'] = $this->limit;
+        $data['pagination'] = pagination($data['jumlah'], $this->limit, $page, 1);
+        $this->load->view('admin/trans/trans_list', $data);
+
+    }
+
+    function trans_save(){
+        $id = $this->m_admin->trans_save_data();
+        die(json_encode(array('id'=>$id)));
+    }
+
+    function trans_delete($id,$page) {
+        $this->cek();
+        $this->m_admin->trans_delete_data($id);
+        $this->trans_list($page);
+    }
+
+    function trans_data($id){
+         $data = $this->m_admin->get_trans($id);
+         die(json_encode($data));
+    }
     /* Trans Jogja */
 
-    function master_slide(){
+    function slide(){
         $this->cek();
-        $data['title'] = 'Master Data Slide';
-        $data['page'] = 'master_slide';
+        $data['title'] = 'Slide';
+        $data['page'] = 'slide';
         $this->show_dashboard($data);
     }
 

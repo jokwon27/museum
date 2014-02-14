@@ -154,7 +154,7 @@
 
         $.ajax({
             type : 'POST',
-            url: '<?= base_url("admin/master_museum_save") ?>/', 
+            url: '<?= base_url("admin/museum_save") ?>/', 
             cache: false,
             dataType: 'json',
             data: $('#formtambah').serialize()+'&keterangan_museum='+CKEDITOR.instances.keterangan.getData(),
@@ -207,7 +207,7 @@
     function get_museum_list(p){
         $.ajax({
             type : 'GET',
-            url: '<?= base_url("admin/master_museum_list") ?>/'+p,
+            url: '<?= base_url("admin/museum_list") ?>/'+p,
             data: $('#formtambah').serialize()+'&search='+$('#search').val(),
             cache: false,
             success: function(data) {
@@ -219,7 +219,7 @@
     function edit_museum(id){
         $.ajax({
             type : 'GET',
-            url: '<?= base_url("admin/master_museum_data") ?>/'+id,
+            url: '<?= base_url("admin/museum_data") ?>/'+id,
             dataType: 'json',
             cache: false,
             success: function(data) {
@@ -266,18 +266,18 @@
                 message: 'Anda yakin akan menghapus data ini?',
                 buttons: [
                 {
-                    label: 'Batal',
+                    label: '<i class="fa fa-refresh"></i> Batal',
                     action: function(dialogItself){
                         dialogItself.close();
                     }
                 },
                 {
-                    label: 'Hapus',
+                    label: '<i class="fa fa-trash-o"></i> Hapus',
                     cssClass: 'btn-primary',
                     action: function(dialogItself){
                          $.ajax({
                             type : 'GET',
-                            url: '<?= base_url("admin/master_museum_delete") ?>/'+id+'/'+page,
+                            url: '<?= base_url("admin/museum_delete") ?>/'+id+'/'+page,
                             cache: false,
                             success: function(data) {
                                 $('#museum_list').html(data);

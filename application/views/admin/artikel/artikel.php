@@ -74,7 +74,7 @@
 
         $.ajax({
             type : 'POST',
-            url: '<?= base_url("admin/master_artikel_save") ?>/', 
+            url: '<?= base_url("admin/artikel_save") ?>/', 
             cache: false,
             dataType: 'json',
             data: $('#formtambah').serialize()+'&isi_artikel='+CKEDITOR.instances.isi.getData(),
@@ -125,7 +125,7 @@
     function get_artikel_list(p){
         $.ajax({
             type : 'GET',
-            url: '<?= base_url("admin/master_artikel_list") ?>/'+p,
+            url: '<?= base_url("admin/artikel_list") ?>/'+p,
             data: $('#formtambah').serialize()+'&search='+$('#search').val(),
             cache: false,
             success: function(data) {
@@ -137,7 +137,7 @@
     function edit_artikel(id){
         $.ajax({
             type : 'GET',
-            url: '<?= base_url("admin/master_artikel_data") ?>/'+id,
+            url: '<?= base_url("admin/artikel_data") ?>/'+id,
             dataType: 'json',
             cache: false,
             success: function(data) {
@@ -178,18 +178,18 @@
                 message: 'Anda yakin akan menghapus data ini?',
                 buttons: [
                 {
-                    label: 'Batal',
+                    label: '<i class="fa fa-refresh"></i> Batal',
                     action: function(dialogItself){
                         dialogItself.close();
                     }
                 },
                 {
-                    label: 'Hapus',
+                    label: '<i class="fa fa-trash-o"></i> Hapus',
                     cssClass: 'btn-primary',
                     action: function(dialogItself){
                          $.ajax({
                             type : 'GET',
-                            url: '<?= base_url("admin/master_artikel_delete") ?>/'+id+'/'+page,
+                            url: '<?= base_url("admin/artikel_delete") ?>/'+id+'/'+page,
                             cache: false,
                             success: function(data) {
                                 $('#artikel_list').html(data);

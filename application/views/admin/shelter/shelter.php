@@ -139,7 +139,7 @@
 
         $.ajax({
             type : 'POST',
-            url: '<?= base_url("admin/master_shelter_save") ?>/', 
+            url: '<?= base_url("admin/shelter_save") ?>/', 
             cache: false,
             dataType: 'json',
             data: $('#formtambah').serialize(),
@@ -191,7 +191,7 @@
     function get_shelter_list(p){
         $.ajax({
             type : 'GET',
-            url: '<?= base_url("admin/master_shelter_list") ?>/'+p,
+            url: '<?= base_url("admin/shelter_list") ?>/'+p,
             data: $('#formtambah').serialize()+'&search='+$('#search').val(),
             cache: false,
             success: function(data) {
@@ -203,7 +203,7 @@
     function edit_shelter(id){
         $.ajax({
             type : 'GET',
-            url: '<?= base_url("admin/master_shelter_data") ?>/'+id,
+            url: '<?= base_url("admin/shelter_data") ?>/'+id,
             dataType: 'json',
             cache: false,
             success: function(data) {
@@ -232,18 +232,18 @@
                 message: 'Anda yakin akan menghapus data ini?',
                 buttons: [
                 {
-                    label: 'Batal',
+                    label: '<i class="fa fa-refresh"></i> Batal',
                     action: function(dialogItself){
                         dialogItself.close();
                     }
                 },
                 {
-                    label: 'Hapus',
+                    label: '<i class="fa fa-trash-o"></i> Hapus',
                     cssClass: 'btn-primary',
                     action: function(dialogItself){
                          $.ajax({
                             type : 'GET',
-                            url: '<?= base_url("admin/master_shelter_delete") ?>/'+id+'/'+page,
+                            url: '<?= base_url("admin/shelter_delete") ?>/'+id+'/'+page,
                             cache: false,
                             success: function(data) {
                                 $('#shelter_list').html(data);
