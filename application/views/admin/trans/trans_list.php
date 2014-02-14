@@ -4,8 +4,8 @@
 <table class="table table-striped table-hover" width="100%">
 	<tr>
 		<th width="5%">No.</th>
-		<th>Nama Rute</th>
-		<th width="15%">Rute</th>
+		<th width="20%">Nama Rute</th>
+		<th>Rute</th>
 		<th width="30%"></th>
 	</tr>
 	<?php foreach ($data as $key => $value):?>

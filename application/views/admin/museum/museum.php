@@ -101,8 +101,8 @@
         });
 		get_museum_list(1);
         $('#bt_reset').click(function(){
-           get_museum_list(1);
-           reset_data();
+            reset_data();
+            get_museum_list(1);
         });
 
         $('#bt_add').click(function(){
@@ -188,9 +188,9 @@
     
 
     function reset_data(){
-        $('input[name=id], #nama, #alamat, #longitude, #latitude, #url ').val('');
+        $('input[name=id], #nama, #alamat, #longitude, #latitude, #url, .myinput, #search').val('');
         CKEDITOR.instances.keterangan.setData('');
-        dc_validation_remove('.form-control');
+        dc_validation_remove('.myinput');
         setAllMap(null);
         map.setCenter(thecenter);
     }
@@ -338,31 +338,31 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Nama Museum</label>
             <div class="col-sm-6">
-            <?= form_input('nama','','class=form-control id=nama onkeyup=set_url(this)')?>
+            <?= form_input('nama','','class="form-control myinput" id=nama onkeyup=set_url(this)')?>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">Alamat</label>
             <div class="col-sm-6">
-            <?= form_textarea('alamat','','class=form-control id=alamat')?>
+            <?= form_textarea('alamat','','class="form-control myinput" id=alamat')?>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">URL</label>
             <div class="col-sm-6">
-            <?= form_input('url','','class=form-control id=url')?>
+            <?= form_input('url','','class="form-control myinput" id=url')?>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">Longitude</label>
             <div class="col-sm-6">
-            <?= form_input('longitude','','class=form-control id=longitude')?>
+            <?= form_input('longitude','','class="form-control myinput" id=longitude')?>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">Latitude</label>
             <div class="col-sm-6">
-            <?= form_input('latitude','','class=form-control id=latitude')?>
+            <?= form_input('latitude','','class="form-control myinput" id=latitude')?>
             </div>
         </div>
         <div class="form-group">

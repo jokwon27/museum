@@ -9,7 +9,6 @@
     function initialize() {
         var mapOptions = {
             zoom: 16,
-            // Center the map on Chicago, USA.
             center: thecenter
         };
 
@@ -47,15 +46,8 @@
 
     /** @constructor */
     function deleteControl(controlDiv, map) {
-
-      // We set up a variable for this since we're adding
-      // event listeners later.
       var control = this;
 
-
-      // Set CSS styles for the DIV containing the control
-      // Setting padding to 5 px will offset the control
-      // from the edge of the map
       controlDiv.style.padding = '5px';
 
       // Set CSS for the control border
@@ -99,8 +91,8 @@
         });
 		get_shelter_list(1);
         $('#bt_reset').click(function(){
-           get_shelter_list(1);
-           reset_data();
+            reset_data();
+            get_shelter_list(1);
         });
 
         $('#bt_add').click(function(){
@@ -173,8 +165,8 @@
     
 
     function reset_data(){
-        $('input[name=id], #nama, #longitude, #latitude ').val('');
-        dc_validation_remove('.form-control');
+        $('input[name=id], #nama, #longitude, #latitude, myinput, #search ').val('');
+        dc_validation_remove('.myinput');
         setAllMap(null);
         map.setCenter(thecenter);
     }
@@ -298,19 +290,19 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">Nama Shelter</label>
                 <div class="col-sm-6">
-                <?= form_input('nama','','class=form-control id=nama')?>
+                <?= form_input('nama','','class="form-control myinput" id=nama')?>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">Longitude</label>
                 <div class="col-sm-6">
-                <?= form_input('longitude','','class=form-control id=longitude')?>
+                <?= form_input('longitude','','class="form-control myinput" id=longitude')?>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">Latitude</label>
                 <div class="col-sm-6">
-                <?= form_input('latitude','','class=form-control id=latitude')?>
+                <?= form_input('latitude','','class="form-control myinput" id=latitude')?>
                 </div>
             </div>
             <div class="form-group">

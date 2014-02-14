@@ -5,8 +5,8 @@
 	$(function(){
 		get_artikel_list(1);
         $('#bt_reset').click(function(){
-           get_artikel_list(1);
-           reset_data();
+            reset_data();
+            get_artikel_list(1);
         });
 
         $('#bt_add').click(function(){
@@ -108,9 +108,9 @@
     
 
     function reset_data(){
-        $('input[name=id], #museum, #judul, input[name=id_museum], #url').val('');
+        $('input[name=id], #museum, #judul, input[name=id_museum], #url, #search').val('');
         CKEDITOR.instances.isi.setData('');
-        dc_validation_remove('.form-control');
+        dc_validation_remove('.myinput');
     }
 
     function tambah_data(){
@@ -251,19 +251,19 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Judul</label>
             <div class="col-sm-6">
-            <?= form_input('judul','','class=form-control id=judul onkeyup=set_url(this)')?>
+            <?= form_input('judul','','class="form-control myinput" id=judul onkeyup=set_url(this)')?>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">Museum</label>
             <div class="col-sm-6">
-            <?= form_input('museum','','class=form-control id=museum')?>
+            <?= form_input('museum','','class="form-control myinput" id=museum')?>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">URL</label>
             <div class="col-sm-6">
-            <?= form_input('url','','class=form-control id=url')?>
+            <?= form_input('url','','class="form-control myinput" id=url')?>
             </div>
         </div>
         <div class="form-group">

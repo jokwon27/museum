@@ -2,8 +2,8 @@
 	$(function(){
 		get_user_list(1);
         $('#bt_reset').click(function(){
-           get_user_list(1);
-           reset_data();
+            reset_data();
+            get_user_list(1);
         });
 
         $('#bt_add').click(function(){
@@ -83,8 +83,8 @@
     }
 
     function reset_data(){
-        $('input[name=id], #user').val('');
-        dc_validation_remove('.form-control');
+        $('input[name=id], #user, #search').val('');
+        dc_validation_remove('.myinput');
     }
 
     function tambah_data(){
@@ -202,7 +202,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Username</label>
             <div class="col-sm-6">
-            <?= form_input('user','','class=form-control id=user')?>
+            <?= form_input('user','','class="form-control myinput" id=user')?>
             </div>
         </div>
         <div class="form-group">

@@ -1,5 +1,5 @@
 <style type="text/css">
-  #map-trans, #map-preview {height: 300px; }
+  #map-trans, #map-preview {height: 400px; }
 </style>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABJD9IIW_lEgd8azMKO4YS-GfF7T7weuk&sensor=false"></script>
 <script type="text/javascript">
@@ -13,7 +13,6 @@
     function initialize() {
         var mapOptions = {
         zoom: 14,
-        // Center the map on Chicago, USA.
         center: thecenter
         };
 
@@ -27,56 +26,44 @@
         poly = new google.maps.Polyline(polyOptions);
         poly.setMap(map);
 
-        // Add a listener for the click event
+        
         google.maps.event.addListener(map, 'click', addLatLng);
 
         var delControlDiv = document.createElement('div');
         var delControl = new deleteControl(delControlDiv, map);
 
         delControlDiv.index = 1;
+
+        var undoControlDiv = document.createElement('div');
+        var undoControl = new undoActControl(undoControlDiv, map);
+
+        undoControlDiv.index = 2;
         map.controls[google.maps.ControlPosition.TOP_RIGHT].push(delControlDiv);
+        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(undoControlDiv);
     }
 
-    /**
-     * Handles click events on a map, and adds a new point to the Polyline.
-     * @param {google.maps.MouseEvent} event
-     */
+
     function addLatLng(event) {
 
       var path = poly.getPath();
       koord = JSON.stringify(path.getArray());
-      // Because path is an MVCArray, we can simply append a new coordinate
-      // and it will automatically appear.
-      path.push(event.latLng);
+      path.push(event.latLng);      
+    }
 
-      // Add a new marker at the new plotted point on the polyline.
-      var marker = new google.maps.Marker({
-        position: event.latLng,
-        title: '#' + path.getLength(),
-        map: map
-      });
+    function addLatLngEdit(lat, longi) {
+      var path = poly.getPath();
+      path.push(new google.maps.LatLng(lat,longi));
     }
 
     function addLatLngPreview(lat, longi) {
 
       var path_preview = poly_preview.getPath();
-  
-      // Because path is an MVCArray, we can simply append a new coordinate
-      // and it will automatically appear.
       path_preview.push(new google.maps.LatLng(lat,longi));
-
-      // Add a new marker at the new plotted point on the polyline.
-      var marker_preview = new google.maps.Marker({
-        position: event.latLng,
-        title: '#' + path_preview.getLength(),
-        map: map_preview
-      });
     }
     
     function initialize_preview() {
         var mapOptions = {
         zoom: 14,
-        // Center the map on Chicago, USA.
         center: thecenter
         };
 
@@ -100,6 +87,14 @@
       poly_preview.setMap(null);
     }
 
+    function undoPath(){
+      var path = poly.getPath();
+      var n = path.b.length;
+      path.b.splice(n-1, 1 );
+      koord = JSON.stringify(path.getArray());
+      poly.setPath(path)
+    }
+
 
     /** @constructor */
     function deleteControl(controlDiv, map) {
@@ -120,7 +115,7 @@
       deleteUI.style.borderWidth = '2px';
       deleteUI.style.cursor = 'pointer';
       deleteUI.style.textAlign = 'center';
-      deleteUI.title = 'Click to set the map to Home';
+      deleteUI.title = 'Klik Untuk Hapus Rute';
       controlDiv.appendChild(deleteUI);
 
       // Set CSS for the control interior
@@ -138,10 +133,53 @@
       // simply set the map to the control's current home property.
       google.maps.event.addDomListener(deleteUI, 'click', function() {
         $('input[name=koordinat_rute]').val('');
+        koord = '';
         removeLine();
+        initialize();
       });
 
-     
+    }
+
+    function undoActControl(controlDiv, map) {
+
+      // We set up a variable for this since we're adding
+      // event listeners later.
+      var control = this;
+
+      // Set CSS styles for the DIV containing the control
+      // Setting padding to 5 px will offset the control
+      // from the edge of the map
+      controlDiv.style.padding = '5px';
+
+      // Set CSS for the control border
+      var undoUI = document.createElement('div');
+      undoUI.style.backgroundColor = 'white';
+      undoUI.style.borderStyle = 'solid';
+      undoUI.style.borderWidth = '2px';
+      undoUI.style.cursor = 'pointer';
+      undoUI.style.textAlign = 'center';
+      undoUI.title = 'Undo';
+      controlDiv.appendChild(undoUI);
+
+      // Set CSS for the control interior
+      var undoText = document.createElement('div');
+      undoText.style.fontFamily = 'Arial,sans-serif';
+      undoText.style.fontSize = '12px';
+      undoText.style.paddingLeft = '4px';
+      undoText.style.paddingRight = '4px';
+      undoText.innerHTML = '<b>Undo</b>';
+      undoUI.appendChild(undoText);
+
+      
+
+      // Setup the click event listener for Home:
+      // simply set the map to the control's current home property.
+      google.maps.event.addDomListener(undoUI, 'click', function() {
+          undoPath();
+       
+      });
+
+
     }
     google.maps.event.addDomListener(window, 'load', initialize);
     google.maps.event.addDomListener(window, 'load', initialize_preview);
@@ -159,8 +197,8 @@
         });
         get_trans_list(1);
         $('#bt_reset').click(function(){
-           get_trans_list(1);
-           reset_data();
+            reset_data();
+            get_trans_list(1);
         });
 
         $('#bt_add').click(function(){
@@ -224,9 +262,10 @@
     
 
     function reset_data(){
-        $('input[name=id], #nama, #longitude, #latitude, input[nama=koordinat_rute] ').val('');
-        dc_validation_remove('.form-control');
-        
+        $('input[name=id], #nama, #rute, input[nama=koordinat_rute], #search').val('');
+        dc_validation_remove('.myinput');
+        removeLine();
+        initialize();
         map.setCenter(thecenter);
     }
 
@@ -253,6 +292,8 @@
     }
 
     function edit_trans(id){
+        removeLine();
+        initialize();
         $.ajax({
             type : 'GET',
             url: '<?= base_url("admin/trans_data") ?>/'+id,
@@ -261,6 +302,13 @@
             success: function(data) {
                 $('input[name=id]').val(data.id);
                 $('#nama').val(data.nama);
+                $('#rute').val(data.rute);
+                $('input[name=koordinat_rute]').val(data.koordinat_rute);
+                if (data.koordinat_rute !== null) {
+                    $.each(JSON.parse(data.koordinat_rute), function(i, v){
+                        addLatLngEdit(v.d , v.e);
+                    });
+                };
                 
                 $('#judul_dialog').html('Edit');
                 $('#form_tambah').modal('show');
@@ -278,6 +326,8 @@
             dataType: 'json',
             cache: false,
             success: function(data) {
+                $('#judul_rute').html(data.nama);
+                $('#rute_jalan').html(data.rute);
                 if (data.koordinat_rute !== null) {
                     $.each(JSON.parse(data.koordinat_rute), function(i, v){
                         addLatLngPreview(v.d , v.e)
@@ -369,18 +419,18 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">Nama Rute</label>
                 <div class="col-sm-6">
-                <?= form_input('nama','','class=form-control id=nama')?>
+                <?= form_input('nama','','class="form-control myinput" id=nama')?>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">Rute</label>
                 <div class="col-sm-6">
-                <textarea class="form-control" id="rute" name="rute"></textarea>
+                <?= form_textarea('rute','','class="form-control myinput" id=rute')?>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">Koordinat Rute</label>
-                <div class="col-sm-8">
+                <div class="col-sm-10">
                     <div id="map-trans"></div>
                 </div>
             </div>
@@ -406,7 +456,11 @@
             <h4 class="modal-title">Preview</h4>
           </div>
         <div class="modal-body body_fit">
-             <div id="map-preview"></div>
+            <h2>Rute <span id="judul_rute"></span></h2>
+            <hr/>
+            <div id="rute_jalan"></div>
+            <hr/>
+            <div id="map-preview"></div>
         </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-check"></i> OK</button>

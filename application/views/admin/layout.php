@@ -35,14 +35,14 @@
   
     <script type="text/javascript">
       $(function(){
-        $('.form-control').keyup(function(){
+        $('.myinput').keyup(function(){
             if($(this).val() !== ''){
                 dc_validation_remove(this);
             }
             
         });
 
-        $('.form-control').change(function(){
+        $('.myinput').change(function(){
             if($(this).val() !== ''){
                 dc_validation_remove(this);
             }            
