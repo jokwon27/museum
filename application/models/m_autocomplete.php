@@ -9,6 +9,13 @@ class M_autocomplete extends CI_Model {
         return $this->db->query($sql);
 	}
 
+	function get_data_shelter($q){
+	
+        $sql = "select * from shelter 
+        where nama like ('%$q%')  order by locate('$q', nama)";
+        return $this->db->query($sql);
+	}
+
 	
 	
 }

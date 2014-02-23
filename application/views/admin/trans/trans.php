@@ -1,5 +1,5 @@
 <style type="text/css">
-  #map-trans, #map-preview {height: 400px; }
+  #map-trans, #map-preview {height: 500px; }
 </style>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABJD9IIW_lEgd8azMKO4YS-GfF7T7weuk&sensor=false"></script>
 <script type="text/javascript">
@@ -8,7 +8,9 @@
     var map = {};
     var koord = '';
     var map_preview = {};
-    var thecenter = new google.maps.LatLng(-7.782772,110.366922);
+    var markers = [];
+    var pointer_shelter = [];
+    var thecenter = new google.maps.LatLng(-7.783069238887897,110.36760125309229);
 
     function initialize() {
         var mapOptions = {
@@ -19,9 +21,9 @@
         map = new google.maps.Map(document.getElementById('map-trans'), mapOptions);
 
         var polyOptions = {
-        strokeColor: '#FF0000',
-        strokeOpacity: 1.0,
-        strokeWeight: 3
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
         };
         poly = new google.maps.Polyline(polyOptions);
         poly.setMap(map);
@@ -40,6 +42,69 @@
         undoControlDiv.index = 2;
         map.controls[google.maps.ControlPosition.TOP_RIGHT].push(delControlDiv);
         map.controls[google.maps.ControlPosition.TOP_RIGHT].push(undoControlDiv);
+    }
+
+    function placeMarker(location,id, judul) {
+        var marker = new google.maps.Marker({
+            position: location, 
+            map: map,
+            title: judul,
+            id_shelter: id
+        });
+        google.maps.event.addListener(marker, 'click', function(){
+          var lgt = pointer_shelter.length;
+          if (lgt == 0) {
+            pointer_shelter.push(this.id_shelter);
+          };
+          if((lgt > 0) && (pointer_shelter[lgt - 1] !== this.id_shelter)){
+            pointer_shelter.push(this.id_shelter);
+            var lg = pointer_shelter.length;
+            if (lg > 1) {
+              draw_path_shelter(pointer_shelter[lg-2],this.id_shelter);
+            };
+            console.log(pointer_shelter)
+          }
+          
+        });
+
+
+        markers.push(marker);
+    }
+
+    function draw_path_shelter(id_shelter1,id_shelter2){
+      $.ajax({
+            type : 'GET',
+            url: '<?= base_url("admin/get_koordinat_shelter") ?>/'+id_shelter1+'/'+id_shelter2,
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+                if (data !== null) {
+                  $.each(JSON.parse(data.jalur), function(i, v){
+                      addLatLngEdit(v.d, v.e)
+                      console.log(v.d)
+                  });
+                }else{
+                  pointer_shelter.remove(pointer_shelter.length-1)
+                }
+                
+            }
+        });
+    }
+
+  
+
+    function get_all_shelter(){
+        $.ajax({
+            type : 'GET',
+            url: '<?= base_url("admin/get_all_shelter") ?>/',
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+                $.each(data, function(i,v){
+                    placeMarker(new google.maps.LatLng(v.latitude,v.longitude),v.id, 'Shelter '+v.nama);
+                });
+            }
+        });
     }
 
 
@@ -188,8 +253,10 @@
 <script type="text/javascript">
     
     $(function(){
+        
         $("#form_tambah").on("shown.bs.modal", function () {
             google.maps.event.trigger(map, "resize");
+            get_all_shelter();
         });
 
         $("#modal_preview").on("shown.bs.modal", function () {
@@ -405,8 +472,7 @@
 </div>
 
 <div id="form_tambah" class="modal fade">
-     
-    <div class="modal-dialog higherWider">
+    <div class="modal-dialog" style="width:90%; height:100%;">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -449,7 +515,7 @@
 </div><!-- /.modal -->
 
 <div id="modal_preview" class="modal fade">
-    <div class="modal-dialog higherWider">
+    <div class="modal-dialog" style="width:90%; height:100%;">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>

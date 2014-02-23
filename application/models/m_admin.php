@@ -328,4 +328,59 @@ class M_admin extends CI_Model {
         return $this->db->query($sql)->row();
     }
     /* Rute Trans Jogja */
+
+    /* Relasi Shelter */
+    function relasi_shelter_get_data($limit, $start, $search){
+        $q = '';
+        if (isset($search['id']) && ($search['id'] !== '')) {
+            $q = " and rs.id = '".$search['id']."'";
+        }
+
+        if (isset($search['nama']) && ($search['nama'] !== '')) {
+            $q = " and s1.nama like '%".$search['nama']."%' or s2.nama like '%".$search['nama']."%'";
+        }
+        $limit = " limit $start, $limit ";
+        $sql = "select rs.*, s1.nama as shelter_awal,
+            s2.nama as shelter_tujuan
+            from relasi_shelter rs
+            join shelter s1 on (s1.id = rs.id_shelter_awal)
+            join shelter s2 on (s2.id = rs.id_shelter_tujuan)
+            where rs.id is not null $q order by rs.id";
+        
+
+        $query = $this->db->query($sql . $limit);
+        $ret['data'] = $query->result();
+        $ret['jumlah'] = $this->db->query($sql)->num_rows();
+        return $ret;
+    }
+
+    function relasi_shelter_delete_data($id){
+        $this->db->where('id', $id)->delete('relasi_shelter');
+    }
+
+    function relasi_shelter_save_data(){
+        $data = array(
+            'id_shelter_awal' => post_safe('id_shelter_awal'),
+            'id_shelter_tujuan' => post_safe('id_shelter_tujuan'),
+            'jalur' => post_safe('koordinat_rute')        
+        );
+
+        $id = post_safe('id');
+
+        if ($id === '') {
+            $this->db->insert('relasi_shelter', $data);
+            $id = $this->db->insert_id();
+        }else{
+            $this->db->where('id', $id)->update('relasi_shelter', $data);
+        }
+
+        return $id;
+    }
+
+    function get_relasi_shelter($id){
+        $sql = "select * from relasi_shelter
+            where id = '".$id."'";
+        return $this->db->query($sql)->row();
+    }
+    /* Relasi Shelter */
 }

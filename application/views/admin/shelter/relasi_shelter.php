@@ -3,8 +3,10 @@
 </style>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABJD9IIW_lEgd8azMKO4YS-GfF7T7weuk&sensor=false"></script>
 <script type="text/javascript">
-    var markers = [];
+    var markers1 = null, markers2 = null;
+    var poly = null;
     var map = {};
+    var koord = '';
     var thecenter = new google.maps.LatLng(-7.783069238887897,110.36760125309229);
     function initialize() {
         var mapOptions = {
@@ -13,12 +15,15 @@
         };
 
         map = new google.maps.Map(document.getElementById('map-shelter'), mapOptions);
-        google.maps.event.addListener(map, 'click', function(event) {
-            setAllMap(null);
-            placeMarker(event.latLng);
-           $('#latitude').val(event.latLng['d']);
-           $('#longitude').val(event.latLng['e']);
-        });
+        google.maps.event.addListener(map, 'click', addKoord);
+
+        var polyOptions = {
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        };
+        poly = new google.maps.Polyline(polyOptions);
+        poly.setMap(map);
 
         var delControlDiv = document.createElement('div');
         var delControl = new deleteControl(delControlDiv, map);
@@ -28,21 +33,36 @@
 
     }
     google.maps.event.addDomListener(window, 'load', initialize);
-    function placeMarker(location) {
+    function placeMarker(location, index) {
         var marker = new google.maps.Marker({
             position: location, 
             map: map
         });
-        markers.push(marker);
+        if (index == 1) {
+            if (markers1 !== null) {
+                markers1.setMap(null);
+            };
+            markers1 = marker;
+        }else{
+            if (markers2 !== null) {
+                markers2.setMap(null);
+            };
+            markers2 = marker;
+            google.maps.event.addListener(markers2, 'click', addKoord);
+        }
+    }
+    function addKoord(event) {
+      var path = poly.getPath();
+      koord = JSON.stringify(path.getArray());
+      path.push(event.latLng);
+      console.log(koord)
     }
 
-    function setAllMap(map) {
-      for (var i = 0; i < markers.length; i++) {
-        markers[i].setMap(map);
-      }
+    function addKoordMarker(lat, longi) {
+      var path = poly.getPath();
+      koord = JSON.stringify(path.getArray());
+      path.push(new google.maps.LatLng(lat,longi));
     }
-   
-
 
     /** @constructor */
     function deleteControl(controlDiv, map) {
@@ -74,13 +94,18 @@
       // Setup the click event listener for Home:
       // simply set the map to the control's current home property.
       google.maps.event.addDomListener(deleteUI, 'click', function() {
-        $('#latitude, #longitude').val('');
-        setAllMap(null);
+        delete_all_map();
       });
 
      
     }
 
+    function delete_all_map(){
+        if (markers1 !== null) {markers1.setMap(null);};
+        if (markers2 !== null) {markers2.setMap(null);};
+        if (poly !== null) {poly.setMap(null);};
+        $('#id_shelter_awal, #id_shelter_tujuan, #shelter_awal, #shelter_tujuan').val('');
+    }
   
 </script>
 <script type="text/javascript">
@@ -89,10 +114,10 @@
         $("#form_tambah").on("shown.bs.modal", function () {
             google.maps.event.trigger(map, "resize");
         });
-		get_shelter_list(1);
+		get_relasi_shelter_list(1);
         $('#bt_reset').click(function(){
             reset_data();
-            get_shelter_list(1);
+            get_relasi_shelter_list(1);
         });
 
         $('#bt_add').click(function(){
@@ -104,24 +129,75 @@
             return false;
         });
         
+        $('#shelter_awal').autocomplete("<?= base_url('autocomplete/get_shelter') ?>",
+        {
+            parse: function(data){
+                var parsed = [];
+                for (var i=0; i < data.length; i++) {
+                    parsed[i] = {
+                        data: data[i],
+                        value: data[i].nama // nama field yang dicari
+                    };
+                }
+                $("input[name=id_shelter_awal]").val('');
+                
+                return parsed;
+            },
+            formatItem: function(data,i,max){
+                var str = '<div class=result>'+data.nama+'</div>';
+                return str;
+            },
+            width: 400, // panjang tampilan pencarian autocomplete yang akan muncul di bawah textbox pencarian
+            dataType: 'json' // tipe data yang diterima oleh library ini disetup sebagai JSON
+        }).result(
+        function(event,data,formated){
+            $(this).val(data.nama);
+            $("input[name=id_shelter_awal]").val(data.id);
+            addKoordMarker(data.latitude, data.longitude);
+            var koord1 = new google.maps.LatLng(data.latitude,data.longitude);
+            placeMarker(koord1, 1);
+            map.setCenter(koord1);
+        });
+
+        $('#shelter_tujuan').autocomplete("<?= base_url('autocomplete/get_shelter') ?>",
+        {
+            parse: function(data){
+                var parsed = [];
+                for (var i=0; i < data.length; i++) {
+                    parsed[i] = {
+                        data: data[i],
+                        value: data[i].nama // nama field yang dicari
+                    };
+                }
+                $("input[name=id_shelter_tujuan]").val('');
+                
+                return parsed;
+            },
+            formatItem: function(data,i,max){
+                var str = '<div class=result>'+data.nama+'</div>';
+                return str;
+            },
+            width: 400, // panjang tampilan pencarian autocomplete yang akan muncul di bawah textbox pencarian
+            dataType: 'json' // tipe data yang diterima oleh library ini disetup sebagai JSON
+        }).result(
+        function(event,data,formated){
+            $(this).val(data.nama);
+            $("input[name=id_shelter_tujuan]").val(data.id);
+            placeMarker(new google.maps.LatLng(data.latitude,data.longitude), 2)
+        });
         
 	});
 
     function save_data(){
         var stop = false;
-
-        if ($('#nama').val() == '') {
-            dc_validation('#nama', 'Nama harus diisi!');
+        $('input[name=koordinat_rute]').val(koord);
+        if ($('id_#shelter_awal').val() == '') {
+            dc_validation('#shelter_awal', 'Shelter awal harus diisi!');
             stop = true; 
         }
 
-        if ($('#longitude').val() == '') {
-            dc_validation('#longitude', 'Longitude harus diisi!');
-            stop = true; 
-        }
-
-        if ($('#latitude').val() == '') {
-            dc_validation('#latitude', 'Latitude harus diisi!');
+        if ($('#id_shelter_tujuan').val() == '') {
+            dc_validation('#shelter_tujuan', 'Shelter tujuan harus diisi!');
             stop = true; 
         }
 
@@ -131,7 +207,7 @@
 
         $.ajax({
             type : 'POST',
-            url: '<?= base_url("admin/shelter_save") ?>/', 
+            url: '<?= base_url("admin/relasi_shelter_save") ?>/', 
             cache: false,
             dataType: 'json',
             data: $('#formtambah').serialize(),
@@ -143,7 +219,7 @@
                      message_edit_succes();
                 }
                
-                get_shelter_list(1);
+                get_relasi_shelter_list(1);
                 $('#form_tambah').modal('hide');
                 reset_data();
             }, error: function(){
@@ -153,7 +229,7 @@
                 }else{
                      message_edit_failed();
                 }
-                 get_shelter_list(1);
+                 get_relasi_shelter_list(1);
                 $('#form_tambah').modal('hide');
                 reset_data();
             }
@@ -165,9 +241,8 @@
     
 
     function reset_data(){
-        $('input[name=id], #nama, #longitude, #latitude, myinput, #search ').val('');
+        $('input[name=id],#shelter_awal, #shelter_tujuan, #id_shelter_awal, #id_shelter_tujuan, input[name=koordinat_rute], myinput, #search ').val('');
         dc_validation_remove('.myinput');
-        setAllMap(null);
         map.setCenter(thecenter);
     }
 
@@ -176,26 +251,26 @@
         $('#form_tambah').modal().on('hidden.bs.modal', function (e) {
           reset_data();
         })
-         $('#nama').focus();
+         $('#shelter_awal').focus();
     }
 
 
-    function get_shelter_list(p){
+    function get_relasi_shelter_list(p){
         $.ajax({
             type : 'GET',
-            url: '<?= base_url("admin/shelter_list") ?>/'+p,
+            url: '<?= base_url("admin/relasi_shelter_list") ?>/'+p,
             data: $('#formtambah').serialize()+'&search='+$('#search').val(),
             cache: false,
             success: function(data) {
-                $('#shelter_list').html(data);
+                $('#relasi_shelter_list').html(data);
             }
         });
     }
 
-    function edit_shelter(id){
+    function edit_relasi_shelter(id){
         $.ajax({
             type : 'GET',
-            url: '<?= base_url("admin/shelter_data") ?>/'+id,
+            url: '<?= base_url("admin/relasi_shelter_data") ?>/'+id,
             dataType: 'json',
             cache: false,
             success: function(data) {
@@ -215,7 +290,7 @@
     }
     
 
-    function delete_shelter(id){
+    function delete_relasi_shelter(id){
             var page = (isNaN($('.noblock').html()))?'1':$('.noblock').html();
             BootstrapDialog.show({
                 title: 'Hapus Data',
@@ -235,10 +310,10 @@
                     action: function(dialogItself){
                          $.ajax({
                             type : 'GET',
-                            url: '<?= base_url("admin/shelter_delete") ?>/'+id+'/'+page,
+                            url: '<?= base_url("admin/relasi_shelter_delete") ?>/'+id+'/'+page,
                             cache: false,
                             success: function(data) {
-                                $('#shelter_list').html(data);
+                                $('#relasi_shelter_list').html(data);
                                 message_delete_succes();
                             },
                             error: function(){
@@ -253,7 +328,7 @@
         }
 
     function pagination(p){
-        get_shelter_list(p);
+        get_relasi_shelter_list(p);
     }
 </script>
 
@@ -264,7 +339,7 @@
     </div>
     <div class="col-lg-4">
         <div class="input-group">
-            <input type="text" class="form-control" id="search" placeholder="Nama Shelter..." onkeyup="get_shelter_list(1)" />
+            <input type="text" class="form-control" id="search" placeholder="Nama Shelter..." onkeyup="get_relasi_shelter_list(1)" />
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" >
                     <span class="glyphicon glyphicon-search"></span>
@@ -273,7 +348,7 @@
         </div>
     </div>
     <br/><br/>
-	<div id="shelter_list" style="width:100%"></div>
+	<div id="relasi_shelter_list" style="width:100%"></div>
 </div>
 
 <div id="form_tambah" class="modal fade">
@@ -286,23 +361,20 @@
           </div>
         <div class="modal-body body-fit">
             <?= form_open('','id=formtambah class="form-horizontal"') ?>
-           <?= form_hidden('id') ?>
+            <?= form_hidden('id') ?>
+            <?= form_hidden('koordinat_rute') ?>
+            <input type="hidden" name="id_shelter_awal" id="id_shelter_awal" />
+            <input type="hidden" name="id_shelter_tujuan" id="id_shelter_tujuan" />
             <div class="form-group">
-                <label class="col-sm-2 control-label">Nama Shelter</label>
+                <label class="col-sm-2 control-label">Shelter Awal</label>
                 <div class="col-sm-6">
-                <?= form_input('nama','','class="form-control myinput" id=nama')?>
+                <?= form_input('shelter_awal','','class="form-control myinput" id=shelter_awal')?>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">Longitude</label>
+                <label class="col-sm-2 control-label">Shelter Tujuan</label>
                 <div class="col-sm-6">
-                <?= form_input('longitude','','class="form-control myinput" id=longitude')?>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Latitude</label>
-                <div class="col-sm-6">
-                <?= form_input('latitude','','class="form-control myinput" id=latitude')?>
+                <?= form_input('shelter_tujuan','','class="form-control myinput" id=shelter_tujuan')?>
                 </div>
             </div>
             <div class="form-group">

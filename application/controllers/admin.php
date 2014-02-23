@@ -208,6 +208,20 @@ class Admin extends CI_Controller {
          $data = $this->m_admin->get_shelter($id);
          die(json_encode($data));
     }
+
+    function get_all_shelter(){
+        $data = $this->db->get('shelter')->result();
+        die(json_encode($data));
+    }
+
+    function get_koordinat_shelter($id_shelter1, $id_shelter2){
+        $sql = "select * from relasi_shelter where 
+                id_shelter_awal = '".$id_shelter1."' 
+                and id_shelter_tujuan = '".$id_shelter2."' ";
+
+        $data = $this->db->query($sql)->row();
+        die(json_encode($data));
+    }
     /* Shelter */
 
     /* Artikel */
@@ -309,7 +323,50 @@ class Admin extends CI_Controller {
         $this->show_dashboard($data);
     }
 
+    /* Relasi Shelter */
 
+    function relasi_shelter(){
+        $this->cek();
+        $data['title'] = 'Relasi Shelter';
+        $data['page'] = 'shelter/relasi_shelter';
+        $this->show_dashboard($data);
+    }
+
+    function relasi_shelter_list($page){
+        $this->cek();
+        $search = array(
+                'id' => get_safe('id'),
+                'nama' => get_safe('search')
+            );
+        $start = ($page - 1) * $this->limit;        
+        $data = $this->m_admin->relasi_shelter_get_data($this->limit, $start, $search);
+        if ($data['data'] == NULL) {
+            $data = $this->m_admin->relasi_shelter_get_data($this->limit, 0, $search);
+        }
+        $data['page'] = $page;
+        $data['limit'] = $this->limit;
+        $data['pagination'] = pagination($data['jumlah'], $this->limit, $page, 1);
+        $this->load->view('admin/shelter/relasi_shelter_list', $data);
+
+    }
+
+    function relasi_shelter_save(){
+        $id = $this->m_admin->relasi_shelter_save_data();
+        die(json_encode(array('id'=>$id)));
+    }
+
+    function relasi_shelter_delete($id,$page) {
+        $this->cek();
+        $this->m_admin->relasi_shelter_delete_data($id);
+        $this->relasi_shelter_list($page);
+    }
+
+    function relasi_shelter_data($id){
+         $data = $this->m_admin->get_relasi_shelter($id);
+         die(json_encode($data));
+    }
+
+    /* Relasi Shelter */
 	
 }
 

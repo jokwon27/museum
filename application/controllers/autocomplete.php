@@ -9,16 +9,18 @@ class Autocomplete extends CI_Controller {
         date_default_timezone_set('Asia/Jakarta');
     }
 
-
-
 	function get_museum(){
 		$q = get_safe('q');
         $data = $this->m_autocomplete->get_data_museum($q)->result();
         die(json_encode($data));
 	}
 
+    function get_shelter(){
+        $q = get_safe('q');
+        $data = $this->m_autocomplete->get_data_shelter($q)->result();
+        die(json_encode($data));
+    }
+
 	
 }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
