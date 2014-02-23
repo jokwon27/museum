@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 14, 2014 at 04:11 PM
+-- Generation Time: Feb 23, 2014 at 08:38 PM
 -- Server version: 5.5.34
 -- PHP Version: 5.3.10-1ubuntu3.9
 
@@ -87,18 +87,6 @@ CREATE TABLE IF NOT EXISTS `jalur` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
---
--- Dumping data for table `jalur`
---
-
-INSERT INTO `jalur` (`id`, `nama`, `rute`, `koordinat_rute`) VALUES
-(7, '1A', 'Terminal Prambanan – S5. Kalasan – Bandara Adisucipto – S3. Maguwoharjo – Janti (bawah) – S3. UIN Kalijaga – S4. Demangan – S4. Gramedia – S4. Tugu – Stasiun Tugu – Malioboro – S4. Kantor Pos Besar – S4. Gondomanan – S4. Pasar Sentul – S4. SGM – Gembira Loka – S4. Babadan Gedongkuning – JEC – S4. Blok O – Janti (atas) – S3. Maguwoharjo – Bandara Adisucipto – S5. Kalasan – Terminal Prambanan.', '[{"d":-7.755217712271691,"e":110.49293652176857},{"d":-7.757258802866692,"e":110.48057690262794},{"d":-7.773161960970609,"e":110.46641483902931},{"d":-7.783792078329778,"e":110.44701710343361},{"d":-7.78336687880904,"e":110.42993679642677}]'),
-(9, '1B', 'Terminal Prambanan – S5. Kalasan – Bandara Adisucipto – S3. Maguwoharjo – Janti (lewat bawah) – S4. Blok O – JEC – S4. Babadan Gedongkuning – Gembira Loka – S4. SGM – S4. Pasar Sentul – S4. Gondomanan – S4. Kantor Pos Besar – S3. RS.PKU Muhammadiyah – S3. Pasar Kembang – S4. Badran – Bundaran SAMSAT – S4. Pingit – S4. Tugu – S4. Gramedia – Bundaran UGM – S3. Colombo – S4. Demangan – S3. UIN Sunan Kalijaga – Janti – S3. Maguwoharjo – Bandra Adisucipto – S5. Kalasan – Terminal Prambanan.', NULL),
-(10, '2A', 'Terminal Jombor – S4. Monjali – S4. Tugu – Stasiun Tugu – Malioboro – S4. Kantor Pos Besar – S4. Gondomanan – S4. Jokteng Wetan – S4. Tungkak – S4. Gambiran – S3 . Basen – S4. Rejowinangun – S4. Babadan Gedongkuning – Gembira Loka – S4. SGM – S3. Cendana – S4. Mandala Krida – S4. Gayam – Flyover Lempuyangan – Kridosono – S4. Duta Wacana – S4. Galeria – S4. Gramedia – Bunderan UGM – S3. Colombo – Terminal Condongcatur – S4. Kentungan – S4. Monjali – Terminal Jombor.', NULL),
-(11, '2B', 'Terminal Jombor – S4. Monjali – S4. Kentungan – Terminal Condong Catur – S3. Colombo – Bundaran UGM – S4. Gramedia – Kridosono – S4. Duta Wacana – Fly-over Lempuyangan – S4. Gayam – S4. Mandala Krida – S3. Cendana – S4. SGM – Gembiraloka– S4. Babadan Gedongkuning – S4. Rejowinangun – S3. Basen – S4.Tungkak – S4. Joktengwetan – S4. Gondomanan – S4. Kantor Pos Besar – S3. RS PKU Muhammadiyah – S4. Ngabean – S4. Wirobrajan – S3. BPK – S4. Badran – Bundaran SAMSAT – S4. Pingit – S4. Tugu – S4. Monjali – Terminal Jombor.', NULL),
-(12, '3A', 'Terminal Giwangan – S4. Tegalgendu – S3. HS-Silver – Jl. Nyi Pembayun – S3. Pegadaian Kotagede – S3. Basen – S4. Rejowinangun – S4. Babadan Gedongkuning – JEC – S4. Blok O – Janti (lewat atas) – S3. Janti – S3. Maguwoharjo – Bandara ADISUCIPTO – S3. Maguwoharjo – Ringroad Utara – Terminal Condongcatur – S4. Kentungan – S4. MM UGM – S4. MirotaKampus – S3. Gondolayu – S4. Tugu – S4. Pingit – Bundaran SAMSAT – S4. Badran – S3. PasarKembang – Stasiun TUGU – Malioboro – S4. Kantor Pos Besar – S3. RS PKU Muhammadiyah – S4. Ngabean – S4. Jokteng Kulon – S4. Plengkung Gading – S4. Jokteng Wetan – S4. Tungkak – S4.Wirosaban – S4. Tegalgendu – Terminal Giwangan.', NULL),
-(13, '3B', 'Terminal Giwangan – S4. Tegalgendu – S4. Wirosaban – S4. Tungkak – S4.Jokteng Wetan – S4. Plengkung Gading – S4. JoktengKulon – S4. Ngabean – S3. RS PKU Muhammadiyah – S3. Pasar Kembang – S4. Badran – Bundaran SAMSAT – S4. Pingit – S4. Tugu – S3. Gondolayu – S4. Mirota Kampus – S4. MM UGM – S4. Kentungan – Terminal Condong Catur – Ringroad Utara – S3. Maguwoharjo – Bandara Adisucipto – S3. Maguwoharjo – JANTI (lewat bawah) – S4. Blok O – JEC – S4. Babadan Gedongkuning – S4. Rejowinangun – S3. Basen – S3. Pegadaian Kotagede – Jl.Nyi Pembayun – S3. HS-Silver – S4. Tegalgendu – Terminal Giwangan.', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -111,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `menu_admin` (
   `url` varchar(50) DEFAULT NULL,
   `icon` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `menu_admin`
@@ -123,7 +111,8 @@ INSERT INTO `menu_admin` (`id`, `nama`, `url`, `icon`) VALUES
 (4, 'Rute Trans Jogja', 'admin/trans', 'fa-truck'),
 (5, 'Artikel', 'admin/artikel', 'fa-archive'),
 (6, 'Shelter', 'admin/shelter', 'fa-arrow-down'),
-(7, 'Home Slide', 'admin/slide', 'fa-desktop');
+(7, 'Home Slide', 'admin/slide', 'fa-desktop'),
+(8, 'Relasi Shelter', 'admin/relasi_shelter', 'fa-road');
 
 -- --------------------------------------------------------
 
@@ -138,19 +127,20 @@ CREATE TABLE IF NOT EXISTS `menu_user_privileges` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`,`menu_admin_id`),
   KEY `menu_admin_id` (`menu_admin_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=31 ;
 
 --
 -- Dumping data for table `menu_user_privileges`
 --
 
 INSERT INTO `menu_user_privileges` (`id`, `user_id`, `menu_admin_id`) VALUES
-(2, 1, 2),
-(3, 1, 3),
-(4, 1, 4),
-(5, 1, 5),
-(6, 1, 6),
-(7, 1, 7),
+(24, 1, 2),
+(25, 1, 3),
+(26, 1, 4),
+(27, 1, 5),
+(28, 1, 6),
+(29, 1, 7),
+(30, 1, 8),
 (23, 8, 7);
 
 -- --------------------------------------------------------
@@ -184,6 +174,35 @@ INSERT INTO `museum` (`id`, `nama`, `alamat`, `longitude`, `latitude`, `keterang
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `relasi_shelter`
+--
+
+CREATE TABLE IF NOT EXISTS `relasi_shelter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_shelter_awal` int(11) NOT NULL,
+  `id_shelter_tujuan` int(11) NOT NULL,
+  `jalur` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `shelter_awal` (`id_shelter_awal`,`id_shelter_tujuan`),
+  KEY `shelter_tujuan` (`id_shelter_tujuan`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+
+--
+-- Dumping data for table `relasi_shelter`
+--
+
+INSERT INTO `relasi_shelter` (`id`, `id_shelter_awal`, `id_shelter_tujuan`, `jalur`) VALUES
+(2, 5, 6, '[{"d":-7.74679279346486,"e":110.36224731244147},{"d":-7.746819370760853,"e":110.36264453083277},{"d":-7.748754193404859,"e":110.36255870014429},{"d":-7.749392045075268,"e":110.36292348057032},{"d":-7.750114942466894,"e":110.36461863666773},{"d":-7.750370082426404,"e":110.36646399646997},{"d":-7.750625222231289,"e":110.36826644092798}]'),
+(3, 6, 4, '[{"d":-7.7504551290452115,"e":110.36891017109156},{"d":-7.751092978138607,"e":110.37058420479298},{"d":-7.751305594288292,"e":110.37118501961231},{"d":-7.7542396861855325,"e":110.37006922066212},{"d":-7.756153213357084,"e":110.36981172859669},{"d":-7.762106353328158,"e":110.36933965981007}]'),
+(4, 4, 7, '[{"d":-7.774628933187241,"e":110.36809477955103},{"d":-7.77813688943187,"e":110.36760125309229},{"d":-7.782686558678752,"e":110.36710772663355}]'),
+(5, 7, 8, '[{"d":-7.78438735693418,"e":110.36700043827295}]'),
+(6, 8, 9, '[{"d":-7.787470036179453,"e":110.36663565784693},{"d":-7.789404671570122,"e":110.36624941974878},{"d":-7.789787345643812,"e":110.36906037479639},{"d":-7.790510173495701,"e":110.36899600178003},{"d":-7.79048891387082,"e":110.3682878986001},{"d":-7.79048891387082,"e":110.36781582981348},{"d":-7.790233798287868,"e":110.36762271076441},{"d":-7.790074350969641,"e":110.3667856939137},{"d":-7.789946793071337,"e":110.36615269258618}]'),
+(7, 9, 10, '[{"d":-7.790616471604001,"e":110.3661635890603}]'),
+(9, 10, 11, '[{"d":-7.794719557959129,"e":110.36573443561792},{"d":-7.796335270046735,"e":110.3654769435525}]');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `shelter`
 --
 
@@ -193,7 +212,7 @@ CREATE TABLE IF NOT EXISTS `shelter` (
   `longitude` double NOT NULL,
   `latitude` double NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `shelter`
@@ -201,7 +220,17 @@ CREATE TABLE IF NOT EXISTS `shelter` (
 
 INSERT INTO `shelter` (`id`, `nama`, `longitude`, `latitude`) VALUES
 (3, 'Tugu', 110.36760125309229, -7.783069238887897),
-(4, 'Jetis', 110.36809477955103, -7.774628933187241);
+(4, 'Jetis', 110.36809477955103, -7.774628933187241),
+(5, 'Jombor', 110.36224731244147, -7.74679279346486),
+(6, 'Monjali', 110.36891017109156, -7.7504551290452115),
+(7, 'Mangkubumi 1', 110.36700043827295, -7.78438735693418),
+(8, 'Mangkubumi 2', 110.36663565784693, -7.787470036179453),
+(9, 'Malioboro 1', 110.3661635890603, -7.790616471604001),
+(10, 'Malioboro 2', 110.36573443561792, -7.794719557959129),
+(11, 'Ahmad Yani', 110.36517653614283, -7.799672971314071),
+(12, 'Taman Pintar (JL Senopati)', 110.36665711551905, -7.80137370057108),
+(13, 'Brigjen Katamso', 110.36927495151758, -7.808282842037881),
+(14, 'Kolonel Sugiono', 110.36910329014063, -7.814490342475656);
 
 -- --------------------------------------------------------
 
@@ -214,7 +243,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(30) NOT NULL,
   `password` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
 
 --
 -- Dumping data for table `users`
@@ -226,7 +255,6 @@ INSERT INTO `users` (`id`, `username`, `password`) VALUES
 (8, 'joko', '81dc9bdb52d04dc20036dbd8313ed055'),
 (9, 'sasti', '81dc9bdb52d04dc20036dbd8313ed055'),
 (23, 'budi', '81dc9bdb52d04dc20036dbd8313ed055'),
-(26, 'aan', '81dc9bdb52d04dc20036dbd8313ed055'),
 (27, 'ali', '81dc9bdb52d04dc20036dbd8313ed055'),
 (29, 'arga', '81dc9bdb52d04dc20036dbd8313ed055'),
 (31, 'wawan', '81dc9bdb52d04dc20036dbd8313ed055');
@@ -248,6 +276,13 @@ ALTER TABLE `artikel`
 ALTER TABLE `menu_user_privileges`
   ADD CONSTRAINT `menu_user_privileges_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `menu_user_privileges_ibfk_2` FOREIGN KEY (`menu_admin_id`) REFERENCES `menu_admin` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `relasi_shelter`
+--
+ALTER TABLE `relasi_shelter`
+  ADD CONSTRAINT `relasi_shelter_ibfk_1` FOREIGN KEY (`id_shelter_awal`) REFERENCES `shelter` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `relasi_shelter_ibfk_2` FOREIGN KEY (`id_shelter_tujuan`) REFERENCES `shelter` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
