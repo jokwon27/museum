@@ -9,6 +9,25 @@ class M_admin extends CI_Model {
         return $hasil->row();
     }
 
+    function cek_password($data) {
+        $sql = "select * from users u
+        where u.id = '".$data['id']."' and u.password = '".md5($data['password'])."'";
+        //echo $query;
+        $hasil=$this->db->query($sql);
+        $num= $hasil->num_rows();
+        if ($num>0) {
+            $status=true;
+        }
+        else {
+            $status=false;
+        }
+        return $status;
+    }
+
+    function simpan_password($data){
+        $this->db->where('id',$data['id'])->update('users',$data);
+    }
+
      function menu_load_data($id_user = null) {
         $q = null;
         if ($id_user != null) {

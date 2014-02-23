@@ -95,7 +95,7 @@
             <li class="dropdown user-dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?= $this->session->userdata('user') ?> <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+                <li><a href=" <?= base_url('admin/ganti_password') ?> "><i class="fa fa-user"></i> Edit Password</a></li>
                 <li class="divider"></li>
                 <li><a href="<?= base_url('admin/logout') ?>"><i class="fa fa-power-off"></i> Log Out</a></li>
               </ul>

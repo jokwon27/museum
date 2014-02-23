@@ -54,6 +54,32 @@ class Admin extends CI_Controller {
          $this->load->view('admin/login');
     }
 
+        function ganti_password() {
+        $this->cek();
+        $data['title'] = 'Ganti Password';
+        $data['page'] = 'ganti_password';
+        $data['id_user'] = $this->session->userdata('id_user');
+        $this->show_dashboard($data);
+    }
+
+    function cek_password($id_user) {
+        $parameter = array(
+            'id' => $id_user, 
+            'password' => post_safe('password'), 
+        );  
+        $status=$this->m_admin->cek_password($parameter);
+        die(json_encode(array('status'=>$status)));
+    }
+
+    function simpan_password(){
+        $parameter = array(
+            'id' => post_safe("id_user"), 
+            'password' => md5(post_safe('baru')), 
+        );  
+        $this->m_admin->simpan_password($parameter);
+        die(json_encode(array('status'=>true)));  
+    }
+
 	function index(){
         $this->cek();
         $data['title'] = 'Home';
