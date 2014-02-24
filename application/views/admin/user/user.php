@@ -165,6 +165,42 @@
          
         }
 
+    function reset_password(){
+            var id=$('input[name=id]').val();
+            BootstrapDialog.show({
+                title: 'Reset Password',
+                closable:true,
+                type: BootstrapDialog.TYPE_DEFAULT,
+                message: 'Apakah Anda Yakin Ingin Mereset Password? <br> Password default = 1234',
+                buttons: [
+                {
+                    label: '<i class="fa fa-refresh"></i> Batal',
+                    action: function(dialogItself){
+                        dialogItself.close();
+                    }
+                },
+                {
+                    label: '<i class="fa fa-refresh"></i> Reset',
+                    cssClass: 'btn-primary',
+                    action: function(dialogItself){
+                         $.ajax({
+                            type : 'GET',
+                            url: '<?= base_url("admin/reset_password") ?>/'+id+'/',
+                            cache: false,
+                            success: function(data) {
+                                message_custom('success', 'Reset Password', 'anda berhasil mereset password', '');
+                            },
+                            error: function(){
+                                message_custom('error', 'Reset Password', 'reset password GAGAL', '');
+                            }
+                        });
+                         dialogItself.close();
+                    }
+                }]
+            });
+         
+        }
+
     function pagination(p){
         get_user_list(p);
     }
@@ -208,13 +244,14 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Password</label>
             <div class="col-sm-6">
-            <label style="margin:7px;">1234 (Default)</label>
+            <label style="margin:7px;">**********</label> <button type="button" class="btn btn-primary btn-xs" id="bt_reset_pass" onclick="reset_password()"><i class='fa fa-refresh'></i> Reset Password</button>
             </div>
         </div>   
         </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
             <button type="button" class="btn btn-primary" id="bt_save" onclick="save_data()">Simpan</button>
+            
           </div>  
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

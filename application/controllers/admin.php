@@ -80,6 +80,15 @@ class Admin extends CI_Controller {
         die(json_encode(array('status'=>true)));  
     }
 
+    function reset_password($id_user){
+        $parameter = array(
+            'id' => $id_user, 
+            'password' => md5('1234')
+        );  
+        $this->m_admin->simpan_password($parameter);
+        die(json_encode(array('status'=>true)));  
+    }
+
 	function index(){
         $this->cek();
         $data['title'] = 'Home';
