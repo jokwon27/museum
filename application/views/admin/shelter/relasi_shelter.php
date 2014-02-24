@@ -36,7 +36,8 @@
     function placeMarker(location, index) {
         var marker = new google.maps.Marker({
             position: location, 
-            map: map
+            map: map,
+            icon : '<?= base_url("assets/img/bus.png") ?>'
         });
         if (index == 1) {
             if (markers1 !== null) {

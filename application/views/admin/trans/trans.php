@@ -49,7 +49,8 @@
             position: location, 
             map: map,
             title: judul,
-            id_shelter: id
+            id_shelter: id,
+            icon : '<?= base_url("assets/img/bus.png") ?>'
         });
         google.maps.event.addListener(marker, 'click', function(){
           var lgt = pointer_shelter.length;
