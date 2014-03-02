@@ -82,7 +82,7 @@
                 if (data !== null) {
                   $.each(JSON.parse(data.jalur), function(i, v){
                       addLatLngEdit(v.d, v.e)
-                      console.log(v.d)
+                      console.log(v.d+' - '+v.e)
                   });
                 }else{
                   pointer_shelter.remove(pointer_shelter.length-1)

@@ -378,10 +378,35 @@ class M_admin extends CI_Model {
     }
 
     function relasi_shelter_save_data(){
+
+        $temp_jalur = json_decode(post_safe('koordinat_rute'));
+        $id_shelter_awal = post_safe('id_shelter_awal');
+        $id_shelter_tujuan = post_safe('id_shelter_tujuan');
+
+        $koord = $this->get_shelter($id_shelter_awal);
+        $koord_shelter_awal = array(
+                                'd' => $koord->latitude,
+                                'e' => $koord->longitude
+                            );
+
+        $koord = $this->get_shelter($id_shelter_tujuan);
+        $koord_shelter_tujuan = array(
+                                'd' => $koord->latitude,
+                                'e' => $koord->longitude
+                            );
+
+        $jalur = array((Object)$koord_shelter_awal);
+        foreach ($temp_jalur as $key => $value) {
+            
+            array_push($jalur, $value);
+        }
+        array_push($jalur, (Object)$koord_shelter_tujuan);
+
+
         $data = array(
-            'id_shelter_awal' => post_safe('id_shelter_awal'),
-            'id_shelter_tujuan' => post_safe('id_shelter_tujuan'),
-            'jalur' => post_safe('koordinat_rute')        
+            'id_shelter_awal' => $id_shelter_awal,
+            'id_shelter_tujuan' => $id_shelter_tujuan,
+            'jalur' => json_encode($jalur)
         );
 
         $id = post_safe('id');

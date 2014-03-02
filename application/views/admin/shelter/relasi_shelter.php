@@ -1,5 +1,5 @@
 <style type="text/css">
-  #map-shelter {height: 300px; }
+  #map-shelter {height: 500px; }
 </style>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABJD9IIW_lEgd8azMKO4YS-GfF7T7weuk&sensor=false"></script>
 <script type="text/javascript">
@@ -105,6 +105,14 @@
         if (markers1 !== null) {markers1.setMap(null);};
         if (markers2 !== null) {markers2.setMap(null);};
         if (poly !== null) {poly.setMap(null);};
+            var polyOptions = {
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        };
+        poly = new google.maps.Polyline(polyOptions);
+        poly.setMap(map)
+        koord = '';
         $('#id_shelter_awal, #id_shelter_tujuan, #shelter_awal, #shelter_tujuan').val('');
     }
   
@@ -114,6 +122,7 @@
 	$(function(){
         $("#form_tambah").on("shown.bs.modal", function () {
             google.maps.event.trigger(map, "resize");
+            delete_all_map();
         });
 		get_relasi_shelter_list(1);
         $('#bt_reset').click(function(){
@@ -223,6 +232,8 @@
                 get_relasi_shelter_list(1);
                 $('#form_tambah').modal('hide');
                 reset_data();
+                delete_all_map();
+                koord = '';
             }, error: function(){
                 if( $('input[name=id]').val() == ''){
                     $('input[name=id]').val(data.id);
@@ -354,7 +365,7 @@
 
 <div id="form_tambah" class="modal fade">
      
-    <div class="modal-dialog higherWider">
+    <div class="modal-dialog" style="width:90%; height:100%;">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
