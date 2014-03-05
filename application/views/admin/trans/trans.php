@@ -29,7 +29,6 @@
         poly.setMap(map);
 
         
-        google.maps.event.addListener(map, 'click', addLatLng);
 
         var delControlDiv = document.createElement('div');
         var delControl = new deleteControl(delControlDiv, map);
@@ -79,13 +78,17 @@
             dataType: 'json',
             cache: false,
             success: function(data) {
+                
                 if (data !== null) {
                   $.each(JSON.parse(data.jalur), function(i, v){
                       addLatLngEdit(v.d, v.e)
-                      console.log(v.d+' - '+v.e)
                   });
                 }else{
-                  pointer_shelter.remove(pointer_shelter.length-1)
+                  if (pointer_shelter.length > 0) {
+                      pointer_shelter.splice(pointer_shelter.length-1, 1);
+                  };
+                  
+                  alert('Jalur tidak ada');
                 }
                 
             }
@@ -283,7 +286,7 @@
 
     function save_data(){
         var stop = false;
-        $('input[name=koordinat_rute]').val(koord);
+        $('input[name=koordinat_rute]').val(pointer_shelter);
         if ($('#nama').val() == '') {
             dc_validation('#nama', 'Nama Rute harus diisi!');
             stop = true; 
@@ -293,7 +296,7 @@
         if (stop) {
             return false;
         };
-
+        
         $.ajax({
             type : 'POST',
             url: '<?= base_url("admin/trans_save") ?>/', 

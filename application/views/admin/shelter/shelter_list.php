@@ -16,8 +16,8 @@
 		<td><?= $value->longitude ?></td>
 		<td><?= $value->latitude ?></td>
 		<td align="right">
-			<button type="button" class="btn btn-default btn-xs" onclick="edit_shelter('<?= $value->id ?>')">
-				<span class="fa fa-pencil"></span> Edit Shelter
+			<button type="button" class="btn btn-default btn-xs" onclick="preview_shelter('<?= $value->id ?>')">
+				<span class="fa fa-eye"></span> Preview Shelter
 			</button>
 			<button type="button" class="btn btn-default btn-xs" onclick="delete_shelter('<?= $value->id ?>')">
 				<span class="fa fa-trash-o"></span> Hapus

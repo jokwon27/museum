@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 03, 2014 at 06:48 AM
+-- Generation Time: Mar 05, 2014 at 07:52 AM
 -- Server version: 5.5.34
 -- PHP Version: 5.3.10-1ubuntu3.9
 
@@ -83,9 +83,51 @@ CREATE TABLE IF NOT EXISTS `jalur` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nama` varchar(100) NOT NULL,
   `rute` text NOT NULL,
-  `koordinat_rute` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+
+--
+-- Dumping data for table `jalur`
+--
+
+INSERT INTO `jalur` (`id`, `nama`, `rute`) VALUES
+(13, '2A', 'Terminal Jombor');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `koordinat_rute`
+--
+
+CREATE TABLE IF NOT EXISTS `koordinat_rute` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_jalur` int(11) NOT NULL,
+  `id_shelter` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_jalur` (`id_jalur`,`id_shelter`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+
+--
+-- Dumping data for table `koordinat_rute`
+--
+
+INSERT INTO `koordinat_rute` (`id`, `id_jalur`, `id_shelter`) VALUES
+(9, 13, 15),
+(4, 13, 17),
+(13, 13, 25),
+(10, 13, 48),
+(16, 13, 50),
+(14, 13, 56),
+(15, 13, 60),
+(7, 13, 62),
+(8, 13, 63),
+(5, 13, 64),
+(6, 13, 65),
+(12, 13, 71),
+(3, 13, 83),
+(11, 13, 100),
+(2, 13, 111),
+(17, 13, 114);
 
 -- --------------------------------------------------------
 

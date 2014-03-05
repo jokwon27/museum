@@ -255,6 +255,9 @@ class Admin extends CI_Controller {
                 and id_shelter_tujuan = '".$id_shelter2."' ";
 
         $data = $this->db->query($sql)->row();
+        if (sizeof($data) == 0) {
+            $data = null;
+        }
         die(json_encode($data));
     }
     /* Shelter */
@@ -402,6 +405,8 @@ class Admin extends CI_Controller {
     }
 
     /* Relasi Shelter */
+
+    
 	
 }
 

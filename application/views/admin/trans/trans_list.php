@@ -17,9 +17,6 @@
 			<button type="button" class="btn btn-default btn-xs" onclick="detail_rute('<?= $value->id ?>')">
 				<span class="fa fa-eye"></span> Detail Rute
 			</button>
-			<button type="button" class="btn btn-default btn-xs" onclick="edit_trans('<?= $value->id ?>')">
-				<span class="fa fa-pencil"></span> Edit Rute
-			</button>
 			<button type="button" class="btn btn-default btn-xs" onclick="delete_trans('<?= $value->id ?>')">
 				<span class="fa fa-trash-o"></span> Hapus
 			</button>

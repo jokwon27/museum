@@ -325,18 +325,25 @@ class M_admin extends CI_Model {
     function trans_save_data(){
         $data = array(
             'nama' => post_safe('nama'),
-            'rute' => post_safe('rute'),
-            'koordinat_rute' => (post_safe('koordinat_rute') !== '')?post_safe('koordinat_rute'):NULL
+            'rute' => post_safe('rute')
         );
 
         $id = post_safe('id');
 
-        if ($id === '') {
-            $this->db->insert('jalur', $data);
-            $id = $this->db->insert_id();
-        }else{
-            $this->db->where('id', $id)->update('jalur', $data);
-        }
+        
+        $this->db->insert('jalur', $data);
+        $id = $this->db->insert_id();
+        
+        $koord = post_safe('koordinat_rute');
+       
+       foreach (explode(',', $koord) as $key => $value) {
+            $ins = array(
+                    'id_jalur' => $id,
+                    'id_shelter' => $value
+                );
+            $this->db->insert('koordinat_rute', $ins);
+       }
+       
 
         return $id;
     }
@@ -426,5 +433,19 @@ class M_admin extends CI_Model {
             where id = '".$id."'";
         return $this->db->query($sql)->row();
     }
+
+    function get_relasi_shelter2($awal, $tujuan){
+        $sql = "select * from relasi_shelter
+            where id_shelter_awal = '".$awal."' 
+            and id_shelter_tujuan = '".$tujuan."' ";
+            //echo $sql;
+        return $this->db->query($sql)->row();
+    }
     /* Relasi Shelter */
+
+    function get_koordinat_rute($id_jalur){
+        $sql = "select * from koordinat_rute
+                where id_jalur = '".$id_jalur."' order by id";
+        return $this->db->query($sql)->result();    
+    }
 }
