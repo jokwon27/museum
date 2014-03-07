@@ -221,6 +221,7 @@
             data: $('#formtambah').serialize(),
             success: function(data) {
                 message_add_succes();
+                $('input[name=id]').val(data.id);
                 
                 get_relasi_shelter_list(1);
                 $('#form_tambah').modal('hide');
