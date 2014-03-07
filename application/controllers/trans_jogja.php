@@ -13,12 +13,13 @@ class Trans_jogja extends CI_Controller {
 	function index(){
 		$data['title'] = 'Trans Jogja';
 		$data['page'] = 'trans_jogja';
+        $jalur = $this->m_admin->trans_get_data(100, 0, null);
+        $data['jalur'] = $jalur['data'];
 		$this->load->view('front/layout', $data);
 	}
 
 	function get_rute_trans_jogja($id_jalur){
         $rute = $this->m_admin->get_koordinat_rute($id_jalur);
-
         $jalur_trans = array();
 
         foreach ($rute as $key => $val) {
@@ -31,7 +32,9 @@ class Trans_jogja extends CI_Controller {
             }
         }
 
-        die(json_encode($jalur_trans));
+        $data['jalur'] = $jalur_trans;
+        $data['detail'] = $this->m_admin->get_trans($id_jalur);
+        die(json_encode($data));
     }
 	
     function get_all_shelter(){

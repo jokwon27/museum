@@ -54,6 +54,7 @@
             $this->load->view('front/'.$page);
       ?>
       
+      <!--
       <footer>
         <hr>
         <div class="row">
@@ -62,7 +63,7 @@
           </div>
         </div>
       </footer>
-
+      -->
     </div><!-- /.container -->
 
     

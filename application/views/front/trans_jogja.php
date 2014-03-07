@@ -1,9 +1,7 @@
 <style type="text/css">
   #map-canvas { height: 500px; }
 </style>
-<script type="text/javascript"
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABJD9IIW_lEgd8azMKO4YS-GfF7T7weuk&sensor=false">
-</script>
+<script type="text/javascript"  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABJD9IIW_lEgd8azMKO4YS-GfF7T7weuk&sensor=false"></script> 
 <script type="text/javascript">
 	var thecenter = new google.maps.LatLng(-7.783069238887897,110.36760125309229);
 	var poly;
@@ -41,12 +39,14 @@
             cache: false,
             success: function(data) {
                 
-                if (data !== null) {
-                  $.each(data, function(i, v){
+                if (data.jalur.length > 0) {
+                  $.each(data.jalur, function(i, v){
                       addLatLngEdit(v.d, v.e)
                   });
                 }
                 
+                $('#judul_jalur').html(data.detail.nama);
+                $('#detail_jalur').html(data.detail.rute);
             }
         });
     }
@@ -73,25 +73,59 @@
                 $.each(data, function(i,v){
                     placeMarker(new google.maps.LatLng(v.latitude,v.longitude),v.id, 'Shelter '+v.nama);
                 });
+
             }
         });
     }
 
+    function delete_all_map(){
+        $('#judul_jalur, #detail_jalur').html('');
+        if (poly !== null) {poly.setMap(null);};
+            var polyOptions = {
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        };
+        poly = new google.maps.Polyline(polyOptions);
+        poly.setMap(map)
+    }
+
     $(function(){
       get_all_shelter()
-    	draw_path_shelter(13);
+    	
     });
+
+    function show_jalur(obj, id){
+      delete_all_map();
+      $('.list_jalur').removeClass('active');
+      $(obj).addClass('active');
+      draw_path_shelter(id);
+
+    }
 </script>
 
 
 <title><?= $title ?></title>
 <div class="row">
-  <div id="map-canvas" class="col-lg-8"></div>
+  <div class="col-lg-8">
+    <div id="map-canvas" class="col-lg-12"></div>
+    <div class="row"><br/><br/></div>
+    <h2 id="judul_jalur"></h2>
+    <p class="lead" id="detail_jalur"></p>
+  </div>
+  
   
   <div class="col-lg-4">
     <div class="well">
       <h4>List Jalur Trans Jogja</h4>
-      
+      <ul class="nav nav-pills nav-stacked">
+        <?php foreach ($jalur as $key => $value):?>
+        <li style="cursor:pointer;" class="list_jalur" onclick="show_jalur(this, <?= $value->id ?>)"><a><?= $value->nama ?></a></li>
+        <?php endforeach; ?>
+      </ul>
     </div><!-- /well -->
 
 </div>
+<br/>
+<br/>
+<br/>
