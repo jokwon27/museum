@@ -393,6 +393,12 @@ class Admin extends CI_Controller {
         die(json_encode(array('id'=>$id)));
     }
 
+    function relasi_shelter_cek($awal, $tujuan){
+        $cek = $this->m_admin->cek_relasi_shelter($awal, $tujuan);
+        
+        die(json_encode(array('cek'=>$cek)));
+    }
+
     function relasi_shelter_delete($id,$page) {
         $this->cek();
         $this->m_admin->relasi_shelter_delete_data($id);

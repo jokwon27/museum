@@ -191,9 +191,7 @@
             dataType: 'json' // tipe data yang diterima oleh library ini disetup sebagai JSON
         }).result(
         function(event,data,formated){
-            $(this).val(data.nama);
-            $("input[name=id_shelter_tujuan]").val(data.id);
-            placeMarker(new google.maps.LatLng(data.latitude,data.longitude), 2)
+            get_relasi_shelter_cek($("input[name=id_shelter_awal]").val(), data.id, data);
         });
         
 	});
@@ -222,13 +220,8 @@
             dataType: 'json',
             data: $('#formtambah').serialize(),
             success: function(data) {
-                if( $('input[name=id]').val() == ''){
-                    $('input[name=id]').val(data.id);
-                    message_add_succes();
-                }else{
-                     message_edit_succes();
-                }
-               
+                message_add_succes();
+                
                 get_relasi_shelter_list(1);
                 $('#form_tambah').modal('hide');
                 reset_data();
@@ -275,6 +268,24 @@
             cache: false,
             success: function(data) {
                 $('#relasi_shelter_list').html(data);
+            }
+        });
+    }
+
+    function get_relasi_shelter_cek(awal, tujuan, shelter){
+        $.ajax({
+            type : 'GET',
+            url: '<?= base_url("admin/relasi_shelter_cek") ?>/'+awal+'/'+tujuan,
+            cache: false,
+            dataType: 'json',
+            success: function(data) {
+                if (data.cek > 0) {
+                    message_custom('notice','Peringatan','Data relasi shelter sudah ada','');
+                }else{
+                    $('#shelter_tujuan').val(shelter.nama);
+                    $("input[name=id_shelter_tujuan]").val(shelter.id);
+                    placeMarker(new google.maps.LatLng(shelter.latitude,shelter.longitude), 2);
+                }
             }
         });
     }

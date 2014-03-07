@@ -441,6 +441,13 @@ class M_admin extends CI_Model {
             //echo $sql;
         return $this->db->query($sql)->row();
     }
+
+    function cek_relasi_shelter($shelter_awal, $shelter_tujuan){
+        $sql = "select * from relasi_shelter
+                where id_shelter_awal = '".$shelter_awal."'
+                and id_shelter_tujuan = '".$shelter_tujuan."'";
+        return $this->db->query($sql)->num_rows();
+    }
     /* Relasi Shelter */
 
     function get_koordinat_rute($id_jalur){
