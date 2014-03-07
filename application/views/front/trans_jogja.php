@@ -1,5 +1,5 @@
 <style type="text/css">
-  #map-canvas { height: 500px; }
+  #map-canvas { height: 550px; }
 </style>
 <script type="text/javascript"  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABJD9IIW_lEgd8azMKO4YS-GfF7T7weuk&sensor=false"></script> 
 <script type="text/javascript">
