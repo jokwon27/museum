@@ -48,13 +48,13 @@
       </div><!-- /.container -->
     </nav>
 
-    <div class="container">
+    <div class="container" style="min-height:900px">
 
       <?php         
             $this->load->view('front/'.$page);
       ?>
       
-      <!--
+      
       <footer>
         <hr>
         <div class="row">
@@ -63,7 +63,7 @@
           </div>
         </div>
       </footer>
-      -->
+
     </div><!-- /.container -->
 
     

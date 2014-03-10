@@ -366,11 +366,11 @@
             </div>
         </div>
         <div class="form-group">
-                <label class="col-sm-2 control-label"></label>
-                <div class="col-sm-8">
-                    <div id="map-museum"></div>
-                </div>
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-8">
+                <div id="map-museum"></div>
             </div>
+        </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">Keterangan</label>
             <div class="col-sm-10">

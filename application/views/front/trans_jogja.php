@@ -110,8 +110,14 @@
   <div class="col-lg-8">
     <div id="map-canvas" class="col-lg-12"></div>
     <div class="row"><br/><br/></div>
-    <h2 id="judul_jalur"></h2>
-    <p class="lead" id="detail_jalur"></p>
+    <h3>Nama Jalur : <span id="judul_jalur"></span></h3>
+    <p class="" style="align:justify" id="detail_jalur"></p>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
   </div>
   
   
@@ -126,6 +132,3 @@
     </div><!-- /well -->
 
 </div>
-<br/>
-<br/>
-<br/>
