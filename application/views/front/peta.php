@@ -3,7 +3,7 @@
 </style>
 <link href="<?= base_url('assets/css/jquery.autocomplete.css') ?>" rel="stylesheet">
 <script type="text/javascript" src="<?= base_url('assets/js/jquery.autocomplete.js') ?>"></script>
-<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABJD9IIW_lEgd8azMKO4YS-GfF7T7weuk&sensor=false"></script> -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABJD9IIW_lEgd8azMKO4YS-GfF7T7weuk&sensor=false"></script>
 <script type="text/javascript">
    var map;
    var markers = [];
@@ -16,6 +16,7 @@
       map = new google.maps.Map(document.getElementById('map-canvas'),
           myOptions);
 
+      /*
       // Try HTML5 geolocation
       if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -34,6 +35,7 @@
         // Browser doesn't support Geolocation
         handleNoGeolocation(false);
       }
+      */
     }
 
     function handleNoGeolocation(errorFlag) {
@@ -63,7 +65,7 @@
         markers.push(marker);
     }
 
-    //google.maps.event.addDomListener(window, 'load', initialize);
+    google.maps.event.addDomListener(window, 'load', initialize);
 
     $(function(){
       $('#museum').autocomplete("<?= base_url('autocomplete/get_museum') ?>",
