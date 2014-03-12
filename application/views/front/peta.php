@@ -7,6 +7,7 @@
 <script type="text/javascript">
     var mylat = -7.774735;
     var mylong = 110.369164;
+    var poly;
 
     var myposition = new google.maps.LatLng(mylat, mylong);
     var map;
@@ -20,6 +21,14 @@
       };
       map = new google.maps.Map(document.getElementById('map-canvas'),
           myOptions);
+
+      var polyOptions = {
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        };
+        poly = new google.maps.Polyline(polyOptions);
+        poly.setMap(map);
 
       /*
       // Try HTML5 geolocation
@@ -62,6 +71,30 @@
 
       var infowindow = new google.maps.InfoWindow(options);
       map.setCenter(options.position);
+    }
+
+    function addLatLngEdit(lat, longi) {
+      var path = poly.getPath();
+      path.push(new google.maps.LatLng(lat,longi));
+    }
+
+    function draw_path_shelter(id_jalur){
+      $.ajax({
+            type : 'GET',
+            url: '<?= base_url("trans_jogja/get_rute_trans_jogja") ?>/'+id_jalur,
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+                
+                if (data.jalur.length > 0) {
+                  $.each(data.jalur, function(i, v){
+                      addLatLngEdit(v.d, v.e)
+                  });
+                }
+                
+                
+            }
+        });
     }
 
     function placeMarker(location, judul) {
@@ -110,7 +143,7 @@
           dataType: 'json',
           cache: false,
           success: function(data) {
-           console.log(data)
+              
           }
       });
 

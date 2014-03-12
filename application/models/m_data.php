@@ -48,7 +48,29 @@ class M_data extends CI_Model{
 
 
     function get_rute($shelter_user, $shelter_museum){
+        $sql = "select * from koordinat_rute
+                where id_shelter = '".$shelter_user."' 
+                or id_shelter = '".$shelter_museum."'
+                order by id_jalur, id";
+        $query = $this->db->query($sql)->result();
 
+      
+        $jalur =  array();
+        
+        foreach ($query as $key => $value) {
+            if ($key === 0) {
+                
+                $rute[0] = $value;
+            }else{
+                if($query[$key - 1]->id_jalur == $value->id_jalur){
+                   $jalur[] = $value->id_jalur;
+                }
+            }
+
+        }
+
+        return $jalur;
+        
     }
 }
 
