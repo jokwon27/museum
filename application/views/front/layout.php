@@ -9,7 +9,7 @@
     
 
     <!-- Bootstrap core CSS -->
-    <link href="<?= base_url('assets/bootstrap/css/bootstrap.min.css')?>" rel="stylesheet">
+    <link href="<?= base_url('assets/bootstrap/css/bootstrap.css')?>" rel="stylesheet">
 
     <!-- Add custom CSS here -->
     <link href="<?= base_url('assets/css/small-business.css') ?>" rel="stylesheet">
@@ -17,6 +17,10 @@
     <script type="text/javascript" src="<?= base_url('assets/js/jquery-1.8.3.js') ?>"></script>
     <script type="text/javascript" src="<?= base_url('assets/bootstrap/js/bootstrap.min.js') ?>"></script>
     <link rel="stylesheet" href="<?= base_url('assets/font-awesome/css/font-awesome.min.css')?>">
+    
+    <script type="text/javascript" src="<?= base_url('assets/pnotify/jquery.pnotify.min.js') ?>"></script>
+
+    <link href="<?= base_url('assets/pnotify/jquery.pnotify.default.css') ?>" media="all" rel="stylesheet" type="text/css" />
   </head>
 
   <body>

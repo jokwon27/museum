@@ -18,6 +18,38 @@ class M_data extends CI_Model{
        	//echo $sql;
         return $this->db->query($sql)->row();
     }
+
+    function get_nearest_shelter($mylatitude, $mylongitude){
+        $shelter = $this->db->get('shelter')->result();
+        $terdekat = 100000;
+        $data['id_shelter'] = null;
+        $data['shelter'] = null;
+        $data['longitude'] = null;
+        $data['latitude'] = null;
+
+        foreach ($shelter as $key => $value) {
+            
+
+            $selisih = sqrt(pow(($mylongitude - $value->longitude), 2) + pow(($mylatitude - $value->latitude), 2)) * 100;
+          
+
+            if($terdekat > $selisih){
+                $terdekat = $selisih;
+
+                $data['id_shelter'] = $value->id;
+                $data['shelter'] = $value->nama;
+                $data['longitude'] = $value->longitude;
+                $data['latitude'] = $value->latitude;
+            }
+        }
+
+        return $data;
+    }
+
+
+    function get_rute($shelter_user, $shelter_museum){
+
+    }
 }
 
 ?>

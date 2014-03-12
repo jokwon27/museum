@@ -15,6 +15,16 @@ class Peta extends CI_Controller {
 		$data['page'] = 'peta';
 		$this->load->view('front/layout', $data);
 	}
+
+	function get_nearest_shelter($latitude, $longitude){
+		$data = $this->m_data->get_nearest_shelter($latitude, $longitude);
+		die(json_encode($data));
+	}
+
+	function get_rute($shelter_user, $shelter_museum){
+		$data = $this->m_data->get_rute($shelter_user, $shelter_museum);
+		die(json_encode($data));
+	}
 	
 }
 
