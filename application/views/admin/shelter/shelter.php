@@ -16,8 +16,8 @@
         google.maps.event.addListener(map, 'click', function(event) {
             setAllMap(null);
             placeMarker(event.latLng);
-           $('#latitude').val(event.latLng['d']);
-           $('#longitude').val(event.latLng['e']);
+           $('#latitude').val(event.latLng.k);
+           $('#longitude').val(event.latLng.A);
         });
 
         var delControlDiv = document.createElement('div');
