@@ -92,7 +92,16 @@
                   $.each(data.jalur, function(i, v){
                       addLatLngEdit(parseFloat(v.d), parseFloat(v.e));
                   });
-                }               
+                }else{
+                  alert('Tidak Ada Rute');
+                }        
+
+                if(data.shelter.length > 0){
+                  $.each(data.shelter, function(i, v){
+                    var location = new google.maps.LatLng(v.latitude, v.longitude);
+                    shelterMarker(v.id, location, v.nama);
+                  });
+                }         
             }
         });
     }
@@ -107,7 +116,7 @@
         markers.push(marker);
     }
 
-    function shelterMarker(id, location, judul ) {
+    function  shelterMarker(id, location, judul ) {
         var marker = new google.maps.Marker({
             position: location, 
             map: map,
@@ -196,6 +205,7 @@
         }).result(
         function(event,data,formated){
             $(this).val(data.nama);
+            hapus_marker(null, 1);
             $("input[name=id_museum]").val(data.id);
             var location = new google.maps.LatLng(data.latitude, data.longitude);
             placeMarker(location, data.nama+' | '+data.alamat);
@@ -243,6 +253,24 @@
           markers_shelter[n].setMap(map);
         }
     }
+
+    function hapus_marker(map, n) {
+        if(typeof(markers[n]) !== 'undefined'){
+          markers[n].setMap(map);
+        }
+    }
+
+    function reset_data(){
+      hapus_marker(null,0);
+      hapus_marker(null, 1);
+      hapus_shelter(null, 0);
+      hapus_shelter(null, 1);
+      $('#id_shelter_museum, #id_shelter_user, input[name=id_museum]').val('');
+      initialize();
+      $('#user_dekat').removeAttr('disabled');
+      $('#museum').val('');
+      $('#list_jalur').empty();
+    }
   </script>
 
 
@@ -269,6 +297,7 @@
       <input type="hidden" id="id_museum"/>
       <br/>
       <button class="btn btn-primary" id="cari_rute"><i class="fa fa-search"></i> Cari Rute</button>
+      <button class="btn btn-default" onclick="reset_data()" id="user_dekat"><i class="fa fa-refresh"></i> Ulang Pencarian</button>
       <hr style="border-bottom:1px solid #999;" /> 
       <strong>Alternatif Jalur Trans Jogja</strong>
       <ul class="nav nav-pills nav-stacked" id="list_jalur"></ul>

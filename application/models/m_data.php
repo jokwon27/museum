@@ -11,6 +11,9 @@ class M_data extends CI_Model{
        	//echo $sql;
         return $this->db->query($sql)->row();
     }
+    function get_jarak($mylongitude, $longitude, $mylatitude, $latitude){
+        return sqrt(pow(($mylongitude - $longitude), 2) + pow(($mylatitude - $latitude), 2)) * 100;
+    }
 
     function get_museum_by_url($url){
         $sql = "select * from museum where url = '".$url."'";
@@ -30,7 +33,7 @@ class M_data extends CI_Model{
         foreach ($shelter as $key => $value) {
             
 
-            $selisih = sqrt(pow(($mylongitude - $value->longitude), 2) + pow(($mylatitude - $value->latitude), 2)) * 100;
+            $selisih = $this->get_jarak($mylongitude, $value->longitude, $mylatitude, $value->latitude);
           
 
             if($terdekat > $selisih){

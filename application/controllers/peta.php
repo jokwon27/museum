@@ -33,6 +33,7 @@ class Peta extends CI_Controller {
 	function get_rute_trans_jogja($id_jalur,$shelter_user, $shelter_museum){
 		$rute = $this->m_admin->get_koordinat_rute($id_jalur);
         $jalur_trans = array();
+        $shelter = array();
 
      	foreach ($rute as $key => $v) {
      		if ($v->id_shelter !== $shelter_user) {
@@ -43,12 +44,10 @@ class Peta extends CI_Controller {
      	$rute = array_values($rute);
         foreach ($rute as $key => $val) {
             if ($key > 1) {
-
-
+            	$shelter[] = $this->m_admin->get_shelter($val->id_shelter);
                 $relasi = $this->m_admin->get_relasi_shelter2($rute[$key - 1]->id_shelter, $val->id_shelter);
 
                 foreach (json_decode($relasi->jalur) as $key => $val2) {
-                	$val2->id = $val->id;
                     $jalur_trans[] = $val2;
                 }
 
@@ -57,7 +56,7 @@ class Peta extends CI_Controller {
             	}
             }
         }
-
+        $data['shelter'] = $shelter;
         $data['jalur'] = $jalur_trans;
         $data['detail'] = $this->m_admin->get_trans($id_jalur);
         die(json_encode($data));
