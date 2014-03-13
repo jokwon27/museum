@@ -49,7 +49,7 @@ class M_data extends CI_Model{
         return $data;
     }
 
-
+    // KUDU DIBENAKKE MANING
     function get_rute($shelter_user, $shelter_museum){
         $sql = "select * from koordinat_rute
                 where id_shelter = '".$shelter_user."' 
