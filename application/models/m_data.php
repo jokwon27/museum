@@ -66,7 +66,7 @@ class M_data extends CI_Model{
                 
                 $rute[0] = $value;
             }else{
-                if($query[$key - 1]->id_jalur == $value->id_jalur){
+                if(($query[$key - 1]->id_jalur == $value->id_jalur) & ($value->id_shelter === $shelter_museum)){
                    $jalur[] = $value->id_jalur;
                 }
             }

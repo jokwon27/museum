@@ -34,16 +34,16 @@ class Peta extends CI_Controller {
 		$rute = $this->m_admin->get_koordinat_rute($id_jalur);
         $jalur_trans = array();
         $shelter = array();
-        
+        /*
      	foreach ($rute as $key => $v) {
      		if ($v->id_shelter !== $shelter_user) {
      			unset($rute[$key]);
      			break;
      		}
-     	}
+     	}*/
      	$rute = array_values($rute);
         foreach ($rute as $key => $val) {
-            if ($key > 1) {
+            if ($key > 0) {
             	$shelter[] = $this->m_admin->get_shelter($val->id_shelter);
                 $relasi = $this->m_admin->get_relasi_shelter2($rute[$key - 1]->id_shelter, $val->id_shelter);
 
