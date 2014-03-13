@@ -79,20 +79,20 @@
     }
 
     function draw_path_shelter(id_jalur){
+      var shelter_user = $('#id_shelter_user').val();
+      var shelter_museum = $('#id_shelter_museum').val();
       $.ajax({
             type : 'GET',
-            url: '<?= base_url("trans_jogja/get_rute_trans_jogja") ?>/'+id_jalur,
+            url: '<?= base_url("peta/get_rute_trans_jogja") ?>/'+id_jalur+'/'+shelter_user+'/'+shelter_museum,
             dataType: 'json',
             cache: false,
             success: function(data) {
                 
                 if (data.jalur.length > 0) {
                   $.each(data.jalur, function(i, v){
-                      addLatLngEdit(v.d, v.e)
+                      addLatLngEdit(parseFloat(v.d), parseFloat(v.e));
                   });
-                }
-                
-                
+                }               
             }
         });
     }
@@ -162,9 +162,10 @@
             dataType: 'json',
             cache: false,
             success: function(data) {
+              $('#list_jalur').empty();
               $.each(data, function(i, v){
                   var str = ' <li style="cursor:pointer;" class="list_jalur"  onclick="show_jalur(this, '+v.id+')"><a>'+v.nama+'</a></li>';
-                $('#list_jalur').append(str);
+                  $('#list_jalur').append(str);
               });
                 
             }
