@@ -121,6 +121,25 @@
 
     google.maps.event.addDomListener(window, 'load', initialize);
 
+    function show_jalur(obj, id){
+      delete_all_map();
+      $('.list_jalur').removeClass('active');
+      $(obj).addClass('active');
+      draw_path_shelter(id);
+
+    }
+
+    function delete_all_map(){
+        if (poly !== null) {poly.setMap(null);};
+            var polyOptions = {
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        };
+        poly = new google.maps.Polyline(polyOptions);
+        poly.setMap(map)
+    }
+
     $(function(){
       $('#cari_rute').click(function(){
         var id_sm = $('#id_shelter_museum').val();
@@ -138,14 +157,18 @@
         }
 
         $.ajax({
-          type : 'GET',
-          url: '<?= base_url("peta/get_rute") ?>/'+id_su+'/'+id_sm,
-          dataType: 'json',
-          cache: false,
-          success: function(data) {
-              
-          }
-      });
+            type : 'GET',
+            url: '<?= base_url("peta/get_rute") ?>/'+id_su+'/'+id_sm,
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+              $.each(data, function(i, v){
+                  var str = ' <li style="cursor:pointer;" class="list_jalur"  onclick="show_jalur(this, '+v.id+')"><a>'+v.nama+'</a></li>';
+                $('#list_jalur').append(str);
+              });
+                
+            }
+        });
 
       });
 
@@ -229,7 +252,7 @@
   <input type="hidden" id="id_shelter_user" />
   
   <div class="col-lg-4" >
-    <div class="well" style="min-height:500px;">
+    <div class="well" style="min-height:550px;">
       <h4>Pencarian Rute Museum</h4>
       <br/>
       <strong>Cari Shelter Terdekat</strong>
@@ -246,7 +269,8 @@
       <br/>
       <button class="btn btn-primary" id="cari_rute"><i class="fa fa-search"></i> Cari Rute</button>
       <hr style="border-bottom:1px solid #999;" /> 
-       
+      <strong>Alternatif Jalur Trans Jogja</strong>
+      <ul class="nav nav-pills nav-stacked" id="list_jalur"></ul>
       
     </div><!-- /well -->
 
