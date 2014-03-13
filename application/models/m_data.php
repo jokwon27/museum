@@ -55,6 +55,7 @@ class M_data extends CI_Model{
                 where id_shelter = '".$shelter_user."' 
                 or id_shelter = '".$shelter_museum."'
                 order by id_jalur, id";
+        // echo $sql;
         $query = $this->db->query($sql)->result();
 
       
@@ -72,7 +73,7 @@ class M_data extends CI_Model{
 
         }
 
-        return $jalur;
+        return array_unique($jalur);
         
     }
 }

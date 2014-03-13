@@ -34,7 +34,7 @@ class Peta extends CI_Controller {
 		$rute = $this->m_admin->get_koordinat_rute($id_jalur);
         $jalur_trans = array();
         $shelter = array();
-
+        
      	foreach ($rute as $key => $v) {
      		if ($v->id_shelter !== $shelter_user) {
      			unset($rute[$key]);

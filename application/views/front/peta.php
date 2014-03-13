@@ -9,7 +9,7 @@
     var mylong = 110.369164;
     var poly;
 
-    var myposition = new google.maps.LatLng(mylat, mylong);
+    var myposition = null;// new google.maps.LatLng(mylat, mylong);
     var map;
     var markers = [];
     var markers_shelter = [];
@@ -30,7 +30,7 @@
         poly = new google.maps.Polyline(polyOptions);
         poly.setMap(map);
 
-      /*
+      
       // Try HTML5 geolocation
       if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -40,7 +40,8 @@
         
 
           placeMarker(pos, 'Lokasi Anda');
-
+          mylat = position.coords.latitude;
+          mylong =position.coords.longitude;
           map.setCenter(pos);
         }, function() {
           handleNoGeolocation(true);
@@ -49,11 +50,13 @@
         // Browser doesn't support Geolocation
         handleNoGeolocation(false);
       }
-      */
+      /*
+      
 
       placeMarker(myposition, 'Lokasi Anda');
 
       map.setCenter(myposition);
+      */
     }
 
     function handleNoGeolocation(errorFlag) {
@@ -171,6 +174,7 @@
             dataType: 'json',
             cache: false,
             success: function(data) {
+              $('#museum').attr('disabled', 'disabled');
               $('#list_jalur').empty();
               $.each(data, function(i, v){
                   var str = ' <li style="cursor:pointer;" class="list_jalur"  onclick="show_jalur(this, '+v.id+')"><a>'+v.nama+'</a></li>';
@@ -267,7 +271,7 @@
       hapus_shelter(null, 1);
       $('#id_shelter_museum, #id_shelter_user, input[name=id_museum]').val('');
       initialize();
-      $('#user_dekat').removeAttr('disabled');
+      $('#user_dekat, #museum').removeAttr('disabled');
       $('#museum').val('');
       $('#list_jalur').empty();
     }
