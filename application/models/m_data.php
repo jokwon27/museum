@@ -11,9 +11,7 @@ class M_data extends CI_Model{
        	//echo $sql;
         return $this->db->query($sql)->row();
     }
-    function get_jarak($mylongitude, $longitude, $mylatitude, $latitude){
-        return sqrt(pow(($mylongitude - $longitude), 2) + pow(($mylatitude - $latitude), 2)) * 100;
-    }
+
 
     function get_museum_by_url($url){
         $sql = "select * from museum where url = '".$url."'";
@@ -23,27 +21,22 @@ class M_data extends CI_Model{
     }
 
     function get_nearest_shelter($mylatitude, $mylongitude){
-        $shelter = $this->db->get('shelter')->result();
+        $sql = "select *,
+                ( SQRT(POW((".$mylongitude." - longitude), 2) + POW((".$mylatitude." - latitude), 2)) * 100 ) as selisih
+                from shelter
+                order by selisih";
+
+        $shelter = $this->db->query($sql)->result();
         $terdekat = 100000;
-        $data['id_shelter'] = null;
-        $data['shelter'] = null;
-        $data['longitude'] = null;
-        $data['latitude'] = null;
+        $data = array();
 
         foreach ($shelter as $key => $value) {
-            
-
-            $selisih = $this->get_jarak($mylongitude, $value->longitude, $mylatitude, $value->latitude);
-          
-
-            if($terdekat > $selisih){
-                $terdekat = $selisih;
-
-                $data['id_shelter'] = $value->id;
-                $data['shelter'] = $value->nama;
-                $data['longitude'] = $value->longitude;
-                $data['latitude'] = $value->latitude;
+            if ($key < 2) {
+                $data[] = $value;
+            }else{
+                break;
             }
+
         }
 
         return $data;
@@ -51,29 +44,77 @@ class M_data extends CI_Model{
 
     // KUDU DIBENAKKE MANING
     function get_rute($shelter_user, $shelter_museum){
-        $sql = "select * from koordinat_rute
-                where id_shelter = '".$shelter_user."' 
-                or id_shelter = '".$shelter_museum."'
-                order by id_jalur, id";
+        $sql_jalur_from_user = "select kr.*, j.nama as jalur from koordinat_rute kr
+                join jalur j on (j.id = kr.id_jalur)
+                where kr.id_shelter = '".$shelter_user."' 
+                order by kr.id_jalur, kr.id";
         // echo $sql;
-        $query = $this->db->query($sql)->result();
+        $query_user = $this->db->query($sql_jalur_from_user)->result();
+
+        $sql_jalur_from_museum = "select kr.*, j.nama as jalur from koordinat_rute kr
+                join jalur j on (j.id = kr.id_jalur)
+                where kr.id_shelter = '".$shelter_museum."' 
+                order by kr.id_jalur, kr.id";
+        // echo $sql;
+        $query_museum = $this->db->query($sql_jalur_from_museum)->result();
 
       
         $jalur =  array();
+        $rute1 =  array();
+        $rute2 =  array();
+        $intersect = null;
+        $shelter_intersect = null;
+        $shelter_intersect_nama = '';
         
-        foreach ($query as $key => $value) {
-            if ($key === 0) {
-                
-                $rute[0] = $value;
-            }else{
-                if(($query[$key - 1]->id_jalur == $value->id_jalur) & ($value->id_shelter === $shelter_museum)){
-                   $jalur[] = $value->id_jalur;
+        foreach ($query_user as $key1 => $v1) {
+            foreach ($query_museum as $key => $v2) {
+                if($v1->id_jalur !== $v2->id_jalur){
+                    // Cari titik oper shelter
+                    $query_rute1 = $this->db->where('id_jalur', $v1->id_jalur)->get('koordinat_rute')->result();
+                    foreach ($query_rute1 as $key => $value) {
+                        $rute1[] = $value->id_shelter; 
+                    }
+
+                    $query_rute2 = $this->db->where('id_jalur', $v2->id_jalur)->get('koordinat_rute')->result();
+                    foreach ($query_rute2 as $key => $value) {
+                        $rute2[] = $value->id_shelter; 
+                    }
+
+                    $intersect = array_intersect($rute1, $rute2);
+                    $shelter_intersect_nama = '';
+                    foreach ($intersect as $key => $value) {
+                        if ($value !== $shelter_museum) {
+                            $shelter_intersect = $value;
+                            $shelter_intersect_nama = $this->m_admin->get_shelter($value)->nama;
+                            break;
+                        }
+                    }
+                    $judul = $v1->jalur." - ".$v2->jalur;
+                    $rangkaian_jalur = "Dari ".$v1->jalur." pindah ke ".$v2->jalur;
+                }else{
+                    $judul = $v1->jalur;
+                    $rangkaian_jalur = $v1->jalur;
                 }
+
+                $jalur[] = array(
+                        'id_jalur_awal' => $v1->id_jalur,
+                        'id_jalur_akhir' => $v2->id_jalur,
+                        'jalur_awal' => $v1->jalur,
+                        'jalur_akhir' => $v2->jalur,
+                        'titik_oper' => $shelter_intersect_nama,
+                        'intersect' => $shelter_intersect,
+                        'rangkaian_jalur' => $rangkaian_jalur,
+                        'judul' => $judul
+
+                );
+                $intersect = null;
+                $shelter_intersect = null;
+                $shelter_intersect_nama = '';
             }
 
         }
 
-        return array_unique($jalur);
+        return $jalur;
         
     }
 }

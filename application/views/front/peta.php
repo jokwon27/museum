@@ -36,7 +36,6 @@
         navigator.geolocation.getCurrentPosition(function(position) {
           var pos = new google.maps.LatLng(position.coords.latitude,
                                            position.coords.longitude);
-
         
 
           placeMarker(pos, 'Lokasi Anda');
@@ -44,7 +43,10 @@
           mylong =position.coords.longitude;
           map.setCenter(pos);
         }, function() {
-          handleNoGeolocation(true);
+         // handleNoGeolocation(true);
+          var pos = new google.maps.LatLng(mylat, mylong);
+          placeMarker(pos, 'Lokasi Anda');
+          map.setCenter(pos);
         });
       } else {
         // Browser doesn't support Geolocation
@@ -81,12 +83,14 @@
       path.push(new google.maps.LatLng(lat,longi));
     }
 
-    function draw_path_shelter(id_jalur){
-      var shelter_user = $('#id_shelter_user').val();
-      var shelter_museum = $('#id_shelter_museum').val();
+    function draw_path_shelter(jalur_awal, jalur_akhir, intersect){
+      delete_all_map();
+      var shelter_user = $('#shelter_choice').val();
+      var shelter_museum = $('#museum_choice').val();
       $.ajax({
             type : 'GET',
-            url: '<?= base_url("peta/get_rute_trans_jogja") ?>/'+id_jalur+'/'+shelter_user+'/'+shelter_museum,
+            url: '<?= base_url("peta/get_rute_trans_jogja") ?>/',
+            data: 'shelter_awal='+shelter_user+'&shelter_akhir='+shelter_museum+'&jalur_awal='+jalur_awal+'&jalur_akhir='+jalur_akhir+'&intersect='+intersect,
             dataType: 'json',
             cache: false,
             success: function(data) {
@@ -103,6 +107,7 @@
                   $.each(data.shelter, function(i, v){
                     var location = new google.maps.LatLng(v.latitude, v.longitude);
                     shelterMarker(v.id, location, v.nama);
+
                   });
                 }         
             }
@@ -133,14 +138,6 @@
 
     google.maps.event.addDomListener(window, 'load', initialize);
 
-    function show_jalur(obj, id){
-      delete_all_map();
-      $('.list_jalur').removeClass('active');
-      $(obj).addClass('active');
-      draw_path_shelter(id);
-
-    }
-
     function delete_all_map(){
         if (poly !== null) {poly.setMap(null);};
             var polyOptions = {
@@ -154,8 +151,8 @@
 
     $(function(){
       $('#cari_rute').click(function(){
-        var id_sm = $('#id_shelter_museum').val();
-        var id_su = $('#id_shelter_user').val();
+        var id_sm = $('#museum_choice').val();
+        var id_su = $('#shelter_choice').val();
         if(id_su == ''){
           //message_custom('notice', 'Peringatan', 'Silahkan cari shelter terdekat dengan anda' , '#user_dekat')
           alert('Silahkan cari shelter terdekat dengan anda');
@@ -167,18 +164,47 @@
           //message_custom('notice', 'Peringatan', 'Silahkan pilih museum yang akan dicari' , '#museum');
           return false;
         }
-
+        $('#accordion').empty();
         $.ajax({
             type : 'GET',
             url: '<?= base_url("peta/get_rute") ?>/'+id_su+'/'+id_sm,
             dataType: 'json',
             cache: false,
             success: function(data) {
+              console.log(data)
               $('#museum').attr('disabled', 'disabled');
               $('#list_jalur').empty();
               $.each(data, function(i, v){
-                  var str = ' <li style="cursor:pointer;" class="list_jalur"  onclick="show_jalur(this, '+v.id+')"><a>'+v.nama+'</a></li>';
-                  $('#list_jalur').append(str);
+                  var str = '<div class="panel panel-default" onclick="draw_path_shelter('+v.id_jalur_awal+', '+v.id_jalur_akhir+', '+v.intersect+')">'+
+                              '<div class="panel-heading">'+
+                                '<h4 class="panel-title">'+
+                                  '<a data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'">'+
+                                     v.judul+
+                                  '</a>'+
+                                '</h4>'+
+                              '</div>'+
+                              '<div id="collapse'+i+'" class="panel-collapse collapse">'+
+                                '<div class="panel-body">'+
+                                  '<button class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> Tampilkan Rute</button><br/>'+
+                                  '<dl>'+
+                                    '<dt>Rute</dt>'+
+                                    '<dd>'+v.rangkaian_jalur+'</dd>'+
+                                  '</dl>'+
+                                  '<dl>'+
+                                    '<dt>Pindah Shelter</dt>'+
+                                    '<dd>'+v.titik_oper+'</dd>'+
+                                  '</dl>'+
+                                  '<dl>'+
+                                    '<dt>...</dt>'+
+                                    '<dd>...</dd>'+
+                                  '</dl>'+'<dl>'+
+                                    '<dt>...</dt>'+
+                                    '<dd>...</dd>'+
+                                  '</dl>'+
+                                '</div>'+
+                              '</div>'+
+                            '</div>';
+                  $('#accordion').append(str);
               });
                 
             }
@@ -209,7 +235,6 @@
         }).result(
         function(event,data,formated){
             $(this).val(data.nama);
-            hapus_marker(null, 1);
             $("input[name=id_museum]").val(data.id);
             var location = new google.maps.LatLng(data.latitude, data.longitude);
             placeMarker(location, data.nama+' | '+data.alamat);
@@ -218,17 +243,26 @@
     });
 
     function shelter_terdekat_user(obj){
-      hapus_shelter(null, 0);
       $.ajax({
           type : 'GET',
           url: '<?= base_url("peta/get_nearest_shelter") ?>/'+mylat+'/'+mylong,
           dataType: 'json',
           cache: false,
           success: function(data) {
-            $('#id_shelter_user').val(data.id_shelter);
-            var location = new google.maps.LatLng(data.latitude, data.longitude);
-             shelterMarker(data.id_shelter, location, 'Shelter Terdekat : '+data.shelter);
-             map.panTo(location);
+            $('#shelter_choice').empty();
+            
+            var str = '';
+            str = '<option value="">Pilih shelter terdekat</option>'
+            $('#shelter_choice').append(str);
+            $.each(data, function(i, v){
+                var location = new google.maps.LatLng(v.latitude, v.longitude);
+               shelterMarker(v.id, location, 'Shelter terdekat dengan user : '+ v.nama);
+               map.panTo(location);
+
+               str = '<option value="'+v.id+'">'+ v.nama +'</option>'
+               $('#shelter_choice').append(str);
+            });
+            
              $('#user_dekat').attr('disabled','disabled');
           }
       });
@@ -236,18 +270,27 @@
     }
 
     function shelter_terdekat_museum(lat, longi){
-      hapus_shelter(null, 1);
       $.ajax({
           type : 'GET',
           url: '<?= base_url("peta/get_nearest_shelter") ?>/'+lat+'/'+longi,
           dataType: 'json',
           cache: false,
           success: function(data) {
-            $('#id_shelter_museum').val(data.id_shelter);
-            var location = new google.maps.LatLng(data.latitude, data.longitude);
-             shelterMarker(data.id_shelter, location, 'Shelter Terdekat Dengan Museum : '+data.shelter);
-             map.panTo(location);
-             map.setZoom(13);
+            $('#museum_choice').empty();
+            
+            var str = '';
+            str = '<option value="">Pilih shelter terdekat</option>'
+            $('#museum_choice').append(str);
+            $.each(data, function(i, v){
+                var location = new google.maps.LatLng(v.latitude, v.longitude);
+               shelterMarker(v.id, location, 'Shelter terdekat dengan museum : '+ v.nama);
+               map.panTo(location);
+
+               str = '<option value="'+v.id+'">'+ v.nama +'</option>'
+               $('#museum_choice').append(str);
+            });
+            map.setZoom(13);
+             
           }
       });
     }
@@ -269,11 +312,11 @@
       hapus_marker(null, 1);
       hapus_shelter(null, 0);
       hapus_shelter(null, 1);
-      $('#id_shelter_museum, #id_shelter_user, input[name=id_museum]').val('');
+      $('input[name=id_museum]').val('');
       initialize();
       $('#user_dekat, #museum').removeAttr('disabled');
       $('#museum').val('');
-      $('#list_jalur').empty();
+      $('#accordion, #shelter_choice, #museum_choice').empty();
     }
   </script>
 
@@ -281,11 +324,9 @@
 <title><?= $title ?></title>
 <div class="row">
   <div id="map-canvas" class="col-lg-8"></div>
-  <input type="hidden" id="id_shelter_museum" />
-  <input type="hidden" id="id_shelter_user" />
   
   <div class="col-lg-4" >
-    <div class="well" style="min-height:550px;">
+    <div class="well" style="height:550px;">
       <h4>Pencarian Rute Museum</h4>
       <br/>
       <strong>Cari Shelter Terdekat</strong>
@@ -300,12 +341,30 @@
       <?= form_input('museum','','class="form-control" id=museum')?>
       <input type="hidden" id="id_museum"/>
       <br/>
+      <hr style="border-bottom:1px solid #999;" /> 
+      <strong>Shelter Terdekat dengan user</strong>
+      <?= form_dropdown('shelter', array(), array(), 'id=shelter_choice class=form-control') ?>
+      <br/>
+      <strong>Shelter Terdekat dengan museum</strong>
+      <?= form_dropdown('museum', array(), array(), 'id=museum_choice class=form-control') ?>
+      <br/>
       <button class="btn btn-primary" id="cari_rute"><i class="fa fa-search"></i> Cari Rute</button>
       <button class="btn btn-default" onclick="reset_data()" id="user_dekat"><i class="fa fa-refresh"></i> Ulang Pencarian</button>
-      <hr style="border-bottom:1px solid #999;" /> 
-      <strong>Alternatif Jalur Trans Jogja</strong>
-      <ul class="nav nav-pills nav-stacked" id="list_jalur"></ul>
       
     </div><!-- /well -->
+
+  </div>
+</div>
+<div class="row" style="min-height:300px;">
+  <div class="col-lg-8">
+    <h3>Alternatif Jalur Trans Jogja</h3>
+    <hr/>
+
+    <div class="panel-group" id="accordion">
+      
+
+    </div>
+
+  </div>
 
 </div>
