@@ -7,7 +7,7 @@
 <script type="text/javascript">
     var mylat = -7.774735;
     var mylong = 110.369164;
-    var poly;
+    var poly, poly2;
 
     var myposition = null;// new google.maps.LatLng(mylat, mylong);
     var map;
@@ -29,6 +29,14 @@
         };
         poly = new google.maps.Polyline(polyOptions);
         poly.setMap(map);
+
+      polyOptions = {
+          strokeColor: '#0000FF',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        };
+        poly2 = new google.maps.Polyline(polyOptions);
+        poly2.setMap(map);
 
       
       // Try HTML5 geolocation
@@ -78,8 +86,13 @@
       map.setCenter(options.position);
     }
 
-    function addLatLngEdit(lat, longi) {
-      var path = poly.getPath();
+    function addLatLngEdit(lat, longi, line) {
+      if (line == 0) {
+        var path = poly.getPath();
+      }else{
+        var path = poly2.getPath();
+      }
+      
       path.push(new google.maps.LatLng(lat,longi));
     }
 
@@ -95,14 +108,17 @@
             cache: false,
             success: function(data) {
                 
-                if (data.jalur.length > 0) {
-                  $.each(data.jalur, function(i, v){
-                      addLatLngEdit(parseFloat(v.d), parseFloat(v.e));
+                if (data.length > 0) {
+                  $.each(data, function(i, v){
+                      $.each(v.rute, function(i, w){
+                          addLatLngEdit(parseFloat(w.d), parseFloat(w.e), i);
+                      });
                   });
+
                 }else{
                   alert('Tidak Ada Rute');
                 }        
-
+                /*
                 if(data.shelter.length > 0){
                   $.each(data.shelter, function(i, v){
                     var location = new google.maps.LatLng(v.latitude, v.longitude);
@@ -110,6 +126,7 @@
 
                   });
                 }         
+                */
             }
         });
     }
@@ -139,14 +156,21 @@
     google.maps.event.addDomListener(window, 'load', initialize);
 
     function delete_all_map(){
-        if (poly !== null) {poly.setMap(null);};
-            var polyOptions = {
+        var polyOptions = {
           strokeColor: '#FF0000',
           strokeOpacity: 1.0,
           strokeWeight: 3
         };
         poly = new google.maps.Polyline(polyOptions);
-        poly.setMap(map)
+        poly.setMap(map);
+
+      polyOptions = {
+          strokeColor: '#0000FF',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        };
+        poly2 = new google.maps.Polyline(polyOptions);
+        poly2.setMap(map);
     }
 
     $(function(){
