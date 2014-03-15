@@ -46,6 +46,7 @@
 	    <p>
 	        <?= $museum->keterangan ?>
 	    </p>
+	    <iframe width="560" height="315" src="//www.youtube.com/embed/vgMA1lxd5xw" frameborder="0" allowfullscreen></iframe>
 	</div>
 
 	<div class="col-lg-4">

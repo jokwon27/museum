@@ -1,4 +1,4 @@
-<title><?= $artikel->judul ?></title>
+<title><?= $artikel->judl ?></title>
 <div class="row">
 	  <div class="col-lg-8">
 	    <h1><?= anchor('artikel/detail/'.$artikel->url,$artikel->judul) ?></h1>
@@ -11,6 +11,7 @@
 	    	<img style="margin:5px;" src="<?= base_url('image_upload/tumbnail_artikel/').'/'.$artikel->image ?>" width="128" height="100" align="left">
 	        <?= $artikel->isi ?>
 	    </p>
+	    <iframe width="560" height="315" src="//www.youtube.com/embed/vgMA1lxd5xw" frameborder="0" allowfullscreen></iframe>
 	  </div>
   
   	<div class="col-lg-4">
