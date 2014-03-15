@@ -91,14 +91,16 @@ class M_data extends CI_Model{
                     }
                     $judul = $v1->jalur." - ".$v2->jalur;
                     $rangkaian_jalur = "Dari ".$v1->jalur." pindah ke ".$v2->jalur;
+                    $jal_akhir = $v2->id_jalur;
                 }else{
                     $judul = $v1->jalur;
                     $rangkaian_jalur = $v1->jalur;
+                    $jal_akhir = '';
                 }
 
                 $jalur[] = array(
                         'id_jalur_awal' => $v1->id_jalur,
-                        'id_jalur_akhir' => $v2->id_jalur,
+                        'id_jalur_akhir' => $jal_akhir,
                         'jalur_awal' => $v1->jalur,
                         'jalur_akhir' => $v2->jalur,
                         'titik_oper' => $shelter_intersect_nama,

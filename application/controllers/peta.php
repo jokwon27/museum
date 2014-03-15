@@ -47,12 +47,15 @@ class Peta extends CI_Controller {
      			break;
      		}
      	}*/
-        if ($intersect === '') {
+        if ($intersect === '0') {
             $intersect = $shelter_akhir;
         }
 
         $data[0] = $this->get_koordinat_rute_detail($jalur_awal, $intersect);
-        $data[1] = $this->get_koordinat_rute_detail($jalur_akhir, $shelter_akhir);
+        if ($jalur_akhir !== '') {
+            $data[1] = $this->get_koordinat_rute_detail($jalur_akhir, $shelter_akhir);
+        }
+        
         die(json_encode($data));
 	}
 

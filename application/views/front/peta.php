@@ -110,9 +110,12 @@
                 
                 if (data.length > 0) {
                   $.each(data, function(i, v){
-                      $.each(v.rute, function(i, w){
+                      if (v.rute.length > 0) {
+                        $.each(v.rute, function(j, w){
                           addLatLngEdit(parseFloat(w.d), parseFloat(w.e), i);
-                      });
+                        });
+                      };
+                      
                   });
 
                 }else{
@@ -195,11 +198,10 @@
             dataType: 'json',
             cache: false,
             success: function(data) {
-              console.log(data)
               $('#museum').attr('disabled', 'disabled');
               $('#list_jalur').empty();
               $.each(data, function(i, v){
-                  var str = '<div class="panel panel-default" onclick="draw_path_shelter('+v.id_jalur_awal+', '+v.id_jalur_akhir+', '+v.intersect+')">'+
+                  var str = '<div class="panel panel-default">'+
                               '<div class="panel-heading">'+
                                 '<h4 class="panel-title">'+
                                   '<a data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'">'+
@@ -209,7 +211,7 @@
                               '</div>'+
                               '<div id="collapse'+i+'" class="panel-collapse collapse">'+
                                 '<div class="panel-body">'+
-                                  '<button class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> Tampilkan Rute</button><br/>'+
+                                  '<button onclick="draw_path_shelter('+((v.id_jalur_awal !== '')?v.id_jalur_awal:'0')+', '+((v.id_jalur_akhir !== '')?v.id_jalur_akhir:'0')+', '+((v.intersect !== null)?v.intersect:'0')+')" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> Tampilkan Rute</button><br/>'+
                                   '<dl>'+
                                     '<dt>Rute</dt>'+
                                     '<dd>'+v.rangkaian_jalur+'</dd>'+
