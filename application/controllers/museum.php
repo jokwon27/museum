@@ -31,6 +31,7 @@ class Museum extends CI_Controller {
 	function detail($url = null){
 		$data['page'] = 'museum_detail';
 		$data['museum'] = $this->m_data->get_museum_by_url($url);
+		$data['gallery'] = $this->m_data->get_galery_museum($data['museum']->id);
 		$this->load->view('front/layout', $data);
 	}
 	

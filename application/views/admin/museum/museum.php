@@ -228,6 +228,8 @@
                 $('#alamat').val(data.alamat);
                 $('#longitude').val(data.longitude);
                 $('#latitude').val(data.latitude);
+                $('#link_youtube').val(data.link_youtube);
+                $('#folder_gallery').val(data.folder_gallery);
                 $('#url').val(data.url);
                 CKEDITOR.instances.keterangan.setData(data.keterangan);
                 $('#judul_dialog').html('Edit');
@@ -369,6 +371,18 @@
             <label class="col-sm-2 control-label"></label>
             <div class="col-sm-8">
                 <div id="map-museum"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Link Youtube</label>
+            <div class="col-sm-6">
+            <?= form_input('link_youtube','','class="form-control myinput" id=link_youtube')?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Folder Gallery</label>
+            <div class="col-sm-6">
+            <?= form_input('folder_gallery','','class="form-control myinput" id=folder_gallery')?>
             </div>
         </div>
         <div class="form-group">

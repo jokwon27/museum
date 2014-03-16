@@ -19,7 +19,9 @@ class M_data extends CI_Model{
        	//echo $sql;
         return $this->db->query($sql)->row();
     }
-
+    function get_galery_museum($id_museum){
+        return $this->db->where('id_museum', $id_museum)->get('gallery')->result();
+    }
     function get_nearest_shelter($mylatitude, $mylongitude){
         $sql = "select *,
                 ( SQRT(POW((".$mylongitude." - longitude), 2) + POW((".$mylatitude." - latitude), 2)) * 100 ) as selisih
