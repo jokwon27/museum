@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 12, 2014 at 03:55 PM
--- Server version: 5.5.35
+-- Generation Time: Mar 16, 2014 at 08:09 PM
+-- Server version: 5.5.34
 -- PHP Version: 5.3.10-1ubuntu3.9
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
@@ -48,6 +48,29 @@ INSERT INTO `artikel` (`id`, `judul`, `waktu`, `id_user`, `id_museum`, `url`, `i
 (2, 'Chapter 376 Tujuan Fujitora', '2014-02-06 06:52:27', 1, NULL, 'chapter-376-tujuan-fujitora', '<p>Chapter 376 dfdfff dfffffffffff dffffffffff dffffffffffffffffffffffffffffffffffffff dfffffffffff dfffffffffffff dffffffffffvdf fdddddddddddd dfffffffffffff fdddddddddddddd dfffffffffffff</p>\n', 'museum-affandi.jpg'),
 (7, 'Chapter 376 Tujuan Fujitora', '2014-02-06 06:51:43', 1, NULL, 'chapter-376-tujuan-fujitora', '<p>Chapter 376 dfdfff dfffffffffff dffffffffff dffffffffffffffffffffffffffffffffffffff dfffffffffff dfffffffffffff dffffffffffvdf fdddddddddddd dfffffffffffff fdddddddddddddd dfffffffffffff</p>\n', 'museum-affandi.jpg'),
 (19, 'a', '2014-02-14 06:15:11', 1, NULL, 'a', '<p><img alt="" src="/museum/image_upload/images/window_smaller.png" />a</p>\n', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gallery`
+--
+
+CREATE TABLE IF NOT EXISTS `gallery` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_museum` int(11) NOT NULL,
+  `judul` varchar(100) NOT NULL,
+  `url` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_museum` (`id_museum`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `gallery`
+--
+
+INSERT INTO `gallery` (`id`, `id_museum`, `judul`, `url`) VALUES
+(1, 10, 'Museum Affandi', 'affandi-1.jpg'),
+(2, 10, 'Museum Affandi', 'affandi-2.jpg');
 
 -- --------------------------------------------------------
 
@@ -358,6 +381,8 @@ CREATE TABLE IF NOT EXISTS `museum` (
   `keterangan` text NOT NULL,
   `image` varchar(100) NOT NULL,
   `url` varchar(100) NOT NULL,
+  `link_youtube` varchar(255) DEFAULT NULL,
+  `folder_gallery` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
@@ -365,15 +390,15 @@ CREATE TABLE IF NOT EXISTS `museum` (
 -- Dumping data for table `museum`
 --
 
-INSERT INTO `museum` (`id`, `nama`, `alamat`, `longitude`, `latitude`, `keterangan`, `image`, `url`) VALUES
-(9, 'Museum Sonobudoyo', 'Jl. Trikora No. 6 , Yogyakarta', 110.363953, -7.802431, '<p>Museum Sonobudoyo</p>\n <p><img alt="" src="/museum/image_upload/images/Museum_Sonobudoyo.jpg"  /></p>\n\n<p>Museum Negeri Sonobudoyo merupakan Unit Pelaksana Teknis Daerah pada Dinas Kebudayaan Provinsi DIY, mempunyai fungsi pengelolaan benda museum yang memiliki nilai budaya ilmiah, meliputi koleksi pengembangan dan bimbingan edukatif cultural. Sedangkan tugasnya adalah mengumpulkan, merawat, pengawetan, melaksanakan penelitian, pelayanan pustaka, bimbingan edukatif cultural serta penyajian benda koleksi Museum Negeri Sonobudoyo.</p>\n\n<p>', '', 'museum-sonobudoyo'),
-(10, 'Museum Affandi', 'Jl. Laksda Adisucipto 167, Yogyakarta 55281', 110.396359, -7.782724, '<p>Museum Affandi</p>\n\n<p><img alt="" height= "100px" width="250px" src="/museum/image_upload/images/Museum_Affandi.JPG" /></p>\n\n<p><strong>Museum Affandi</strong> yang terletak di pinggir sungai Gajah Wong, atau di Jalan Laksda Adisucipto Nomor 167 Yogyakarta (Jalan Solo Km 5,1) adalah museum yang menyimpan hasil karya pelukis legendaris Affandi. Lebih dari 300 buah lukisannya disimpan di dalam museum ini yang terdiri dari 3 galeri dan sebuah rumah yang dahulu dipakai sebagai tempat tinggal pelukis ini. Rumah ini mempunyai atap berbentuk daun pisang, dan terdiri dari dua lantai dengan lantai atas sebagai kamar pribadi Affandi yang bernuansa artistik.</p>\n\n<p><img alt="" src="/museum/image_upload/images/Museum affandi 2.jpg" />Museum tersebut berisi seluruh karya-karya sang maestro Affandi semasa hidupnya, karya-karya para pelukis lain, alat transportasi yang dipakainya dahulu, rumah yang ditinggalinya sampai sebuah sanggar yang saat ini dipakai untuk membina bakat melukis anak.</p>\n', '', 'museum-affandi'),
-(11, 'Museum Wayang Kekayon', 'Jl. Raya Yogya-Wonosari Km. 7', 110.412975, -7.815136, 'Museum Wayang Kekayon', '', 'museum-wayang-kekayon'),
-(12, 'Museum Ullen Sentalu', 'Jl. Boyong Kaliurang Donoharjo Ngaglik Sleman Daerah Istimewa Yogyakarta, Indonesia', 110.420987, -7.609669, 'Museum Ullen Sentalu', '', 'museum-ullen-sentalu'),
-(13, 'Museum Pusat TNI AU Dirgantara Mandala Yogyakarta', 'Bandara Adi Sucipto, Maguworejo, Depok, Yogyakarta', 110.416383, -7.789745, 'Museum Pusat TNI AU Dirgantara Mandala Yogyakarta', '', 'museum-pusat-tni-au-dirgantara-mandala-yogyakarta'),
-(14, 'Museum Benteng Vrederbug', 'Jl. Jenderal A. Yani No. 6, Yogyakarta', 110.365968, -7.799992, 'Museum Benteng Vrederbug', '', 'museum-benteng-vrederbug'),
-(15, 'Museum Keraton Yogyakarta', 'Jl. Rotowijayan 1, Yogyakarta 55133', 110.364057, -7.806553, 'Museum Keraton Yogyakarta', '', 'museum-keraton-yogyakarta'),
-(16, 'Museum Batik Yogyakarta', 'Jl. Dr Sutomo 13 A RT 049 RW 12 Bausasran Danurejan, Yogyakarta', 110.377589, -7.796165, 'Museum Batik Yogyakarta', '', 'museum-batik-yogyakarta');
+INSERT INTO `museum` (`id`, `nama`, `alamat`, `longitude`, `latitude`, `keterangan`, `image`, `url`, `link_youtube`, `folder_gallery`) VALUES
+(9, 'Museum Sonobudoyo', 'Jl. Trikora No. 6 , Yogyakarta', 110.363953, -7.802431, '<p>Museum Sonobudoyo</p>\n <p><img alt="" src="/museum/image_upload/images/Museum_Sonobudoyo.jpg"  /></p>\n\n<p>Museum Negeri Sonobudoyo merupakan Unit Pelaksana Teknis Daerah pada Dinas Kebudayaan Provinsi DIY, mempunyai fungsi pengelolaan benda museum yang memiliki nilai budaya ilmiah, meliputi koleksi pengembangan dan bimbingan edukatif cultural. Sedangkan tugasnya adalah mengumpulkan, merawat, pengawetan, melaksanakan penelitian, pelayanan pustaka, bimbingan edukatif cultural serta penyajian benda koleksi Museum Negeri Sonobudoyo.</p>\n\n<p>', '', 'museum-sonobudoyo', NULL, NULL),
+(10, 'Museum Affandi', 'Jl. Laksda Adisucipto 167, Yogyakarta 55281', 110.396359, -7.782724, '<p>Museum Affandi</p>\r\n\r\n<p><strong>Museum Affandi</strong> yang terletak di pinggir sungai Gajah Wong, atau di Jalan Laksda Adisucipto Nomor 167 Yogyakarta (Jalan Solo Km 5,1) adalah museum yang menyimpan hasil karya pelukis legendaris Affandi. Lebih dari 300 buah lukisannya disimpan di dalam museum ini yang terdiri dari 3 galeri dan sebuah rumah yang dahulu dipakai sebagai tempat tinggal pelukis ini. Rumah ini mempunyai atap berbentuk daun pisang, dan terdiri dari dua lantai dengan lantai atas sebagai kamar pribadi Affandi yang bernuansa artistik.</p>\r\n\r\n<p>Museum tersebut berisi seluruh karya-karya sang maestro Affandi semasa hidupnya, karya-karya para pelukis lain, alat transportasi yang dipakainya dahulu, rumah yang ditinggalinya sampai sebuah sanggar yang saat ini dipakai untuk membina bakat melukis anak.</p>\r\n\r\n<p>', '', 'museum-affandi', '//www.youtube.com/embed/vgMA1lxd5xw', 'museum_affandi'),
+(11, 'Museum Wayang Kekayon', 'Jl. Raya Yogya-Wonosari Km. 7', 110.412975, -7.815136, 'Museum Wayang Kekayon', '', 'museum-wayang-kekayon', NULL, NULL),
+(12, 'Museum Ullen Sentalu', 'Jl. Boyong Kaliurang Donoharjo Ngaglik Sleman Daerah Istimewa Yogyakarta, Indonesia', 110.420987, -7.609669, 'Museum Ullen Sentalu', '', 'museum-ullen-sentalu', NULL, NULL),
+(13, 'Museum Pusat TNI AU Dirgantara Mandala Yogyakarta', 'Bandara Adi Sucipto, Maguworejo, Depok, Yogyakarta', 110.416383, -7.789745, 'Museum Pusat TNI AU Dirgantara Mandala Yogyakarta', '', 'museum-pusat-tni-au-dirgantara-mandala-yogyakarta', NULL, NULL),
+(14, 'Museum Benteng Vrederbug', 'Jl. Jenderal A. Yani No. 6, Yogyakarta', 110.366028, -7.800289, 'Museum Benteng Vrederbug', '', 'museum-benteng-vrederbug', NULL, NULL),
+(15, 'Museum Keraton Yogyakarta', 'Jl. Rotowijayan 1, Yogyakarta 55133', 110.364057, -7.806553, 'Museum Keraton Yogyakarta', '', 'museum-keraton-yogyakarta', NULL, NULL),
+(16, 'Museum Batik Yogyakarta', 'Jl. Dr Sutomo 13 A RT 049 RW 12 Bausasran Danurejan, Yogyakarta', 110.377589, -7.796165, '<p>Museum Batik Yogyakarta</p>\n', '', 'museum-batik-yogyakarta', '', '');
 
 -- --------------------------------------------------------
 
@@ -684,6 +709,12 @@ INSERT INTO `users` (`id`, `username`, `password`) VALUES
 ALTER TABLE `artikel`
   ADD CONSTRAINT `artikel_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `artikel_ibfk_4` FOREIGN KEY (`id_museum`) REFERENCES `museum` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `gallery`
+--
+ALTER TABLE `gallery`
+  ADD CONSTRAINT `gallery_ibfk_2` FOREIGN KEY (`id_museum`) REFERENCES `museum` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `menu_user_privileges`
