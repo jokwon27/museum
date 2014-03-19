@@ -63,6 +63,7 @@
 <div class="row">
 <div class="col-lg-8">
   <?php foreach ($artikel as $key => $val):?>
+  <div class="special_div">
   <div class="row" style="margin-bottom:10px;">    
       <h2><?= anchor('artikel/detail/'.$val->url,$val->judul) ?></h2>
       <p>
@@ -71,6 +72,7 @@
   </div>
   <div class="row">  
     <a class="btn btn-default btn-xs" href="<?= base_url('artikel/detail').'/'.$val->url?>">Baca Lebih Lanjut &raquo;</a>    
+  </div>
   </div>
   <?php endforeach; ?>
 </div>

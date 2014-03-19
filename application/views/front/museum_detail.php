@@ -87,7 +87,7 @@
 		                <div class="modal-footer">
 		                    <button type="button" class="btn btn-primary pull-left prev">
 		                        <i class="glyphicon glyphicon-chevron-left"></i>
-		                        
+		                   
 		                    </button>
 		                    <button type="button" class="btn btn-primary next">
 		                        

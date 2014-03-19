@@ -46,6 +46,10 @@ class M_data extends CI_Model{
         return $data;
     }
 
+    function get_shelter_terdekat($intersect){
+        // intersect = array shelter
+    }
+
     // KUDU DIBENAKKE MANING
     function get_rute($shelter_user, $shelter_museum){
         $sql_jalur_from_user = "select kr.*, j.nama as jalur from koordinat_rute kr
@@ -93,6 +97,12 @@ class M_data extends CI_Model{
                             break;
                         }
                     }
+
+                    /*
+
+                        $shelter_intersect = $this->get_shelter_terdekat($intersect);
+                    $shelter_intersect_nama = $this->m_admin->get_shelter($shelter_intersect)->nama;
+                    */
                     $judul = $v1->jalur." - ".$v2->jalur;
                     $rangkaian_jalur = "Dari ".$v1->jalur." pindah ke ".$v2->jalur;
                     $jal_akhir = $v2->id_jalur;

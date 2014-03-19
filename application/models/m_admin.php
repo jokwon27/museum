@@ -457,4 +457,34 @@ class M_admin extends CI_Model {
                 where id_jalur = '".$id_jalur."' order by id";
         return $this->db->query($sql)->result();    
     }
+
+    function get_koordinat_rute_with_limit($id_jalur, $awal, $batas){
+        $q_awal = $this->db->where(array('id_jalur' => $id_jalur ,'id_shelter' => $awal))->get('koordinat_rute')->row();
+        $q_akhir = $this->db->where(array('id_jalur' => $id_jalur ,'id_shelter' => $batas))->get('koordinat_rute')->row();
+        $id_awal = '';
+        $id_akhir = '';
+
+        if(sizeof($q_awal) > 0){
+            $id_awal = " and id >= '".$q_awal->id."' ";
+        }
+
+        if(sizeof($q_akhir) > 0){
+            $id_akhir = "and id <= '".$q_akhir->id."'";
+        }
+
+        $sql = "select * from koordinat_rute
+                where id_jalur = '".$id_jalur."' ";
+        $order = " order by id";
+        //echo $sql.$id_awal.$id_akhir.$order;
+        $data =  $this->db->query($sql.$id_awal.$id_akhir.$order)->result();
+
+        if (sizeof($data) < 1) {
+            $data =  $this->db->query($sql.$id_awal.$order)->result();
+            $merge = $this->db->query($sql.$id_akhir.$order)->result();
+            $data = array_merge($data, $merge);
+            //echo print_r($data);
+        }
+
+        return $data;
+    }
 }

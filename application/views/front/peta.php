@@ -111,6 +111,7 @@
                 if (data.length > 0) {
                   $.each(data, function(i, v){
                       if (v.rute.length > 0) {
+                      //if (i == 0) {
                         $.each(v.rute, function(j, w){
                           addLatLngEdit(parseFloat(w.d), parseFloat(w.e), i);
                         });
@@ -159,6 +160,9 @@
     google.maps.event.addDomListener(window, 'load', initialize);
 
     function delete_all_map(){
+      poly.setMap(null);
+      poly2.setMap(null);
+
         var polyOptions = {
           strokeColor: '#FF0000',
           strokeOpacity: 1.0,

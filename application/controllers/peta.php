@@ -40,41 +40,38 @@ class Peta extends CI_Controller {
 
 
         
-        /*
-     	foreach ($rute as $key => $v) {
-     		if ($v->id_shelter !== $shelter_user) {
-     			unset($rute[$key]);
-     			break;
-     		}
-     	}*/
         if ($intersect === '0') {
             $intersect = $shelter_akhir;
         }
 
-        $data[0] = $this->get_koordinat_rute_detail($jalur_awal, $intersect);
-        if ($jalur_akhir !== '') {
-            $data[1] = $this->get_koordinat_rute_detail($jalur_akhir, $shelter_akhir);
+        $data[0] = $this->get_koordinat_rute_detail($jalur_awal, $shelter_awal, $intersect);
+        if ($jalur_akhir !== $jalur_awal) {
+            $data[1] = $this->get_koordinat_rute_detail($jalur_akhir, $intersect, $shelter_akhir);
+           // $data[1] = array();
         }
         
         die(json_encode($data));
 	}
 
-    private function get_koordinat_rute_detail($id_jalur, $batas){
-        $rute = $this->m_admin->get_koordinat_rute($id_jalur);
+    private function get_koordinat_rute_detail($id_jalur, $awal, $batas){
+        $rute = $this->m_admin->get_koordinat_rute_with_limit($id_jalur, $awal, $batas);
         $jalur_trans = array();
         $shelter = array();
-
+        //echo print_r($rute);
         foreach ($rute as $key => $val) {
             if ($key > 0) {
                 $shelter[] = $this->m_admin->get_shelter($val->id_shelter);
                 $relasi = $this->m_admin->get_relasi_shelter2($rute[$key - 1]->id_shelter, $val->id_shelter);
 
-                foreach (json_decode($relasi->jalur) as $key => $val2) {
-                    $jalur_trans[] = $val2;
+                if (sizeof($relasi) > 0) {
+                     foreach (json_decode($relasi->jalur) as $key => $val2) {
+                        $jalur_trans[] = $val2;
+                    }
                 }
+               
 
                 if ($val->id_shelter === $batas) {
-                    break;
+                    //break;
                 }
             }
         }

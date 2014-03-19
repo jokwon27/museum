@@ -1,6 +1,6 @@
 <title><?= $title ?></title>
 <div class="row">
-<div class="col-lg-8">
+<div class="col-lg-8 special_div">
   <?php foreach ($artikel as $key => $val):?>
   <div class="row" style="margin-bottom:10px;">    
       <h2><?= anchor('artikel/detail/'.$val->url,$val->judul) ?></h2>
