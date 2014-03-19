@@ -23,7 +23,9 @@ class Peta extends CI_Controller {
 
 	function get_rute($shelter_user, $shelter_museum){
 		// array
+        $jarak =  array();
         $data = array();
+        $nearest_jalur = null;
 		$jalur = $this->m_data->get_rute($shelter_user, $shelter_museum);
         $num = 0;
 		foreach ($jalur as $key => $value) {
@@ -32,13 +34,24 @@ class Peta extends CI_Controller {
             foreach ($jalur[$num]->rute_detail as $key2 => $value2) {
                 if (isset($value2->jarak_tempuh)) {
                     $jalur[$num]->jarak_tempuh += $value2->jarak_tempuh;
+                    $jarak[$num] = $value2->jarak_tempuh;
                 }
                 
                 //echo $value2->jarak_tempuh."<br/>";
             }
             $num++;
 		}
-		die(json_encode($jalur));
+
+        $near = 1000000;
+
+        foreach ($jarak as $key => $value) {
+            if (($value < $near) & ($value !== $near)) {
+                $nearest_jalur[0] = $jalur[$key];
+            }
+        }
+
+
+		die(json_encode($nearest_jalur));
 	}
 
 	private function get_rute_trans_jogja($shelter_awal, $shelter_akhir, $intersect, $jalur_awal, $jalur_akhir){

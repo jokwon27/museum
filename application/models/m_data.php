@@ -126,7 +126,8 @@ class M_data extends CI_Model{
                     $jal_akhir = '';
                 }
 
-                $jalur[] = (Object) array(
+                if($shelter_museum !== $shelter_intersect){
+                   $jalur[] = (Object) array(
                         'id_jalur_awal' => $v1->id_jalur,
                         'id_jalur_akhir' => $jal_akhir,
                         'id_shelter_awal' => $shelter_user,
@@ -140,7 +141,9 @@ class M_data extends CI_Model{
                         'rute_detail' => null,
                         'jarak_tempuh' => 0
 
-                );
+                    ); 
+                }
+                
                 $intersect = null;
                 $shelter_intersect = null;
                 $shelter_intersect_nama = '';
