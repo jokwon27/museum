@@ -27,7 +27,7 @@
 
 <title><?= $museum->nama ?></title>
 <div class="row">
-	<div class="col-lg-8">
+	<div class="col-lg-12">
 	    <h1><i class="fa fa-building-o"></i> <?= $museum->nama ?></h1>
 	    <hr>
 	    
@@ -102,13 +102,16 @@
 
 	</div>
 
+	<!--
 	<div class="col-lg-4">
 		<div class="well">
 		  <h4>Panel</h4>
 		  
-		</div><!-- /well -->
+		</div><!-- /well
+
 
 	</div>
+	 -->
 
 </div>
 <script src="<?= base_url() ?>assets/gallery/js/jquery.blueimp-gallery.min.js"></script>

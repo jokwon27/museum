@@ -45,8 +45,12 @@
                   });
                 }
                 
-                $('#judul_jalur').html(data.detail.nama);
-                $('#detail_jalur').html(data.detail.rute);
+                var str = '<div class="bs-callout bs-callout-info">'+
+                            '<h4><b>'+data.detail.nama+'</b></h4>'+
+                            '<dl><dd></dd><dt>'+data.detail.rute+'</dt></dl>'+
+                          '</div>';
+                
+                $('#detail_jalur').html(str);
             }
         });
     }
@@ -110,14 +114,7 @@
   <div class="col-lg-8">
     <div id="map-canvas" class="col-lg-12"></div>
     <div class="row"><br/><br/></div>
-    <h3>Nama Jalur : <span id="judul_jalur"></span></h3>
-    <p class="" style="align:justify" id="detail_jalur"></p>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
+    <div id="detail_jalur"></div>
   </div>
   
   

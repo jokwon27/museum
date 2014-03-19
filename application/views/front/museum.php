@@ -14,9 +14,16 @@
 
 	<div class="col-lg-4">
 	<div class="well">
-	  <h4>Panel</h4>
-	  
-	</div><!-- /well -->
+            <h4>Cari Museum</h4>
+            <form action="<?= base_url('museum')?>" method="get">
+            <div class="input-group">
+              <input type="text" class="form-control" name="pencarian">
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+              </span>
+            </div><!-- /input-group -->
+          </div>
+          </form>
 
 	</div>
 

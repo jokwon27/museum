@@ -20,7 +20,7 @@
   <div class="carousel-inner">
     <?php foreach($slide as $key => $value):?>
     <div class="item <?= ($key == 0)?'active':'' ?>">
-      <img src="<?= base_url('assets/img/slide/'.$value->gambar)?>" alt="<?= $value->alt ?>">
+      <img src="<?= base_url('assets/img/slide/'.$value->gambar)?>" alt="<?= $value->alt ?>" width="900" height="332">
       <div class="carousel-caption">
        <h3><?= $value->judul ?></h3>
        <p><?= $value->deskripsi ?></p>
@@ -42,23 +42,17 @@
 </div>
   </div>
   <div class="col-lg-4">
-    <h2>Sistem Informasi Museum</h2>
-    <h4>Daerah Istimewa Yogyakarta</h4>
+    <h2>Sistem Informasi Geografi</h2>
+    <h4>Museum Yogyakarta</h4>
     <br/>
-    <p>Deskripsi...... bla bla bla</p>
+    <p></p>
    
   </div>
 </div>
 
 <hr>
 
-<div class="row">
-  <div class="col-lg-12">
-    <div class="well text-center">
-      <marquee>Welcome!!!</marquee>
-    </div>
-  </div>
-</div>
+
 
 <div class="row">
 <div class="col-lg-8">
