@@ -1,3 +1,7 @@
+<link href="<?= base_url('assets/css/jquery.treetable.css') ?>" rel="stylesheet">
+<link href="<?= base_url('assets/css/jquery.treetable.theme.default.css') ?>" rel="stylesheet">
+<script type="text/javascript" src="<?= base_url('assets/js/jquery.treetable.js') ?>"></script>
+
 <title><?= $title ?></title>
 <div class="row">
 <div class="col-lg-8 special_div">
@@ -17,9 +21,28 @@
 
 <div class="col-lg-4">
   <div class="well">
-    <h4>Panel</h4>
+    <h4>Arsip</h4>
+    <table id="table_archive" class="table">
+      <?php foreach ($archive as $key => $value): ?>
+      <tr data-tt-id="<?= $key ?>">
+        <td><b><?= $value->nama_bulan ?> (<?= $value->jumlah ?>)</b></td>
+      </tr>
+      <?php $num = 0; foreach ($value->list_artikel as $key2 => $val): ?>
+        <tr data-tt-id="<?= $key."leaf".$num ?>" data-tt-parent-id="<?= $key ?>">
+          <td><?= anchor('artikel/detail/'.$val->url,$val->judul) ?></td>
+        </tr>
+      <?php $num++; endforeach; ?>
+    <?php endforeach; ?>
+      
+    </table>
     
   </div>
 </div>
 
 </div>
+
+<script type="text/javascript">
+  $(function(){
+    $("#table_archive").treetable({expandable:true}); 
+  });
+</script>

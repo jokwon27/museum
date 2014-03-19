@@ -23,6 +23,7 @@ class Artikel extends CI_Controller {
 		$data['page'] = 'artikel';
 		$artikel = $this->m_admin->artikel_get_data($this->limit, $start, null);
 		$data['artikel'] = $artikel['data'];
+		$data['archive'] = $this->m_data->get_artikel_archive();
 		$data['pagination'] = pagination_front($artikel['jumlah'], $this->limit, $page,'artikel');
 		$this->load->view('front/layout', $data);
 	}
@@ -34,6 +35,10 @@ class Artikel extends CI_Controller {
 		$this->load->view('front/layout', $data);
 	}
 	
+	function get_artikel_archive(){
+		$data = $this->m_data->get_artikel_archive();
+		die(json_encode($data));
+	}
 }
 
 /* End of file welcome.php */

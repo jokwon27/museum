@@ -172,6 +172,21 @@ class M_data extends CI_Model{
             $this->db->where('id', $rs->id)->update('relasi_shelter', $update);
         }
     }
+
+    function get_artikel_archive(){
+        $sql = "select month(waktu) as bulan , monthname(waktu) as nama_bulan,
+                 count(*) as jumlah , null as list_artikel
+                 from artikel
+                group by month(waktu)";
+        $archive = $this->db->query($sql)->result();
+
+        foreach ($archive as $key => $value) {
+            $sql2 = "select url, judul from artikel where month(waktu) = '".$value->bulan."' ";
+            $archive[$key]->list_artikel = $this->db->query($sql2)->result();
+        }
+
+        return $archive;
+    }
 }
 
 ?>

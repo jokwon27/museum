@@ -16,18 +16,24 @@ class Museum extends CI_Controller {
 		}else{
 			$page = 1;
 		}
+		$nama = '';
+		$page_nama = '';
+		if (isset($_GET['pencarian'])) {
+			$nama = get_safe('pencarian');
+			$page_nama = '&pencarian='.$nama;
+		}
 
 		$search = array(
-				'nama' => (isset($_GET['pencarian'])?get_safe('pencarian'):'')
+				'nama' => $nama
 			);
-		
+
 		$start = ($page - 1) * $this->limit;
 
 		$data['title'] = 'Museum';
 		$data['page'] = 'museum';
 		$museum = $this->m_admin->museum_get_data($this->limit, $start, $search);
 		$data['museum'] = $museum['data'];
-		$data['pagination'] = pagination_front($museum['jumlah'], $this->limit, $page,'museum');
+		$data['pagination'] = pagination_front($museum['jumlah'], $this->limit, $page,'museum', $page_nama);
 		$this->load->view('front/layout', $data);
 	}
 

@@ -635,21 +635,21 @@ function pagination($jmldata, $dataPerPage, $klik, $tab = NULL, $search = NULL) 
     return $buffer;
 }
 
-function pagination_front($total_data, $limit, $page, $url){
+function pagination_front($total_data, $limit, $page, $url, $search = null){
     $str = '';
     $total_page = ceil($total_data/$limit);
 
-    $first = '<li><a href="'. base_url($url.'?page=1').'" >First</a></li>';
-    $last = '<li><a href="'. base_url($url.'?page=').$total_page.'" >Last</a></li>';
+    $first = '<li><a href="'. base_url($url.'?page=1').$search.'" >First</a></li>';
+    $last = '<li><a href="'. base_url($url.'?page=').$total_page.$search.'" >Last</a></li>';
     $click_prev = '';
     if ($page > 1) {
-        $click_prev = base_url($url.'?page=').($page-1);
+        $click_prev = base_url($url.'?page=').($page-1).$search;
     }
     $prev = '<li><a href="'.$click_prev.'">&laquo;</a></li>';
     
     $click_next = '';
     if ($page < $total_page) {
-        $click_next = base_url($url.'?page=').($page+1);
+        $click_next = base_url($url.'?page=').($page+1).$search;
     }
     $next = '<li><a href="'.$click_next.'">&raquo;</a></li>';
 
@@ -668,10 +668,10 @@ function pagination_front($total_data, $limit, $page, $url){
 
     for ($p = $start; $p <= $finish; $p++) {
         if ($p == $page) {
-            $page_numb .= '<li class="active" href="'.base_url($url.'?page=').$p.'"><a>'.$p.'</a></li>';
+            $page_numb .= '<li class="active" href="'.base_url($url.'?page=').$p.$search.'"><a>'.$p.'</a></li>';
             
         }else{
-            $page_numb .= '<li><a href="'.base_url($url.'?page=').$p.'">'.$p.'</a></li>';
+            $page_numb .= '<li><a href="'.base_url($url.'?page=').$p.$search.'">'.$p.'</a></li>';
         }
        
     }
