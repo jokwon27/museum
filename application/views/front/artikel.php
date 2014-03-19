@@ -20,17 +20,22 @@
 </div>
 
 <div class="col-lg-4">
-  <div class="well">
+  <div class="well" style="min-height:550px;">
     <h4>Arsip</h4>
     <table id="table_archive" class="table">
       <?php foreach ($archive as $key => $value): ?>
       <tr data-tt-id="<?= $key ?>">
-        <td><b><?= $value->nama_bulan ?> (<?= $value->jumlah ?>)</b></td>
+        <td><b><?= $value->tahun ?> (<?= $value->jumlah ?>)</b></td>
       </tr>
-      <?php $num = 0; foreach ($value->list_artikel as $key2 => $val): ?>
-        <tr data-tt-id="<?= $key."leaf".$num ?>" data-tt-parent-id="<?= $key ?>">
-          <td><?= anchor('artikel/detail/'.$val->url,$val->judul) ?></td>
+      <?php $num = 0; foreach ($value->list_bulan as $key2 => $val): ?>
+        <tr data-tt-id="<?= $key."bulan".$num ?>" data-tt-parent-id="<?= $key ?>">
+          <td><b><?= $val->nama_bulan ?> (<?= $val->jumlah ?>)</b></td>
         </tr>
+          <?php $num2 = 0; foreach ($val->list_artikel as $key2 => $v): ?>
+          <tr data-tt-id="<?= $key."artikel".$num2 ?>" data-tt-parent-id="<?= $key."bulan".$num ?>">
+            <td><?= anchor('artikel/detail/'.$v->url,$v->judul) ?></td>
+          </tr>
+          <?php $num2++; endforeach; ?>
       <?php $num++; endforeach; ?>
     <?php endforeach; ?>
       

@@ -174,18 +174,44 @@ class M_data extends CI_Model{
     }
 
     function get_artikel_archive(){
-        $sql = "select month(waktu) as bulan , monthname(waktu) as nama_bulan,
-                 count(*) as jumlah , null as list_artikel
+        $sql = "select year(waktu) as tahun,
+                 count(*) as jumlah , null as list_bulan
                  from artikel
-                group by month(waktu)";
+                group by year(waktu)";
+
         $archive = $this->db->query($sql)->result();
 
-        foreach ($archive as $key => $value) {
-            $sql2 = "select url, judul from artikel where month(waktu) = '".$value->bulan."' ";
-            $archive[$key]->list_artikel = $this->db->query($sql2)->result();
+        foreach ($archive as $k => $v) {
+            $sql_month = "select month(waktu) as bulan , monthname(waktu) as nama_bulan,
+                 count(*) as jumlah , null as list_artikel
+                 from artikel 
+                 where year(waktu) = '".$v->tahun."'
+                group by month(waktu)";
+            $archive[$k]->list_bulan = $this->db->query($sql_month)->result();
+
+            foreach ($archive[$k]->list_bulan as $key => $value) {
+                $sql2 = "select url, judul from artikel where month(waktu) = '".$value->bulan."' ";
+                $archive[$k]->list_bulan[$key]->list_artikel = $this->db->query($sql2)->result();
+            }
+
         }
 
+        
+
         return $archive;
+    }
+
+    function update_hit($table, $url){
+        $data = $this->db->where('url', $url)->get($table)->row();
+
+        $hit = 0;
+        if ($data !== null) {
+            $hit = $data->hit;
+        }
+        
+        $update = array('hit'=> ++$hit);
+        $this->db->where('url', $url)->update($table, $update);
+
     }
 }
 

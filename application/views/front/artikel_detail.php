@@ -1,3 +1,8 @@
+<?php 
+  if (!isset($artikel)) {
+    die();
+  }
+?>
 <title><?= $artikel->judul ?></title>
 <div class="row">
 	  <div class="col-lg-12">

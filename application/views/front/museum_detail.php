@@ -1,3 +1,8 @@
+<?php 
+	if (!isset($museum)) {
+		die();
+	}
+?>
 <style type="text/css">
   #map-canvas { width:300px;height: 250px; }
 </style>

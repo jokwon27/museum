@@ -31,8 +31,14 @@ class Artikel extends CI_Controller {
 
 	function detail($url = null){
 		$data['page'] = 'artikel_detail';
-		$data['artikel'] = $this->m_data->get_artikel_by_url($url);
+		if ($url !== null) {
+			$data['artikel'] = $this->m_data->get_artikel_by_url($url);
+			$this->m_data->update_hit('artikel', $url);
+		}
+
 		$this->load->view('front/layout', $data);
+		
+		
 	}
 	
 	function get_artikel_archive(){
