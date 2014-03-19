@@ -15,7 +15,7 @@ class Nav extends CI_Controller {
 		$data['page'] = 'home';
 		$data['title'] = 'Home';
 		$data['slide'] = $this->m_configuration->load_home_slide();
-		$artikel = $this->m_admin->artikel_get_data(3, 0, null);
+		$artikel = $this->m_admin->artikel_get_data(6, 0, null);
 		$data['artikel'] = $artikel['data'];
 		$this->load->view('front/layout', $data);
 	}
