@@ -8,6 +8,7 @@
     var mylat = -7.774735;
     var mylong = 110.369164;
     var poly, poly2;
+    var rute_array = [];
 
     var myposition = null;// new google.maps.LatLng(mylat, mylong);
     var map;
@@ -96,43 +97,25 @@
       path.push(new google.maps.LatLng(lat,longi));
     }
 
-    function draw_path_shelter(jalur_awal, jalur_akhir, intersect){
+    function draw_path_shelter(index, nama, latitude,longitude){
+      var location = new google.maps.LatLng(latitude,
+                                           longitude);
+      hapus_shelter(null, 4);
+      if (nama !== 'undefined') {
+        shelterMarker(0, location, 'Shelter Oper : '+nama);
+      };
+      
+
       delete_all_map();
-      var shelter_user = $('#shelter_choice').val();
-      var shelter_museum = $('#museum_choice').val();
-      $.ajax({
-            type : 'GET',
-            url: '<?= base_url("peta/get_rute_trans_jogja") ?>/',
-            data: 'shelter_awal='+shelter_user+'&shelter_akhir='+shelter_museum+'&jalur_awal='+jalur_awal+'&jalur_akhir='+jalur_akhir+'&intersect='+intersect,
-            dataType: 'json',
-            cache: false,
-            success: function(data) {
-                
-                if (data.length > 0) {
-                  $.each(data, function(i, v){
-                      if (v.rute.length > 0) {
-                      //if (i == 0) {
-                        $.each(v.rute, function(j, w){
-                          addLatLngEdit(parseFloat(w.d), parseFloat(w.e), i);
-                        });
-                      };
-                      
-                  });
-
-                }else{
-                  alert('Tidak Ada Rute');
-                }        
-                /*
-                if(data.shelter.length > 0){
-                  $.each(data.shelter, function(i, v){
-                    var location = new google.maps.LatLng(v.latitude, v.longitude);
-                    shelterMarker(v.id, location, v.nama);
-
-                  });
-                }         
-                */
-            }
-        });
+      $.each(rute_array[index], function(i, v){
+        if (v.rute.length > 0) {
+        //if (i == 0) {
+          $.each(v.rute, function(j, w){
+            addLatLngEdit(parseFloat(w.d), parseFloat(w.e), i);
+          });
+        };
+        
+    });
     }
 
     function placeMarker(location, judul) {
@@ -145,7 +128,7 @@
         markers.push(marker);
     }
 
-    function  shelterMarker(id, location, judul ) {
+    function shelterMarker(id, location, judul ) {
         var marker = new google.maps.Marker({
             position: location, 
             map: map,
@@ -181,6 +164,7 @@
     }
 
     $(function(){
+      shelter_terdekat_user();
       $('#cari_rute').click(function(){
         var id_sm = $('#museum_choice').val();
         var id_su = $('#shelter_choice').val();
@@ -203,36 +187,21 @@
             cache: false,
             success: function(data) {
               $('#museum').attr('disabled', 'disabled');
-              $('#list_jalur').empty();
+              
               $.each(data, function(i, v){
-                  var str = '<div class="panel panel-default">'+
-                              '<div class="panel-heading">'+
-                                '<h4 class="panel-title">'+
-                                  '<a data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'">'+
-                                     v.judul+
-                                  '</a>'+
-                                '</h4>'+
-                              '</div>'+
-                              '<div id="collapse'+i+'" class="panel-collapse collapse">'+
-                                '<div class="panel-body">'+
-                                  '<button onclick="draw_path_shelter('+((v.id_jalur_awal !== '')?v.id_jalur_awal:'0')+', '+((v.id_jalur_akhir !== '')?v.id_jalur_akhir:'0')+', '+((v.intersect !== null)?v.intersect:'0')+')" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> Tampilkan Rute</button><br/>'+
-                                  '<dl>'+
-                                    '<dt>Rute</dt>'+
-                                    '<dd>'+v.rangkaian_jalur+'</dd>'+
-                                  '</dl>'+
-                                  '<dl>'+
-                                    '<dt>Pindah Shelter</dt>'+
-                                    '<dd>'+v.titik_oper+'</dd>'+
-                                  '</dl>'+
-                                  '<dl>'+
-                                    '<dt>...</dt>'+
-                                    '<dd>...</dd>'+
-                                  '</dl>'+'<dl>'+
-                                    '<dt>...</dt>'+
-                                    '<dd>...</dd>'+
-                                  '</dl>'+
-                                '</div>'+
-                              '</div>'+
+                  rute_array[i] = v.rute_detail;
+                  var oper = '<br/>Saat sampai di <b>'+v.titik_oper.nama+'</b> anda pindah ke <b>'+v.jalur_akhir+'</b></dd>'
+                  var str = '<div class="bs-callout bs-callout-info">'+
+                              '<h4><strong>'+v.judul+'</strong></h4>'+
+                              '<dl class="dl-horizontal">'+
+                                '<dt>Rute</dt>'+
+                                '<dd>Anda naik <b>'+v.jalur_awal+'</b>'+
+                                ((v.intersect !== null)?oper:'')+
+                                '<dt>Jarak Tempuh</dt>'+
+                                '<dd><b>'+v.jarak_tempuh+' Km</b></dd>'+
+                                '<dt></dt>'+
+                                '<dd><button class="btn btn-primary btn-xs" onclick="draw_path_shelter('+i+',\''+v.titik_oper.nama+'\',\''+v.titik_oper.latitude+'\',\''+v.titik_oper.longitude+'\')"><i class="fa fa-eye"></i> Tampilkan Rute</button></dd>'+
+                              '</dl>'+
                             '</div>';
                   $('#accordion').append(str);
               });
@@ -293,7 +262,6 @@
                $('#shelter_choice').append(str);
             });
             
-             $('#user_dekat').attr('disabled','disabled');
           }
       });
 
@@ -338,13 +306,14 @@
     }
 
     function reset_data(){
+      shelter_terdekat_user();
       hapus_marker(null,0);
       hapus_marker(null, 1);
       hapus_shelter(null, 0);
       hapus_shelter(null, 1);
       $('input[name=id_museum]').val('');
       initialize();
-      $('#user_dekat, #museum').removeAttr('disabled');
+      $('#museum').removeAttr('disabled');
       $('#museum').val('');
       $('#accordion, #shelter_choice, #museum_choice').empty();
     }
@@ -356,21 +325,12 @@
   <div id="map-canvas" class="col-lg-8"></div>
   
   <div class="col-lg-4" >
-    <div class="well" style="height:550px;">
+    <div class="well" style="min-height:550px;">
       <h4>Pencarian Rute Museum</h4>
       <br/>
-      <strong>Cari Shelter Terdekat</strong>
-      <br/>
-      <br/>
-      <button class="btn btn-primary" onclick="shelter_terdekat_user()" id="user_dekat"><i class="fa fa-search"></i> Cari Shelter</button>
-      <br/>
-      <hr style="border-bottom:1px solid #999;" /> 
-      <br/>
-      <strong>Pilih Museum</strong>
-      
+      <strong>Pilih Museum</strong>      
       <?= form_input('museum','','class="form-control" id=museum')?>
       <input type="hidden" id="id_museum"/>
-      <br/>
       <hr style="border-bottom:1px solid #999;" /> 
       <strong>Shelter Terdekat dengan user</strong>
       <?= form_dropdown('shelter', array(), array(), 'id=shelter_choice class=form-control') ?>
@@ -379,7 +339,7 @@
       <?= form_dropdown('museum', array(), array(), 'id=museum_choice class=form-control') ?>
       <br/>
       <button class="btn btn-primary" id="cari_rute"><i class="fa fa-search"></i> Cari Rute</button>
-      <button class="btn btn-default" onclick="reset_data()" id="user_dekat"><i class="fa fa-refresh"></i> Ulang Pencarian</button>
+      <button class="btn btn-default" onclick="reset_data()"><i class="fa fa-refresh"></i> Ulang Pencarian</button>
       
     </div><!-- /well -->
 
@@ -389,11 +349,7 @@
   <div class="col-lg-8">
     <h3>Alternatif Jalur Trans Jogja</h3>
     <hr/>
-
-    <div class="panel-group" id="accordion">
-      
-
-    </div>
+    <div id="accordion"></div>
 
   </div>
 

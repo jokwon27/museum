@@ -46,8 +46,30 @@ class M_data extends CI_Model{
         return $data;
     }
 
-    function get_shelter_terdekat($intersect){
+    function get_shelter_terdekat($intersect, $id_shelter_tujuan ){
+        $near = 1000000;
+        $shelter_intersect = 0;
         // intersect = array shelter
+        
+        $tujuan = $this->m_admin->get_shelter($id_shelter_tujuan);
+        $num = 0;
+        foreach ($intersect as $key => $val) {
+            if($key > 0){
+                $shelter = $this->m_admin->get_shelter($val);
+
+                $selisih = sqrt(pow(((double)$tujuan->longitude - (double)$shelter->longitude), 2) + pow(((double)$tujuan->latitude - (double)$shelter->latitude), 2)) * 100;
+
+                 if($selisih < $near){
+                    $near = $selisih;
+                    $shelter_intersect = $val;
+                 }
+
+            }
+
+             $num++;
+        }
+
+        return $shelter_intersect;
     }
 
     // KUDU DIBENAKKE MANING
@@ -90,19 +112,11 @@ class M_data extends CI_Model{
 
                     $intersect = array_intersect($rute1, $rute2);
                     $shelter_intersect_nama = '';
-                    foreach ($intersect as $key => $value) {
-                        if ($value !== $shelter_museum) {
-                            $shelter_intersect = $value;
-                            $shelter_intersect_nama = $this->m_admin->get_shelter($value)->nama;
-                            break;
-                        }
-                    }
+            
 
-                    /*
-
-                        $shelter_intersect = $this->get_shelter_terdekat($intersect);
-                    $shelter_intersect_nama = $this->m_admin->get_shelter($shelter_intersect)->nama;
-                    */
+                    $shelter_intersect = $this->get_shelter_terdekat($intersect, $shelter_museum);
+                    $shelter_intersect_nama = $this->m_admin->get_shelter($shelter_intersect);
+                    
                     $judul = $v1->jalur." - ".$v2->jalur;
                     $rangkaian_jalur = "Dari ".$v1->jalur." pindah ke ".$v2->jalur;
                     $jal_akhir = $v2->id_jalur;
@@ -112,15 +126,19 @@ class M_data extends CI_Model{
                     $jal_akhir = '';
                 }
 
-                $jalur[] = array(
+                $jalur[] = (Object) array(
                         'id_jalur_awal' => $v1->id_jalur,
                         'id_jalur_akhir' => $jal_akhir,
+                        'id_shelter_awal' => $shelter_user,
+                        'id_shelter_akhir' => $shelter_museum,
                         'jalur_awal' => $v1->jalur,
                         'jalur_akhir' => $v2->jalur,
                         'titik_oper' => $shelter_intersect_nama,
                         'intersect' => $shelter_intersect,
                         'rangkaian_jalur' => $rangkaian_jalur,
-                        'judul' => $judul
+                        'judul' => $judul,
+                        'rute_detail' => null,
+                        'jarak_tempuh' => 0
 
                 );
                 $intersect = null;
@@ -131,6 +149,28 @@ class M_data extends CI_Model{
         }
         return $jalur;
         
+    }
+
+    function count_jarak(){
+        $relasi_shelter = $this->db->get('relasi_shelter')->result();
+        $jarak = 0;
+        foreach ($relasi_shelter as $key => $rs) {
+            $jarak = 0;
+            $jalur = json_decode($rs->jalur);
+            foreach ( $jalur as $key2 => $koord) {
+                if ($key2 > 0) {
+                    $selisih = sqrt(pow(( $jalur[$key2-1]->e - $koord->e), 2) + pow(($jalur[$key2-1]->d - $koord->d), 2)) * 100;
+                    
+                    $jarak += $selisih;
+                    
+                }
+            }
+
+            // update jarak
+
+            $update = array('jarak' => round($jarak, 1) );
+            $this->db->where('id', $rs->id)->update('relasi_shelter', $update);
+        }
     }
 }
 
