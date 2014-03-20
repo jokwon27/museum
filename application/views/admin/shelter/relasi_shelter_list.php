@@ -16,8 +16,8 @@
 		<td><?= $value->shelter_tujuan ?></td>
 		<td><?= ''?></td>
 		<td align="right">
-			<button type="button" class="btn btn-default btn-xs" onclick="edit_relasi_shelter('<?= $value->id ?>')">
-				<span class="fa fa-pencil"></span> Edit Relasi Shelter
+			<button type="button" class="btn btn-default btn-xs" onclick="preview_relasi_shelter('<?= $value->id ?>')">
+				<span class="fa fa-eye"></span> Preview Relasi Shelter
 			</button>
 			<button type="button" class="btn btn-default btn-xs" onclick="delete_relasi_shelter('<?= $value->id ?>')">
 				<span class="fa fa-trash-o"></span> Hapus

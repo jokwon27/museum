@@ -1,11 +1,14 @@
 <style type="text/css">
   #map-shelter {height: 500px; }
+  #prev-map {height: 500px; }
 </style>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABJD9IIW_lEgd8azMKO4YS-GfF7T7weuk&sensor=false"></script>
 <script type="text/javascript">
-    var markers1 = null, markers2 = null;
+    var markers1 = null, markers2 = null, markers3 = null, markers4 = null;
     var poly = null;
+    var poly2 = null;
     var map = {};
+    var map2 = {};
     var koord = '';
     var thecenter = new google.maps.LatLng(-7.783069238887897,110.36760125309229);
     function initialize() {
@@ -32,7 +35,29 @@
         map.controls[google.maps.ControlPosition.TOP_RIGHT].push(delControlDiv);
 
     }
+
+    function initialize_preview() {
+        var mapOptions = {
+            zoom: 16,
+            center: thecenter
+        };
+
+        map2 = new google.maps.Map(document.getElementById('prev-map'), mapOptions);
+  
+
+        var polyOptions = {
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        };
+        poly2 = new google.maps.Polyline(polyOptions);
+        poly2.setMap(map2);
+
+
+    }
+
     google.maps.event.addDomListener(window, 'load', initialize);
+    //google.maps.event.addDomListener(window, 'load', initialize_preview);
     function placeMarker(location, index) {
         var marker = new google.maps.Marker({
             position: location, 
@@ -52,6 +77,26 @@
             google.maps.event.addListener(markers2, 'click', addKoord);
         }
     }
+
+    function placeMarkerPreview(location, index) {
+        var marker = new google.maps.Marker({
+            position: location, 
+            map: map2,
+            icon : '<?= base_url("assets/img/bus.png") ?>'
+        });
+        if (index == 1) {
+            if (markers3 !== null) {
+                markers3.setMap(null);
+            };
+            markers3 = marker;
+        }else{
+            if (markers4 !== null) {
+                markers4.setMap(null);
+            };
+            markers4 = marker;
+        }
+    }
+
     function addKoord(event) {
       var path = poly.getPath();
       koord = JSON.stringify(path.getArray());
@@ -291,26 +336,29 @@
         });
     }
 
-    function edit_relasi_shelter(id){
+
+    function preview_relasi_shelter(id){
+        initialize_preview();
         $.ajax({
             type : 'GET',
             url: '<?= base_url("admin/relasi_shelter_data") ?>/'+id,
             dataType: 'json',
             cache: false,
             success: function(data) {
-                $('input[name=id]').val(data.id);
-                $('#nama').val(data.nama);
-                $('#longitude').val(data.longitude);
-                $('#latitude').val(data.latitude);
-
+                /*
                 var shelterCoord = new google.maps.LatLng(data.latitude,data.longitude);
-                placeMarker(shelterCoord);
-                map.setCenter(shelterCoord);
-                $('#judul_dialog').html('Edit');
-                $('#form_tambah').modal('show');
+                placeMarkerPreview(shelterCoord, 0);
+                map2.setCenter(shelterCoord);
+                */
+
+                $.each(JSON.parse(data.jalur) ,function(i, v){
+                    var path = poly2.getPath();               
+                    path.push(new google.maps.LatLng(v.d,v.e));
+                });
+
+                $('#form_preview').modal('show');
             }
         });
-        
     }
     
 
@@ -376,7 +424,6 @@
 </div>
 
 <div id="form_tambah" class="modal fade">
-     
     <div class="modal-dialog" style="width:90%; height:100%;">
         <div class="modal-content">
           <div class="modal-header">
@@ -416,6 +463,30 @@
             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-refresh"></i> Batal</button>
             <button type="button" class="btn btn-primary" id="bt_save" onclick="save_data()"><i class="fa fa-save"></i> Simpan</button>
           </div>  
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+  
+</div><!-- /.modal -->
+
+
+<div id="form_preview" class="modal fade">
+     
+    <div class="modal-dialog" style="width:90%; height:100%;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title"><span id="judul_dialog"></span> Preview Jalur Antar Shelter</h4>
+          </div>
+            <div class="modal-body body-fit">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="prev-map"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-check"></i> OK</button>
+            </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
   

@@ -181,6 +181,7 @@
     }
 
 
+
     function get_shelter_list(p){
         $.ajax({
             type : 'GET',

@@ -420,9 +420,16 @@
             <label class="col-sm-2 control-label">Tumbnail</label>
             <div class="col-sm-6">
                 <input type="file" name="tumbnail" id="tumbnail" size="20" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-6">
                 <input type="submit" name="submit" id="submit" value="Upload" />
             </div>
         </div>
+
+
         </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-refresh"></i> Batal</button>
