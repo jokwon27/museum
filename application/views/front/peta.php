@@ -110,11 +110,11 @@
 
       delete_all_map();
       $.each(rute_array[index], function(i, v){
-        if (v.rute.length > 0) {
-        //if (i == 0) {
+        if (typeof(v.rute) !== 'undefined') {
           $.each(v.rute, function(j, w){
             addLatLngEdit(parseFloat(w.d), parseFloat(w.e), i);
           });
+
         };
         
     });

@@ -18,6 +18,7 @@ class Nav extends CI_Controller {
 		$artikel = $this->m_admin->artikel_get_data(6, 0, null);
 		$data['artikel'] = $artikel['data'];
 		$this->m_data->add_visitor();
+		$data['artikel_populer'] = $this->m_admin->artikel_populer();
 		$this->load->view('front/layout', $data);
 	}
 

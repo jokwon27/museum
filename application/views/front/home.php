@@ -73,9 +73,19 @@
 
 <div class="col-lg-4">
   <div class="well">
-    <h4>Panel</h4>
-    
-  </div>
+            <h4>Artikel Populer</h4>
+              <div class="row">
+                <div class="col-lg-12">
+                  <ul class="list-unstyled">
+                    <?php foreach ($artikel_populer as $key => $value): ?>
+                      <li><a href="<?= base_url('artikel/detail').'/'.$value->url ?>"><?= $value->judul ?></a></li>
+                    <?php endforeach; ?>
+                    
+                 
+                  </ul>
+                </div>
+              </div>
+          </div>
 </div>
 
 </div>

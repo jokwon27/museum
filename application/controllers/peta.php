@@ -41,17 +41,19 @@ class Peta extends CI_Controller {
             }
             $num++;
 		}
-
+        /* */
         $near = 1000000;
-
+        
         foreach ($jarak as $key => $value) {
             if (($value < $near) & ($value !== $near)) {
+                $near = $value;
                 $nearest_jalur[0] = $jalur[$key];
             }
         }
-
+        
 
 		die(json_encode($nearest_jalur));
+        //die(json_encode($jalur));
 	}
 
 	private function get_rute_trans_jogja($shelter_awal, $shelter_akhir, $intersect, $jalur_awal, $jalur_akhir){

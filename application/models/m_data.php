@@ -62,6 +62,9 @@ class M_data extends CI_Model{
         
         $tujuan = $this->m_admin->get_shelter($id_shelter_tujuan);
         $num = 0;
+        if($id_shelter_tujuan == '24'){
+            echo print_r($intersect);
+        }
         foreach ($intersect as $key => $val) {
             if($key > 0){
                 $shelter = $this->m_admin->get_shelter($val);
@@ -121,7 +124,11 @@ class M_data extends CI_Model{
 
                     $intersect = array_intersect($rute1, $rute2);
                     $shelter_intersect_nama = '';
-            
+                    
+                    foreach ($intersect as $key => $value) {
+                        $shelter_intersect = $value;
+                        break;
+                    }
 
                     $shelter_intersect = $this->get_shelter_terdekat($intersect, $shelter_museum);
                     $shelter_intersect_nama = $this->m_admin->get_shelter($shelter_intersect);
