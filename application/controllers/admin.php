@@ -93,6 +93,10 @@ class Admin extends CI_Controller {
         $this->cek();
         $data['title'] = 'Home';
         $data['page'] = 'home';
+        $data['total_artikel'] = $this->db->get('artikel')->num_rows();
+        $data['total_museum'] = $this->db->get('museum')->num_rows();
+        $data['museum_populer'] = $this->m_admin->museum_populer();
+        $data['artikel_populer'] = $this->m_admin->artikel_populer();
 		$this->show_dashboard($data);
 	}
     
@@ -411,6 +415,19 @@ class Admin extends CI_Controller {
     }
 
     /* Relasi Shelter */
+
+    function get_total_pengunjung() {
+        $date   = mktime(0, 0, 0, date("m"), date("d")-7, date("Y"));
+        $start  = date("Y-m-d", $date);
+        $result = $this->m_admin->get_visitor($start)->result();
+        $data   = array();
+        $juml   = array();
+        foreach ($result as $hasil) {
+            $data[] = indo_tgl_graph($hasil->MyJoinDate);
+            $juml[] = (int)$hasil->jumlah;
+        }
+        die(json_encode(array('tanggal' => $data, 'jumlah' => $juml)));
+    }
 
     
 	

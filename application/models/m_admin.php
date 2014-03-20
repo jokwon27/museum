@@ -487,4 +487,37 @@ class M_admin extends CI_Model {
 
         return $data;
     }
+
+    function museum_populer(){
+        $sql = "select * from museum order by hit desc limit 0, 5";
+
+        return $this->db->query($sql)->result();
+    }
+
+    function artikel_populer(){
+        $sql = "select * from artikel order by hit desc limit 0, 5";
+
+        return $this->db->query($sql)->result();
+    }
+
+    function get_visitor($awal){
+        $sql = "
+            select
+            AllDaysYouWant.MyJoinDate,
+            count( date(waktu) ) as jumlah
+            from
+            ( select
+                    @curDate := Date_Add(@curDate, interval 1 day) as MyJoinDate
+                 from
+                    ( select @curDate := '$awal' ) sqlvars,
+                    visitor_counter
+                 limit 7 ) AllDaysYouWant
+            LEFT JOIN visitor_counter p
+               on AllDaysYouWant.MyJoinDate = date(p.waktu)
+            group by
+            AllDaysYouWant.MyJoinDate
+        ";
+        return $this->db->query($sql);
+    }
+
 }

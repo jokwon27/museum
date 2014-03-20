@@ -1,6 +1,15 @@
 <?php
 
 class M_data extends CI_Model{
+
+    function add_visitor(){
+        $data = array(
+                'waktu' =>  date('Y-m-d H:i:s')
+            );
+
+        $this->db->insert('visitor_counter', $data);
+    }
+
 	function get_artikel_by_url($url){
         $sql = "select a.*, u.username, m.nama as museum, m.url as url_museum
         	from artikel a

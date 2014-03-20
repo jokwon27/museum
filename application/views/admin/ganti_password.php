@@ -51,30 +51,30 @@
 		};
 	}
 </script>
-<div class="col-sm-6">
+<div class="col-lg-6">
 	<?= form_open("","id=form")?>
 	<input type="hidden" name="id_user" id="id_user" value="<?= $id_user ?>">
 	<div class="form-group">
-	    <label class="col-sm-4 control-label">Password Lama</label>
-	    <div class="col-sm-8">
+	    <label class="col-lg-4 control-label">Password Lama</label>
+	    <div class="col-lg-8">
 	    <?= form_password('lama','','class="form-control myinput" id=lama onkeyup=cek_password()')?>
 	    </div>
 	</div>
 	<div class="form-group">
-	    <label class="col-sm-4 control-label">Password Baru</label>
-	    <div class="col-sm-8">
+	    <label class="col-lg-4 control-label">Password Baru</label>
+	    <div class="col-lg-8">
 	    <?= form_password('baru','','class="form-control myinput" id=baru')?>
 	    </div>
 	</div>
 	<div class="form-group">
-	    <label class="col-sm-4 control-label">Confirm Password Baru</label>
-	    <div class="col-sm-8">
+	    <label class="col-lg-4 control-label">Confirm Password Baru</label>
+	    <div class="col-lg-8">
 	    <?= form_password('confirm','','class="form-control myinput" id=confirm onkeyup=konfirmasi()')?>
 	    </div>
 	</div>
 	<div class="form-group">
-	    <label class="col-sm-4 control-label"></label>
-	    <div class="col-sm-8">
+	    <label class="col-lg-4 control-label"></label>
+	    <div class="col-lg-8">
 	    	<button class="btn btn-primary" id="bt_simpan"><i class="fa fa-save"></i> Simpan</button>
 	    	<button class="btn btn-default" id="bt_reset"><i class="fa fa-refresh"></i> Reset</button>
 	    </div>

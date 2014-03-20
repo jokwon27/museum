@@ -42,10 +42,10 @@
 </div>
   </div>
   <div class="col-lg-4">
-    <h2>Sistem Informasi Geografi</h2>
+    <h3>Sistem Informasi Geografi</h3>
     <h4>Museum Yogyakarta</h4>
     <br/>
-    <p></p>
+    <p>"Daerah Istimewa setingkat provinsi di Indonesia yang merupakan peleburan Negara Kesultanan Yogyakarta dan Negara Kadipaten Paku Alaman. Daerah dengan kultur budaya lengkap dengan sejarah menjadikan museum sebagai destinasi wisata yang sangat cocok di sini. Terdapat banyak museum yang dapat dikunungi dan kami menghadirkan sistem informasi geografis museum sebagai sarana pendukung untuk pencarian lokasi museum sebagai tempat tujuan anda"</p>
    
   </div>
 </div>

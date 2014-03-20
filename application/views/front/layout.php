@@ -34,7 +34,7 @@
             <span class="icon-bar"></span>
           </button>
           <!-- You'll want to use a responsive image option so this logo looks good on devices - I recommend using something like retina.js (do a quick Google search for it and you'll find it) -->
-          <a class="navbar-brand logo-nav" href="<?= base_url()?>"><img src="<?= base_url('assets/img/maps-icon.png')?>" width="64" height="64"> SIG Museum Yogyakarta</a>
+          <a class="navbar-brand logo-nav" href="<?= base_url()?>"><img src="<?= base_url('assets/img/maps-icon.png')?>" width="64" height="64"> <b style="font-size:25px;">SIG Museum Yogyakarta</b></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -58,7 +58,7 @@
       ?>
       
       
-      <footer style="background:#ffffff;">
+      <footer style="background:#ffff;">
         <hr>
         <div class="row">
           <div class="col-lg-12">
