@@ -51,11 +51,13 @@
           mylat = position.coords.latitude;
           mylong =position.coords.longitude;
           map.setCenter(pos);
+          shelter_terdekat_user();
         }, function() {
          // handleNoGeolocation(true);
           var pos = new google.maps.LatLng(mylat, mylong);
           placeMarker(pos, 'Lokasi Anda');
           map.setCenter(pos);
+          shelter_terdekat_user();
         });
       } else {
         // Browser doesn't support Geolocation
@@ -164,7 +166,7 @@
     }
 
     $(function(){
-      shelter_terdekat_user();
+      
       $('#cari_rute').click(function(){
         var id_sm = $('#museum_choice').val();
         var id_su = $('#shelter_choice').val();
