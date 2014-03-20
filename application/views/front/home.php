@@ -45,7 +45,7 @@
     <h3>Sistem Informasi Geografi</h3>
     <h4>Museum Yogyakarta</h4>
     <br/>
-    <p>"Daerah Istimewa setingkat provinsi di Indonesia yang merupakan peleburan Negara Kesultanan Yogyakarta dan Negara Kadipaten Paku Alaman. Daerah dengan kultur budaya lengkap dengan sejarah menjadikan museum sebagai destinasi wisata yang sangat cocok di sini. Terdapat banyak museum yang dapat dikunungi dan kami menghadirkan sistem informasi geografis museum sebagai sarana pendukung untuk pencarian lokasi museum sebagai tempat tujuan anda"</p>
+    <p align="justify">"Daerah Istimewa setingkat provinsi di Indonesia yang merupakan peleburan Negara Kesultanan Yogyakarta dan Negara Kadipaten Paku Alaman. Daerah dengan kultur budaya lengkap dengan sejarah menjadikan museum sebagai destinasi wisata yang sangat cocok di sini. Terdapat banyak museum yang dapat dikunungi dan kami menghadirkan sistem informasi geografis museum sebagai sarana pendukung untuk pencarian lokasi museum sebagai tempat tujuan anda"</p>
    
   </div>
 </div>
