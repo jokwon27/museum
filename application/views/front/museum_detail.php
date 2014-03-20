@@ -27,6 +27,7 @@
 	marker.setMap(map);
   }
   google.maps.event.addDomListener(window, 'load', initialize);
+
 </script>
 
 

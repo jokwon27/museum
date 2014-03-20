@@ -165,7 +165,8 @@ class M_admin extends CI_Model {
             'id_user' => $this->session->userdata('id_user'),
             'id_museum' => post_safe('id_museum'),
             'url' => post_safe('url'),
-            'isi' => post_safe('isi_artikel')            
+            'isi' => post_safe('isi_artikel'),
+            'image' => post_safe('nama_image')           
         );
 
         $id = post_safe('id');
@@ -225,7 +226,8 @@ class M_admin extends CI_Model {
             'latitude' => post_safe('latitude'),
             'keterangan' => post_safe('keterangan_museum'),
             'link_youtube' => post_safe('link_youtube'),
-            'folder_gallery' => post_safe('folder_gallery')
+            'folder_gallery' => post_safe('folder_gallery'),
+            'image' => post_safe('nama_image')
         );
 
         $id = post_safe('id');

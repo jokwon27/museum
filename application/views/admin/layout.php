@@ -26,7 +26,7 @@
     <script type="text/javascript" src="<?= base_url('assets/js/library.js') ?>"></script>
     <script type="text/javascript" src="<?= base_url('assets/bootstrap/js/bootstrap.min.js') ?>"></script>
     <script type="text/javascript" src="<?= base_url('assets/bootstrap/js/bootstrap-dialog.js') ?>"></script>
-
+    <script type="text/javascript" src="<?= base_url('assets/js/ajaxfileupload.js') ?>"></script>
     <link rel="stylesheet" href="<?= base_url('assets/font-awesome/css/font-awesome.min.css')?>">
     
     <script type="text/javascript" src="<?= base_url('assets/pnotify/jquery.pnotify.min.js') ?>"></script>
@@ -39,7 +39,6 @@
             if($(this).val() !== ''){
                 dc_validation_remove(this);
             }
-            
         });
 
         $('.myinput').change(function(){

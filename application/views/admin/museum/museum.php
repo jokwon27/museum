@@ -110,8 +110,32 @@
             reset_data();
         });
 
-        $('#formtambah').submit(function(){
+        $('#formtambah').submit(function(e){
+            e.preventDefault();
+            $.ajaxFileUpload({
+                url             :'<?= base_url() ?>/admin/upload_tumbnail/tumbnail_museum', 
+                secureuri       :false,
+                fileElementId   :'tumbnail',
+                dataType        : 'json',
+                data            : {
+                    'title'             : $('#nama_image').val()
+                },
+                success : function (data, status)
+                {
+                    if(data.status != 'error')
+                    {
+                        alert('berhasil upload file');
+                        $('#nama_image').val(data.filename)
+                    }
+                    
+                }
+            });
             return false;
+        });
+
+        $('#tumbnail').change(function(){
+            var a = $(this).val().split('\\').pop();
+            $('#nama_image').val(a);
         });
         
 	});
@@ -337,6 +361,7 @@
           </div>
         <div class="modal-body body_fit">
        <?= form_hidden('id') ?>
+       <input type="hidden" name="nama_image" id="nama_image"/>
         <div class="form-group">
             <label class="col-sm-2 control-label">Nama Museum</label>
             <div class="col-sm-6">
@@ -389,6 +414,13 @@
             <label class="col-sm-2 control-label">Keterangan</label>
             <div class="col-sm-10">
             <?= form_textarea('keterangan','','id=keterangan')?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Tumbnail</label>
+            <div class="col-sm-6">
+                <input type="file" name="tumbnail" id="tumbnail" size="20" />
+                <input type="submit" name="submit" id="submit" value="Upload" />
             </div>
         </div>
         </div>
