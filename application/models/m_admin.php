@@ -224,7 +224,7 @@ class M_admin extends CI_Model {
             'url' => post_safe('url'),
             'longitude' => post_safe('longitude'),
             'latitude' => post_safe('latitude'),
-            'keterangan' => post_safe('keterangan_museum'),
+            'keterangan' => $_POST['keterangan_museum'],
             'link_youtube' => post_safe('link_youtube'),
             'folder_gallery' => post_safe('folder_gallery'),
             'image' => post_safe('nama_image')

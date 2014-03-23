@@ -470,6 +470,23 @@ class Admin extends CI_Controller {
         echo json_encode(array('status' => $status, 'msg' => $msg, 'filename' =>$data['file_name']));
     }
 
+    function galery_list($id_museum){
+        $data['museum'] = $this->m_admin->get_museum($id_museum);
+        $data['galery'] = $this->db->where('id_museum', $id_museum)->get('gallery')->result();
+        $this->load->view('admin/museum/galery', $data);
+    }
+
+    function galery_delete($id, $folder){
+        $galery = $this->db->where('id', $id)->get('gallery')->row();
+        $path = APPPATH."../image_upload/gallery/".$folder."/".$galery->url;
+        unlink($path);
+
+        echo $path;
+
+        //$this->db->where('id', $id)->delete('gallery');
+
+    }
+
     
 	
 }

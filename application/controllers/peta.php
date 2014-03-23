@@ -13,6 +13,10 @@ class Peta extends CI_Controller {
 	function index(){
 		$data['title'] = 'Peta';
 		$data['page'] = 'peta';
+        if (isset($_POST['id_museum'])) {
+            $data['museum'] = $this->m_admin->get_museum(post_safe('id_museum'));
+        }
+
 		$this->load->view('front/layout', $data);
 	}
 

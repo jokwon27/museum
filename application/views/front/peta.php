@@ -63,13 +63,13 @@
         // Browser doesn't support Geolocation
         handleNoGeolocation(false);
       }
-      /*
       
-
-      placeMarker(myposition, 'Lokasi Anda');
-
-      map.setCenter(myposition);
-      */
+      if ('<?= isset($museum) ?>') {
+          var location = new google.maps.LatLng('<?= $museum->latitude ?>','<?= $museum->longitude ?>');
+          $('#museum').attr('disabled', 'disabled');
+          placeMarker(location, '<?= $museum->nama ?> | <?= $museum->alamat ?>');
+          shelter_terdekat_museum('<?= $museum->latitude ?>','<?= $museum->longitude ?>');
+      };
     }
 
     function handleNoGeolocation(errorFlag) {
@@ -331,8 +331,8 @@
       <h4>Pencarian Rute Museum</h4>
       <br/>
       <strong>Pilih Museum</strong>      
-      <?= form_input('museum','','class="form-control" id=museum')?>
-      <input type="hidden" id="id_museum"/>
+      <?= form_input('museum', isset($museum)?$museum->nama:'','class="form-control" id=museum')?>
+      <input type="hidden" id="id_museum" value="<?= (isset($museum)?$museum->id:'') ?>"/>
       <hr style="border-bottom:1px solid #999;" /> 
       <strong>Shelter Terdekat dengan user</strong>
       <?= form_dropdown('shelter', array(), array(), 'id=shelter_choice class=form-control') ?>
@@ -356,3 +356,9 @@
   </div>
 
 </div>
+
+<script type="text/javascript">
+  $(function(){
+    
+  });
+</script>

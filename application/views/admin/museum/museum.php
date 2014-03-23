@@ -111,6 +111,7 @@
         });
 
         $('#formtambah').submit(function(e){
+            $('#galery_content').html('');
             e.preventDefault();
             $.ajaxFileUpload({
                 url             :'<?= base_url() ?>/admin/upload_tumbnail/tumbnail_museum', 
@@ -165,7 +166,7 @@
         if ($('#latitude').val() == '') {
             dc_validation('#latitude', 'Latitude harus diisi!');
             stop = true;
-        }
+        }galery_content
 
         if (CKEDITOR.instances.keterangan.getData() == '') {
              CKEDITOR.instances.keterangan.setData($('#nama').val());
@@ -209,6 +210,17 @@
 
     }
 
+    function get_galery_museum(id_museum){
+        $.ajax({
+            type : 'GET',
+            url: '<?= base_url("admin/galery_list") ?>/'+id_museum,
+            cache: false,
+            success: function(data) {
+                $('#galery_content').html(data);
+            }
+        });
+    }
+
     
 
     function reset_data(){
@@ -217,6 +229,7 @@
         dc_validation_remove('.myinput');
         setAllMap(null);
         map.setCenter(thecenter);
+        $('#galery_content').html('');
     }
 
     function tambah_data(){
@@ -261,7 +274,7 @@
                 var museumCoord = new google.maps.LatLng(data.latitude,data.longitude);
                 placeMarker(museumCoord);
                 map.setCenter(museumCoord);
-
+                get_galery_museum(data.id);
                 $('#form_tambah').modal('show');
             }
         });
@@ -353,82 +366,90 @@
 
 <div id="form_tambah" class="modal fade">
      <?= form_open('','id=formtambah class="form-horizontal"') ?>
-    <div class="modal-dialog higherWider">
+    <div class="modal-dialog" style="width: 100%; height: 100%;">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"><span id="judul_dialog"></span> Data Museum</h4>
           </div>
         <div class="modal-body body_fit">
-       <?= form_hidden('id') ?>
-       <input type="hidden" name="nama_image" id="nama_image"/>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Nama Museum</label>
-            <div class="col-sm-6">
-            <?= form_input('nama','','class="form-control myinput" id=nama onkeyup=set_url(this)')?>
+        <div class="row">
+            <div class="col-lg-7" style="border-right:1px solid #ddd;">
+                 <?= form_hidden('id') ?>
+                <input type="hidden" name="nama_image" id="nama_image"/>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Nama Museum</label>
+                    <div class="col-sm-6">
+                    <?= form_input('nama','','class="form-control myinput" id=nama onkeyup=set_url(this)')?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Alamat</label>
+                    <div class="col-sm-6">
+                    <?= form_textarea('alamat','','class="form-control myinput" id=alamat')?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">URL</label>
+                    <div class="col-sm-6">
+                    <?= form_input('url','','class="form-control myinput" id=url')?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Longitude</label>
+                    <div class="col-sm-6">
+                    <?= form_input('longitude','','class="form-control myinput" id=longitude')?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Latitude</label>
+                    <div class="col-sm-6">
+                    <?= form_input('latitude','','class="form-control myinput" id=latitude')?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-8">
+                        <div id="map-museum"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Link Youtube</label>
+                    <div class="col-sm-6">
+                    <?= form_input('link_youtube','','class="form-control myinput" id=link_youtube')?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Folder Gallery</label>
+                    <div class="col-sm-6">
+                    <?= form_input('folder_gallery','','class="form-control myinput" id=folder_gallery')?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Keterangan</label>
+                    <div class="col-sm-10">
+                    <?= form_textarea('keterangan','','id=keterangan')?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Tumbnail</label>
+                    <div class="col-sm-6">
+                        <input type="file" name="tumbnail" id="tumbnail" size="20" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-6">
+                        <input type="submit" name="submit" id="submit" value="Upload" />
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Alamat</label>
-            <div class="col-sm-6">
-            <?= form_textarea('alamat','','class="form-control myinput" id=alamat')?>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">URL</label>
-            <div class="col-sm-6">
-            <?= form_input('url','','class="form-control myinput" id=url')?>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Longitude</label>
-            <div class="col-sm-6">
-            <?= form_input('longitude','','class="form-control myinput" id=longitude')?>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Latitude</label>
-            <div class="col-sm-6">
-            <?= form_input('latitude','','class="form-control myinput" id=latitude')?>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label"></label>
-            <div class="col-sm-8">
-                <div id="map-museum"></div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Link Youtube</label>
-            <div class="col-sm-6">
-            <?= form_input('link_youtube','','class="form-control myinput" id=link_youtube')?>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Folder Gallery</label>
-            <div class="col-sm-6">
-            <?= form_input('folder_gallery','','class="form-control myinput" id=folder_gallery')?>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Keterangan</label>
-            <div class="col-sm-10">
-            <?= form_textarea('keterangan','','id=keterangan')?>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Tumbnail</label>
-            <div class="col-sm-6">
-                <input type="file" name="tumbnail" id="tumbnail" size="20" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label"></label>
-            <div class="col-sm-6">
-                <input type="submit" name="submit" id="submit" value="Upload" />
-            </div>
-        </div>
 
+            <div class="col-lg-5">
+                <h3>Galery</h3>
+                <div id="galery_content"></div>
+            </div>
+        </div>
 
         </div>
           <div class="modal-footer">

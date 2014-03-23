@@ -48,7 +48,12 @@
 	    <p><span class="fa fa-building-o"></span> Alamat : <?= $museum->alamat ?></p>
 	    <p><span class="fa fa-map-marker"></span> Longitude : <?= $museum->longitude ?></p>
 	    <p><span class="fa fa-map-marker"></span> Latitude : <?= $museum->latitude ?></p>
-	    
+	    <p>
+	    	<?= form_open('peta') ?>
+	    	<input type="hidden" name="id_museum" value="<?= $museum->id ?>" />
+	    	<button type="submit" class="btn btn-primary btn-xs"><i class="fa fa-map-marker"></i> Klik untuk mencari rute ke <?= $museum->nama ?></button>
+	    	<?= form_close() ?>
+	    </p>
 
 	    <hr>
 	    <p>
