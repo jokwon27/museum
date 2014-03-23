@@ -174,7 +174,7 @@ if (defined('ENVIRONMENT'))
 
 	// Name of the "system folder"
 	define('SYSDIR', trim(strrchr(trim(BASEPATH, '/'), '/'), '/'));
-
+	define('PUBPATH',str_replace(SELF,'',FCPATH)); // added 
 
 	// The path to the "application" folder
 	if (is_dir($application_folder))

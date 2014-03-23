@@ -478,7 +478,7 @@ class Admin extends CI_Controller {
 
     function galery_delete($id, $folder){
         $galery = $this->db->where('id', $id)->get('gallery')->row();
-        $path = APPPATH."../image_upload/gallery/".$folder."/".$galery->url;
+        $path = PUBPATH."image_upload/gallery/".$folder."/".$galery->url;
         unlink($path);
 
         echo $path;
